@@ -11,12 +11,12 @@
 #include "coords.h"
 
 class ship{
-    private:
+   // private:
+
+    protected:
         coords center;
         bool vertical;
         int dim, life;
-
-    protected:
         //exceptions
         class invalidPosition : std::exception {};
         //check position
@@ -27,23 +27,27 @@ class ship{
         ship(): center{{"A1"}}, vertical{false}, life{1}, dim{1} {};
         ship(coords c, bool v, int l, int d): center{c}, vertical{v}, life{l}, dim{d} {};
 
+        ship(const ship&) = delete;     // deactivate copy constructor
+        //ship& operator=(const ship&) = delete;
+
         //getters per prua e poppa
         virtual coords getBow() = 0;
         virtual coords getStern() = 0;
 
         //getters utili
-        coords getCenter() {return center; };     //get coord center
-        int getLife() {return life; };          //get life
-        int getDimension() {return dim; };     //get ship dimension
+        coords getCenter() { return center; };     //get coord center
+        int getLife() { return life; };          //get life
+        int getDimension() { return dim; };     //get ship dimension
 
         //setters
         void removeHealth() { life --; };       //life - 1
+        void removeShip(coords center, backing::matrix *removeMatrix);      //funzione per rimuovere una nave
 
         //funzioni comuni alle navi
         virtual void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) = 0;      //function for ship action
 };
 
-class battleship : ship{
+class battleship : public ship{
     private:
         const int dim = 5;
         int life = 5;
@@ -63,7 +67,7 @@ class battleship : ship{
         void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) override;
 };
 
-class support : ship{
+class support : public ship{
 private:
     const int dim = 3;
     int life = 3;
@@ -83,17 +87,29 @@ public:
     bool move(coords target, backing::matrix* matrixDefence);
 };
 
-
-class submarine : ship{
-private:
-    const int dim = 3;
-    int life = 3;
-    coords center;
-    bool vertical = false;
+class submarine : public ship{
+/*private:
+    const int dim = 1;
+      int life = 1;
+      coords center;
+      bool vertical = false;*/
 public:
     //constructor
-    submarine() : center{{"A3"}}, vertical{false}{};   //default constructor           //! to remove if not used
-    submarine(coords ctr) : center{ctr}{};
+    //submarine() : center{{"A3"}}, vertical{false}{};   //default constructor           //! to remove if not used
+    //submarine(coords ctr) : center{ctr}{};
+    submarine(){
+        ship::center = coords("A3");
+        ship::life = 1;
+        ship::vertical = false;
+        ship::dim = 1;
+    }
+    submarine(coords ctr){
+        ship::center = ctr;
+        ship::life = 1;
+        ship::vertical = false;
+        ship::dim = 1;
+    }
+    //submarine(const submarine& sub);
 
     //getters per prua e poppa
     coords getBow() override;
@@ -103,7 +119,6 @@ public:
     void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) override;
     bool move(coords target, backing::matrix* matrixDefence);
 };
-
 
 
 /*

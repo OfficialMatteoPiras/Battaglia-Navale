@@ -11,4 +11,5 @@ add_executable(Battaglia_Navale
         sources/player.cpp
         sources/backing.cpp
         sources/ship.cpp
-        sources/replay.cpp headers/replay.h)
+        sources/replay.cpp
+        sources/game.cpp)

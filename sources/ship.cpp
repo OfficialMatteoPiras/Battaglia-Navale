@@ -77,7 +77,6 @@ bool submarine::move(coords target, backing::matrix* matrixDefence) {
     if(!checkPosition(target, *matrixDefence)){
         throw invalidPosition();
     }
-    std::cout << center << std::endl;
     matrixDefence->setElement(' ', center.getX(), center.getY());
     matrixDefence->setElement('E', target.getX(), target.getY());
     return true;
