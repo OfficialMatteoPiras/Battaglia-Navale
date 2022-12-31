@@ -2,6 +2,14 @@
 
 #include "../headers/ship.h"
 #include <utility>
+// ------------------- SHIP ------------------- //
+bool ship::checkPosition(coords target, backing::matrix checkMatrix) {
+    if(checkMatrix.getElement(target) != ' '){
+        //throw invalidPosition();
+        return false;
+    }
+    return true;
+}
 
 // ------------------- BATTLESHIP ------------------- //
 coords battleship::getBow() {   //getter prua
@@ -66,7 +74,7 @@ void submarine::action(coords target, backing::matrix *matrixShips, backing::mat
 }
 
 bool submarine::move(coords target, backing::matrix* matrixDefence) {
-    if(matrixDefence->getElement(target) != ' '){
+    if(!checkPosition(target, *matrixDefence)){
         throw invalidPosition();
     }
     std::cout << center << std::endl;

@@ -19,6 +19,8 @@ class ship{
     protected:
         //exceptions
         class invalidPosition : std::exception {};
+        //check position
+        bool checkPosition(coords target, backing::matrix checkMatrix);     //matrix to check if there's something on target
 
     public:
         //constructors
