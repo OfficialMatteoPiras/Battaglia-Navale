@@ -88,6 +88,11 @@ void player::startFleet() {
         //todo: creare un oggetto ship, convertire prua / poppa con centro ed inserire nella mappa
     }
 
+std::string player::getInputCoords(const std::string& message) {
+    std::string newCoords;
+    std::cout << "Inserire le coordinate per " << message << "(poppa prua): ";
+    std::cin >> newCoords;
+    return {newCoords};
 }
 
 /*
@@ -99,5 +104,9 @@ coords player::getShipCoords(ship playerShip) {
     return coords(0, 0);
 }
 */
+
+
+
+
 
 
