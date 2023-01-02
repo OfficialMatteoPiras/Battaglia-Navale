@@ -11,6 +11,19 @@ bool ship::checkPosition(coords target, game::matrix checkMatrix) {
     return true;
 }
 
+coords ship::getCenter(coords bow, coords stern) {
+    int center;
+    if(bow.getX() == stern.getX()){ //hanno la stessa ascissa
+        center = bow.getY() - stern.getY();
+        if(center < 0) center *= (-1);
+        return {bow.getX(), center};
+    }
+    //se hanno la stessa ordinata
+    center = bow.getX() - stern.getX();
+    if(center < 0) center *= (-1);
+    return {bow.getY(), center};
+}
+
 // ------------------- BATTLESHIP ------------------- //
 coords battleship::getBow() {   //getter prua
     if(vertical) return {center.getX(), center.getY() - 2};

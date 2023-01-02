@@ -9,7 +9,7 @@ add_executable(Battaglia_Navale
         main.cpp
         sources/coords.cpp
         sources/player.cpp
-        sources/backing.cpp
+        #sources/backing.cpp
         sources/ship.cpp
         sources/replay.cpp
         sources/game.cpp)

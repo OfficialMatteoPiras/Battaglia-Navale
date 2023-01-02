@@ -13,24 +13,23 @@ class player{
     private:
         game::matrix defence;    //griglia difesa (navi)
         game::matrix attack;     //griglia attacco
-        ship *ships[8];
-        //vettori per le navi
-        /*std::vector<submarine> battleship;
-        std::vector<submarine> support;
-        std::vector<submarine> submarine;
-*/
-
-        //std::vector<ship> fleet;    //vettore con tutte le navi
-
-        static std::string getInputCoords(const std::string& ship);
-
+        //ship *ships[8];
+        //std::vector<ship*> fleet;
+        std::map<coords, ship*> fleet;
 
         //exceptions
         class invalidCoords : std::exception {};
 
+        //membri privati
+        std::pair<coords, coords> getCoords(const std::string& message);
+
     public:
         //Constructors
         explicit player();       //costruttore che inizializza tutta la flotta
+
+        //start flotta
+        void startFleet();
+
 
         //Getters
         //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate
@@ -39,8 +38,15 @@ class player{
         //Setters
 
         void visual(){
-            game::grid(game::matrix  defence, game::matrix attack);
+            game::grid(defence, attack);
         }
+
+        //Distruttore
+        ~player() = default;
+    /*~player(){
+       /* dete *ships;
+        delete &fleet;
+    }*/
 };
 
 

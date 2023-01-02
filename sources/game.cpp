@@ -3,7 +3,10 @@
 //
 
 #include "../headers/game.h"
+
 #include <fstream>
+#include <iostream>
+
 
 void game::grid(game::matrix ships, game::matrix attack) {
     std::string letters = "ABCDEFGHILMN";

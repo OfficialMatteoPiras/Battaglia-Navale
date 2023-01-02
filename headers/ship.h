@@ -19,7 +19,7 @@ class ship{
         //exceptions
         class invalidPosition : std::exception {};
         //check position
-        bool checkPosition(coords target, game::matrix checkMatrix);     //matrix to check if there's something on target
+        static bool checkPosition(coords target, game::matrix checkMatrix);     //matrix to check if there's something on target
 
     public:
         //constructors
@@ -35,15 +35,19 @@ class ship{
 
         //getters utili
         coords getCenter() { return center; };     //get coord center
-        int getLife() { return life; };          //get life
-        int getDimension() { return dim; };     //get ship dimension
+        static coords getCenter(coords bow, coords stern);
+        const int getLife() { return life; };          //get life
+        const int getDimension() { return dim; };     //get ship dimension
 
         //setters
         void removeHealth() { life --; };       //life - 1
-        void removeShip(coords center, game::matrix *removeMatrix);      //funzione per rimuovere una nave
+        void removeShip(coords center, game::matrix *removeMatrix);      //todo: funzione per rimuovere una nave
 
         //funzioni comuni alle navi
         virtual void action(coords target, game::matrix* matrixShips, game::matrix* matrixAttack, game::matrix* opponentDefence) = 0;      //function for ship action
+
+        //distruttore
+        ~ship() = default;
 };
 
 class battleship : public ship{

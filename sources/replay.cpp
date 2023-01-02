@@ -17,7 +17,7 @@
 #include "../headers/coords.h"
 #include "../headers/game.h"
 #include <fstream>
-
+/*
 int main(){
     std::string lines;
     std::ifstream inFile("log.txt");
@@ -28,4 +28,4 @@ int main(){
     inFile.close();
     std::cout << "END";
     return 0;
-}
+}*/

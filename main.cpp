@@ -75,4 +75,5 @@ int main(int argc, char **argv){
 
     player player1;
 
+    return 0;
 }
