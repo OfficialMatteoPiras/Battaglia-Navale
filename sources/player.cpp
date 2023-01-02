@@ -64,3 +64,7 @@ coords player::getShipCoords(ship playerShip) {
 }
 */
 
+
+
+
+

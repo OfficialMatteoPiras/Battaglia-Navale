@@ -27,7 +27,6 @@ namespace backing {
             void hit(coords target);
             void restore(coords target);
             bool isEmpty(coords target);      //true se è vuoto
-
     };
 
     //void grid(std::vector<std::pair<coords, coords>>);
