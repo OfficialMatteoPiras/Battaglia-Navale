@@ -39,7 +39,7 @@ class player{
         //Setters
 
         void visual(){
-            game::grid(game::matrix  defence, game::matrix attack);
+            game::grid(defence, attack);
         }
 };
 
