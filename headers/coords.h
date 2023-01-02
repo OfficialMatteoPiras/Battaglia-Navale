@@ -11,19 +11,21 @@ class coords {
     public:
         //CONSTRUCTORS
         coords(int r, int c);       //costruisce dalle coordinate della matrice (0-12)
-        coords(std::string);        //legge "B10" e inizializza con y=1, x=9
+        coords(std::string);        //legge "B10" e inizializza con x=1, y=9
 
         //GETTERS
         //matrix coordinates
-        int getX() const { return x; }    //colonna della matrice (0-11)
-        int getY() const { return y; }    //riga della matrice (0-11)
+        int getX() const { return x; }    //riga della matrice (0-11)
+        int getY() const { return y; }    //colonna della matrice (0-11)
 
         //grid coordinates
-        char getRow() const { return rowToChar(y); }  //riga della griglia (A-N)
-        int getCol() const { return x+1; }   //colonna della griglia (1-12)
+        char getRow() const { return rowToChar(x); }  //riga della griglia (A-N)
+        int getCol() const { return y+1; }   //colonna della griglia (1-12)
 
+        //ADD
         coords addRow(int n);
         coords addCol(int n);
+        coords add(int r, int c);
 
     private:
         int x;  //riga della matrice (0-11)

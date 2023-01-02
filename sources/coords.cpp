@@ -6,8 +6,8 @@
 coords::coords(int r, int c){
     if(r < 0 || r > 11 || c < 0 || c > 11)
         throw invalidCoords();
-    x = c;
-    y = r;
+    x = r;      // x = row
+    y = c;      // y = column
 }
 
 coords::coords(std::string s){  //"YX" ("riga-colonna")
@@ -21,10 +21,12 @@ coords::coords(std::string s){  //"YX" ("riga-colonna")
     }
     if(r < 0 || r > 11 || c < 0 || c > 11)
         throw invalidCoords();
-    x = c;      // x = col
-    y = r;      // y = row
+    x = r;      // x = row
+    y = c;      // y = column
 }
 
+
+//ADD
 coords coords::addRow(int n) {
     return coords(x+n, y);
 }
@@ -32,6 +34,11 @@ coords coords::addRow(int n) {
 coords coords::addCol(int n) {
     return coords(x, y+n);
 }
+
+coords coords::add(int r, int c) {
+    return coords(x+r, y+c);
+}
+
 
 //ROW TYPES CONVERSIONS
 char coords::rowToChar(int r) {
@@ -43,6 +50,7 @@ int coords::rowToInt(char r) {
     std::string s = "ABCDEFGHILMN";
     return s.find(r);
 }
+
 
 //OPERATOR <<
 std::ostream& operator<< (std::ostream& os, const coords& c){
