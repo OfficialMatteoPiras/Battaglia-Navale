@@ -1,6 +1,6 @@
 //! Created by Matteo Piras
 
-#include "headers/backing.h"
+#include "../headers/backing.h"
 #include <cctype>
 
 void backing::grid(backing::matrix ships, backing::matrix attack) {

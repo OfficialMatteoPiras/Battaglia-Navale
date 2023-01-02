@@ -1,6 +1,6 @@
 // Created by Claudia De Carlo
 
-#include "headers/coords.h"
+#include "../headers/coords.h"
 
 //CONSTRUCTORS
 coords::coords(int r, int c){
