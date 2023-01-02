@@ -19,8 +19,8 @@
 #include <fstream>
 
 int main(){
-    std::string lines
-    ifstream inFile("log.txt");
+    std::string lines;
+    std::ifstream inFile("log.txt");
 
     while(getline(inFile, lines)){
         std::cout << lines << std::endl;

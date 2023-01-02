@@ -2,7 +2,7 @@
 #include "headers/ship.h"
 #include "headers/player.h"
 #include <iostream>
-
+/*
 int main(int argc, char **argv){
     /*backing::matrix ships1, attack1;
     backing::matrix ships2, attack2;
@@ -71,8 +71,9 @@ int main(int argc, char **argv){
     s.move({"A10"}, &ships1);
     backing::grid(ships1, attack1);
 
-*/
+
 
     player player1;
 
 }
+*/

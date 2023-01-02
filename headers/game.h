@@ -3,6 +3,10 @@
 #ifndef BATTAGLIA_NAVALE_GAME_H
 #define BATTAGLIA_NAVALE_GAME_H
 
+#include <iostream>
+#include <vector>
+#include <fstream>
+#include "../headers/coords.h"
 
 namespace game {
     class matrix {
