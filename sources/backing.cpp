@@ -101,7 +101,7 @@ char backing::matrix::getElement(coords c) {
     return _matrix[c.getX()][c.getY()];
 }
 char backing::matrix::getElement(int row, int col) {
-    return _matrix[col][row];
+    return _matrix[row][col];
 }
 
 void backing::matrix::hit(coords target){

@@ -22,7 +22,7 @@ namespace backing {
             //getters
             char* getRow(int);
             char getElement(coords);
-            char getElement(int col, int row);
+            char getElement(int row, int col);
             //setters
             bool setElement(char, int, int);
             void hit(coords target);
