@@ -19,11 +19,11 @@
 #include <fstream>
 
 int main(){
-    string lines
+    std::string lines
     ifstream inFile("log.txt");
 
     while(getline(inFile, lines)){
-        std::cout << lines << endl;
+        std::cout << lines << std::endl;
     }
     inFile.close();
     std::cout << "END";
