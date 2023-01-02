@@ -5,10 +5,9 @@
 
 #include <iostream>
 #include <utility>
-#include "../headers/coords.h"
-#include "../headers/backing.h"
+#include "/headers/coords.h"
+#include "/headers/backing.h"
 
-#include "coords.h"
 
 class ship{
    // private:

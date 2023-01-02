@@ -1,15 +1,13 @@
 //! Created by Matteo Piras
 
-#ifndef BATTAGLIA_NAVALE_SUPPORT_H
-#define BATTAGLIA_NAVALE_SUPPORT_H
+#ifndef BATTAGLIA_NAVALE_BACKING_H
+#define BATTAGLIA_NAVALE_BACKING_H
 
 #include <iostream>
 #include <vector>
 #include <fstream>
 
-#include "headers/coords.h"
-#include "backing.h"
-
+#include "../headers/coords.h"
 
 namespace backing {
     class matrix {
@@ -40,4 +38,4 @@ namespace backing {
 
 }
 
-#endif //BATTAGLIA_NAVALE_SUPPORT_H
+#endif //BATTAGLIA_NAVALE_BACKING_H
