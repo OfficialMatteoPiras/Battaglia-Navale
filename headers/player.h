@@ -9,7 +9,35 @@
 
 #include <map>
 
+class player{
+    private:
+        backing::matrix defence;    //griglia difesa (navi)
+        backing::matrix attack;     //griglia attacco
+        ship *ships[8];
+        //vettori per le navi
+        /*std::vector<submarine> battleship;
+        std::vector<submarine> support;
+        std::vector<submarine> submarine;
+*/
 
+        //std::vector<ship> fleet;    //vettore con tutte le navi
+
+        static std::string getInputCoords(const std::string& ship);
+
+
+        //exceptions
+        class invalidCoords : std::exception {};
+
+    public:
+        //Constructors
+        explicit player();       //costruttore che inizializza tutta la flotta
+
+        //Getters
+        //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate
+        //coords getShipCoords(ship playerShip);      //getter delle coordinate di una nave
+
+        //Setters
+};
 
 
 /*

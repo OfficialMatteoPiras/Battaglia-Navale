@@ -67,15 +67,25 @@ class battleship : public ship{
 };
 
 class support : public ship{
-private:
+/*private:
     const int dim = 3;
     int life = 3;
     coords center;
-    bool vertical;
+    bool vertical;*/
 public:
     //constructor
-    support() : center{{"A3"}}, vertical{false}{};   //default constructor           //! to remove if not used
-    support(coords ctr, bool vert) : center{ctr}, vertical{vert}{};
+    //support() : center{{"A3"}}, vertical{false}{};   //default constructor           //! to remove if not used
+    //support(coords ctr, bool vert) : center{ctr}, vertical{vert}{};
+    support(){
+        ship::center = coords ("A3");
+        ship::vertical = false;
+    }
+
+    support(coords ctr, bool vert){
+        ship::center = ctr;
+        ship::vertical = vert;
+    }
+
 
     //getters per prua e poppa
     coords getBow() override;
