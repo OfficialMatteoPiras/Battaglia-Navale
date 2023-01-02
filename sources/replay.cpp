@@ -16,11 +16,11 @@
 #include "../headers/ship.h"
 #include "../headers/coords.h"
 #include "../headers/game.h"
-#include <ifstream>
+#include <fstream>
 
 int main(){
     std::string lines;
-    ifstream inFile("log.txt");
+    std::ifstream inFile("log.txt");
 
     while(getline(inFile, lines)){
         std::cout << lines << std::endl;
