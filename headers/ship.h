@@ -6,7 +6,7 @@
 #include <iostream>
 #include <utility>
 #include "../headers/coords.h"
-#include "../headers/backing.h"
+#include "../headers/game.h"
 
 
 class ship{
@@ -19,7 +19,7 @@ class ship{
         //exceptions
         class invalidPosition : std::exception {};
         //check position
-        bool checkPosition(coords target, backing::matrix checkMatrix);     //matrix to check if there's something on target
+        bool checkPosition(coords target, game::matrix checkMatrix);     //matrix to check if there's something on target
 
     public:
         //constructors
@@ -40,10 +40,10 @@ class ship{
 
         //setters
         void removeHealth() { life --; };       //life - 1
-        void removeShip(coords center, backing::matrix *removeMatrix);      //funzione per rimuovere una nave
+        void removeShip(coords center, game::matrix *removeMatrix);      //funzione per rimuovere una nave
 
         //funzioni comuni alle navi
-        virtual void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) = 0;      //function for ship action
+        virtual void action(coords target, game::matrix* matrixShips, game::matrix* matrixAttack, game::matrix* opponentDefence) = 0;      //function for ship action
 };
 
 class battleship : public ship{
@@ -63,7 +63,7 @@ class battleship : public ship{
         coords getStern() override;
 
         //action
-        void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) override;
+        void action(coords target, game::matrix* matrixShips, game::matrix* matrixAttack, game::matrix* opponentDefence) override;
 };
 
 class support : public ship{
@@ -92,8 +92,8 @@ public:
     coords getStern() override;
 
     //action
-    void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) override;
-    bool move(coords target, backing::matrix* matrixDefence);
+    void action(coords target, game::matrix* matrixShips, game::matrix* matrixAttack, game::matrix* opponentDefence) override;
+    bool move(coords target, game::matrix* matrixDefence);
 };
 
 class submarine : public ship{
@@ -125,8 +125,8 @@ public:
     coords getStern() override;
 
     //action
-    void action(coords target, backing::matrix* matrixShips, backing::matrix* matrixAttack, backing::matrix* opponentDefence) override;
-    bool move(coords target, backing::matrix* matrixDefence);
+    void action(coords target, game::matrix* matrixShips, game::matrix* matrixAttack, game::matrix* opponentDefence) override;
+    bool move(coords target, game::matrix* matrixDefence);
 };
 
 
@@ -147,11 +147,11 @@ public:
     int Life() const { return life; }
     bool alive() const{ return life!=0; }
     bool getvertical() const { return vertical; }
-    //virtual void action(coords, backing::matrix/*, backing::matrix/*, backing::matrix/*) = 0;
-    //virtual bool move(coords target, backing::matrix defense);
-    bool move(coords target, backing::matrix defense, char c);
+    //virtual void action(coords, game::matrix/*, game::matrix/*, game::matrix/*) = 0;
+    //virtual bool move(coords target, game::matrix defense);
+    bool move(coords target, game::matrix defense, char c);
 
-    virtual void action(coords, backing::matrix*, backing::matrix*, backing::matrix*) = 0;
+    virtual void action(coords, game::matrix*, game::matrix*, game::matrix*) = 0;
 };
 
 class battleship : public ship
@@ -162,7 +162,7 @@ private:
 
 public:
     //shoot
-    void action(coords target, backing::matrix* defense, backing::matrix* attack, backing::matrix* oppDef) override;
+    void action(coords target, game::matrix* defense, game::matrix* attack, game::matrix* oppDef) override;
 };
 
 class support : public ship
@@ -174,7 +174,7 @@ private:
 public:
     //move
     //repair
-    void action(coords target, backing::matrix *defense, backing::matrix *attack, backing::matrix* oppDef) override;
+    void action(coords target, game::matrix *defense, game::matrix *attack, game::matrix* oppDef) override;
 
 };
 
@@ -187,7 +187,7 @@ private:
 public:
     //move
     //research
-    void action(coords target, backing::matrix* defense, backing::matrix *attack, backing::matrix* oppDef) override;
+    void action(coords target, game::matrix* defense, game::matrix *attack, game::matrix* oppDef) override;
 };*/
 
 #endif //BATTAGLIA_NAVALE_SHIP_H

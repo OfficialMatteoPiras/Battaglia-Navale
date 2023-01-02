@@ -3,7 +3,7 @@
 #include "../headers/player.h"
 #include "../headers/ship.h"
 #include "../headers/coords.h"
-#include "../headers/backing.h"
+#include "../headers/game.h"
 
 
 //MAIN con argomenti (A = pcpc | B = pcumano)

@@ -3,7 +3,7 @@
 #include "../headers/ship.h"
 #include <utility>
 // ------------------- SHIP ------------------- //
-bool ship::checkPosition(coords target, backing::matrix checkMatrix) {
+bool ship::checkPosition(coords target, game::matrix checkMatrix) {
     if(checkMatrix.getElement(target) != ' '){
         //throw invalidPosition();
         return false;
@@ -22,7 +22,7 @@ coords battleship::getStern() {   //getter poppa
     return {center.getX() + 2, center.getY()};
 }
 
-void battleship::action(coords target, backing::matrix *matrixShips, backing::matrix *matrixAttack, backing::matrix *opponentDefence) {
+void battleship::action(coords target, game::matrix *matrixShips, game::matrix *matrixAttack, game::matrix *opponentDefence) {
     char c;
     if(opponentDefence->isEmpty(target)){
         std::cout << "Miss";
@@ -36,7 +36,6 @@ void battleship::action(coords target, backing::matrix *matrixShips, backing::ma
     matrixAttack->setElement(c, target.getX(), target.getY());     //matrix attack update
 }
 
-
 // ------------------- SUPPORT ------------------- //
 coords support::getBow() {   //getter prua
     if(vertical) return {center.getX(), center.getY() - 1};
@@ -48,7 +47,7 @@ coords support::getStern() {   //getter poppa
     return {center.getX() + 1, center.getY()};
 }
 
-void support::action(coords target, backing::matrix *matrixShips, backing::matrix *matrixAttack, backing::matrix *opponentDefence) {
+void support::action(coords target, game::matrix *matrixShips, game::matrix *matrixAttack, game::matrix *opponentDefence) {
 
 }
 
@@ -61,7 +60,7 @@ coords submarine::getStern() {   //getter poppa
     return {center.getX(), center.getY()};
 }
 
-void submarine::action(coords target, backing::matrix *matrixShips, backing::matrix *matrixAttack, backing::matrix *opponentDefence) {
+void submarine::action(coords target, game::matrix *matrixShips, game::matrix *matrixAttack, game::matrix *opponentDefence) {
     int startX = target.getY() - 2;     //due celle sopra
     int startY = target.getX() - 2;     //due celle indietro
     for (int i = startX; i < startX + 5; ++i) {             //ciclo per le righe -> da inizio a inizio + 5
@@ -73,7 +72,7 @@ void submarine::action(coords target, backing::matrix *matrixShips, backing::mat
     }
 }
 
-bool submarine::move(coords target, backing::matrix* matrixDefence) {
+bool submarine::move(coords target, game::matrix* matrixDefence) {
     if(!checkPosition(target, *matrixDefence)){
         throw invalidPosition();
     }
@@ -82,14 +81,10 @@ bool submarine::move(coords target, backing::matrix* matrixDefence) {
     return true;
 }
 
-
-
-
-
 /*
 //class battleship
 //SHOOT
-void battleship::action(coords target, backing::matrix* defense, backing::matrix *attack, backing::matrix *oppDef) {
+void battleship::action(coords target, game::matrix* defense, game::matrix *attack, game::matrix *oppDef) {
     if(oppDef->isEmpty(target)){
         std::cout << "Miss";
     }
@@ -100,7 +95,7 @@ void battleship::action(coords target, backing::matrix* defense, backing::matrix
 
 //MOVE FUNCTION
 
-bool ship::move(coords target, backing::matrix defense, char c){
+bool ship::move(coords target, game::matrix defense, char c){
     if(defense.isEmpty(target)){
         if(c=='E'){
             defense.insert(target, 'E');
@@ -133,7 +128,7 @@ bool ship::move(coords target, backing::matrix defense, char c){
 };
 
 //classe submarine
-void submarine::action(coords target, backing::matrix *defense, backing::matrix *attack, backing::matrix *oppDef) {
+void submarine::action(coords target, game::matrix *defense, game::matrix *attack, game::matrix *oppDef) {
     int startX = target.getY() - 2;     //due celle sopra
     int startY = target.getX() - 2;     //due celle indietro
     for (int i = startX; i < startX + 5; ++i) {             //ciclo per le righe -> da inizio a inizio + 5
@@ -146,7 +141,7 @@ void submarine::action(coords target, backing::matrix *defense, backing::matrix 
 }
 
 //class support
-void support::action(coords target, backing::matrix* defense, backing::matrix *attack, backing::matrix* oppDef) {
+void support::action(coords target, game::matrix* defense, game::matrix *attack, game::matrix* oppDef) {
     if(move(target, *defense, 'S')){
         for(int i = -1; i <= 1; i++){
             for(int j = -1; i<= 1; i++){
@@ -161,7 +156,7 @@ void support::action(coords target, backing::matrix* defense, backing::matrix *a
 }
 
 //MOVEMENT OF THE SUPPORT SHIP
-/*bool support::move(coords target, backing::matrix defense){
+/*bool support::move(coords target, game::matrix defense){
     if(defense.isEmpty(target)){
         switch
     }
@@ -170,7 +165,7 @@ void support::action(coords target, backing::matrix* defense, backing::matrix *a
 
 //class submarine
 //MOVEMENT OF THE SUBMARINE
-bool submarine::move(coords target, backing::matrix defense){
+bool submarine::move(coords target, game::matrix defense){
     if(defense.isEmpty(target)){
         defense.insert(target, 'E');
         defense.insert(target, ' ');

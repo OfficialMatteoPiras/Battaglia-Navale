@@ -6,7 +6,6 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-
 #include "../headers/coords.h"
 
 namespace backing {

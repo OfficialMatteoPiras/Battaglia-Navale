@@ -35,7 +35,7 @@ player::player() {
     defence.insert({"C10"}, 'E');
     defence.insert({"E10"}, 'E');
 
-    backing::grid(defence, attack);
+    game::grid(defence, attack);
 
     submarine *s = dynamic_cast <submarine*> ( ships[0] );
     s->move({"N6"}, &defence);

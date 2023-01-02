@@ -4,15 +4,15 @@
 #define BATTAGLIA_NAVALE_PLAYER_H
 
 #include "../headers/coords.h"
-#include "../headers/backing.h"
+#include "../headers/game.h"
 #include "../headers/ship.h"
 
 #include <map>
 
 class player{
     private:
-        backing::matrix defence;    //griglia difesa (navi)
-        backing::matrix attack;     //griglia attacco
+        game::matrix defence;    //griglia difesa (navi)
+        game::matrix attack;     //griglia attacco
         ship *ships[8];
         //vettori per le navi
         /*std::vector<submarine> battleship;
@@ -37,6 +37,10 @@ class player{
         //coords getShipCoords(ship playerShip);      //getter delle coordinate di una nave
 
         //Setters
+
+        void visual(){
+            game::grid(game::matrix  defence, game::matrix attack);
+        }
 };
 
 
@@ -48,8 +52,8 @@ class player {
         void action(coords origin, coords target, player opponent);      //check origin in fleet, chiama fleet[origin].value.action(target, attack, defense, p.defense), aggiorna fleet se è S o E
 
     private:
-        backing::matrix defense;
-        backing::matrix attack;
+        game::matrix defense;
+        game::matrix attack;
         std::map<ship, coords> fleet;   //mappa per le navi
         int aliveUnits = 8;
 };*/
