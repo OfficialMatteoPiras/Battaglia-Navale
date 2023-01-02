@@ -16,10 +16,10 @@
 #include "../headers/ship.h"
 #include "../headers/coords.h"
 #include "../headers/game.h"
-#include <fstream>
+#include <ifstream>
 
 int main(){
-    std::string lines
+    std::string lines;
     ifstream inFile("log.txt");
 
     while(getline(inFile, lines)){
