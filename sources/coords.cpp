@@ -50,9 +50,25 @@ int coords::rowToInt(char r) {
     std::string s = "ABCDEFGHILMN";
     return s.find(r);
 }
+//OVERLOAD ==, <, >
+bool coords::operator==(const coords& c) const{
+    return ((x == c.getX())&&(y == c.getY()));
+}
+
+bool coords::operator<(const coords& c) const{
+    return ((x < c.getX())&&(y < c.getY()));
+}
+
+bool coords::operator>(const coords& c) const{
+    return ((x > c.getX())&&(y > c.getY()));
+}
+
+bool coords::operator>=(const coords& c) const{
+    return ((x >= c.getX())&&(y >= c.getY()));
+}
 
 
 //OPERATOR <<
-std::ostream& operator<< (std::ostream& os, const coords& c){
+std::ostream& operator<< (std::ostream& os, coords& c){
     return os << c.getRow() << c.getCol();
 }

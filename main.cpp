@@ -2,8 +2,12 @@
 #include "headers/ship.h"
 #include "headers/player.h"
 #include <iostream>
-/*
+
 int main(int argc, char **argv){
+
+    player pl1;
+    pl1.startFleet();
+
     /*backing::matrix ships1, attack1;
     backing::matrix ships2, attack2;
 
@@ -75,6 +79,6 @@ int main(int argc, char **argv){
 
     player player1;
 
-    return 0;
+    return 0;*/
 }
-*/
+

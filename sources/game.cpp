@@ -1,6 +1,4 @@
-//
-// Created by mattp on 31/12/2022.
-//
+//Matteo Piras
 
 #include "../headers/game.h"
 

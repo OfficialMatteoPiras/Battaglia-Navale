@@ -3,7 +3,7 @@
 #include "../headers/player.h"
 
 player::player() {
-    player::getCoords("corazzata 1");
+    //player::getCoords("corazzata 1");
 
     /*
     fleet.push_back(new submarine({"A10"}));
@@ -68,8 +68,6 @@ player::player() {
     free(s);*/
 }
 
-
-
 std::pair<coords, coords> player::getCoords(const std::string& message){
     std::string origin, target, delimiter = " ";
     //input
@@ -82,12 +80,29 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
 void player::startFleet() {
 
     for (int i = 0; i < 3; ++i) {
+        std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i));
+        battleship newShip = getIstanceBattleship(input.first, input.second);
+        fleet[newShip.getCenter()] = &newShip;
+    }
+
+    for(auto it = fleet.cbegin(); it != fleet.cend(); ++it) {
+        std::cout << it->first.getX()<< " "<< it->first.getY() << " " << it->second->getCenter().getX()<< " " << it->second->getCenter().getX() << "\n";
+    }
+
+
+    //fleet.push_back({newShip.getCenter(), &newShip});
+    //fleet[newShip.getCenter()] = &newShip;
+    //fleet.insert(newShip.getCenter(), (ship*) &newShip);
+    //fleet.insert(std::pair<coords, ship*>(newShip.getCenter(), (ship*) &newShip));
+
+   /* for (auto itr = fleet.begin(); itr != fleet.end(); ++itr) {   //battleship
         //restituisce prua e poppa
         std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i));
         //ricavo il centro della nave
         //todo: creare un oggetto ship, convertire prua / poppa con centro ed inserire nella mappa
-        submarine s ();
-    }
+        auto newShip = getIstanceBattleship(input.first, input.second);
+        fleet.insert(itr, {newShip.getCenter(), &newShip});
+    }*/
 }
 
 
