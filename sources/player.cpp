@@ -86,14 +86,18 @@ void player::startFleet() {
         std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i));
         //ricavo il centro della nave
         //todo: creare un oggetto ship, convertire prua / poppa con centro ed inserire nella mappa
+        submarine s ();
     }
+}
 
+
+/*
 std::string player::getInputCoords(const std::string& message) {
-    std::string newCoords;
+    std::string newCoords;.
     std::cout << "Inserire le coordinate per " << message << "(poppa prua): ";
     std::cin >> newCoords;
     return {newCoords};
-}
+}*/
 
 /*
 ship player::getPlayerShip(coords coordsShip) {

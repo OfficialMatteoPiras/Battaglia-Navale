@@ -35,7 +35,7 @@ coords coords::addCol(int n) {
     return coords(x, y+n);
 }
 
-coords coords::add(int r, int c) {
+coords coords::add(int r, int c) const {
     return coords(x+r, y+c);
 }
 

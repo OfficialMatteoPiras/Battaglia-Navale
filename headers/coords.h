@@ -25,7 +25,7 @@ class coords {
         //ADD
         coords addRow(int n);
         coords addCol(int n);
-        coords add(int r, int c);
+        coords add(int r, int c) const;
 
     private:
         int x;  //riga della matrice (0-11)
