@@ -56,19 +56,27 @@ bool coords::operator==(const coords& c) const{
 }
 
 bool coords::operator<(const coords& c) const{
-    return ((x < c.getX())&&(y < c.getY()));
+    if(x == c.getX())
+        return y < c.getY();
+    return x < c.getX();
 }
 
 bool coords::operator>(const coords& c) const{
-    return ((x > c.getX())&&(y > c.getY()));
+    if(x == c.getX())
+        return y > c.getY();
+    return x > c.getX();
 }
 
 bool coords::operator>=(const coords& c) const{
-    return ((x != c.getX())&&(y != c.getY()));
+    return !(operator<(c));
 }
 
-bool coords::operator!=(const coords &) const {
-    return false;
+bool coords::operator<=(const coords& c) const{
+    return !(operator>(c));
+}
+
+bool coords::operator!=(const coords& c) const {
+    return !(operator==(c));
 }
 
 
