@@ -1,8 +1,10 @@
-//Created by Claudia De Carlo
+//Created by Claudia De Carlo and Matteo Piras
 
 #include "../headers/player.h"
 
-player::player() {}
+player::player() {
+
+}
 
 std::pair<coords, coords> player::getCoords(const std::string& message){
     std::string origin, target, delimiter = " ";
@@ -40,12 +42,12 @@ void player::startFleet() {
     }
 
     std::cout << "\n\t ******* LA FLOTTA STA SALPANDO CAPITANO! *******" << std::endl;
-
+    fleet = {};
 }
 
 void player::printFleet() {
-    for(auto it = fleet.cbegin(); it != fleet.cend(); ++it){
-        std::cout << it->first.getRow() << it->first.getCol() << " " << it->second->getCenter() << std::endl;
+    for (auto & it : fleet) {
+        std::cout << it.first.getRow() << it.first.getCol() << " " << it.second->getCenter() << std::endl;
     }
 }
 
@@ -64,15 +66,18 @@ void player::startRandomFleet() {
 
             if (i >= 0 && i < 3) {   //CORAZZATA
                 battleship newShip = getIstanceBattleship(input.first, input.second);
-                fleet[newShip.getCenter()] = &newShip;
+                fleet.insert({newShip.getCenter(), &newShip});
+                //fleet[newShip.getCenter()] = &newShip;
             }
             if (i >= 3 && i < 6) {   //SUPPORTO
                 support newShip = getIstanceSupport(input.first, input.second);
-                fleet[newShip.getCenter()] = &newShip;
+                fleet.insert({newShip.getCenter(), &newShip});
+                //fleet[newShip.getCenter()] = &newShip;
             }
             if (i >= 6) {   //SOTTOMARINO
                 submarine newShip = getIstanceSubmarine(input.first, input.second);
-                fleet[newShip.getCenter()] = &newShip;
+                fleet.insert({newShip.getCenter(), &newShip});
+                //fleet[newShip.getCenter()] = &newShip;
             }
             std::cout << c1 << " " << c2 << " " << vtr << " " << dim << std::endl;
         }
@@ -80,6 +85,8 @@ void player::startRandomFleet() {
             std::cout << " ** invalid coordinates **" << std::endl;
             i--;
         }
+        std::cout << "map size:" << fleet.size() << std::endl;
+        std::cout << "-------------------" << std::endl;
     }
 }
 
@@ -227,11 +234,6 @@ void player::hit(coords target) {
     ship *s = fleet.find(target)->second;
     s->removeLife();
 }
-
-
-
-
-
 
 
 //FUNZIONI STUPIDE NON GUARDARE SIAMO BRUTTE
