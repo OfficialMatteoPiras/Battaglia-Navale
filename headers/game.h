@@ -36,6 +36,9 @@ namespace game {
     std::vector<std::pair<coords, coords>> read_file();
     bool write_file();          //da vedere cosa prende in input
 
+    //FUNZIONI RANDOM
+    coords getRandomCoord();
+    int getRandomInt(int range, int offset = 0);
 };
 
 

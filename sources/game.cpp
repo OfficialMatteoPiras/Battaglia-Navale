@@ -130,3 +130,16 @@ bool game::matrix::setElement(char c, int row, int col){
     _matrix[row][col] = c;
     return true;
 }
+
+//FUNZIONI RANDOM
+coords game::getRandomCoord(){
+    std::string letters = "ABCDEFGHILMN";
+    return {letters[getRandomInt(letters.size() - 1 )] + std::to_string(getRandomInt(letters.size() ))};
+}
+
+int game::getRandomInt(int range, int offset){
+    int random = offset + (rand() % range);
+    return random;
+}
+
+

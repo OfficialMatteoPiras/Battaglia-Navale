@@ -80,14 +80,28 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
 void player::startFleet() {
 
     for (int i = 0; i < 3; ++i) {
-        std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i));
+        coords c1 = game::getRandomCoord();
+        coords c2 = game::getRandomCoord();
+        std::pair<coords, coords> input (c1, c2);
+        std::cout << "input-> ";
+        std::cout << input.first << " " << input.second << std::endl;
+
+       // std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i));
         battleship newShip = getIstanceBattleship(input.first, input.second);
         fleet[newShip.getCenter()] = &newShip;
+        std::cout << "new ship-> " << newShip.getCenter() << std::endl;
     }
 
-    for(auto it = fleet.cbegin(); it != fleet.cend(); ++it) {
-        std::cout << it->first.getX()<< " "<< it->first.getY() << " " << it->second->getCenter().getX()<< " " << it->second->getCenter().getX() << "\n";
+    std::cout << "fleet size: " << fleet.size() << std::endl;
+
+    for(auto it = fleet.cbegin(); it != fleet.cend(); ++it){
+        std::cout << it->first.getRow() << it->first.getCol() << " " << it->second->getCenter() << std::endl;
     }
+
+
+   /* for(auto it = fleet.cbegin(); it != fleet.cend(); ++it) {
+        std::cout << it->first.getX()<< " "<< it->first.getY() << " " << it->second->getCenter().getX()<< " " << it->second->getCenter().getX() << "\n";
+    }*/
 
 
     //fleet.push_back({newShip.getCenter(), &newShip});

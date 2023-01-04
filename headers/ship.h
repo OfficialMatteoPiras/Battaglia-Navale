@@ -90,7 +90,7 @@ public:
 };
 
 //OPERATOR << (stampa come centro, dimensione, vita, verticale )
-std::ostream& operator<< (std::ostream& os, coords ship);
+std::ostream& operator<< (std::ostream& os, coords &ship);
 
 
 #endif //BATTAGLIA_NAVALE_SHIP_H
