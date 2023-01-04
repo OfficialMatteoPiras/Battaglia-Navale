@@ -58,12 +58,12 @@ void player::startRandomFleet() {
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
+
             if(i == 3 || i == 6) dim -= 2;
             coords c1 = game::getRandomCoord();
             bool vtr = game::getRandomInt(100) % 2 == 0;
             coords c2 = game::getRandomCoord(c1, vtr, dim);
             std::pair<coords, coords> input(c1, c2);
-
 
             if (i >= 0 && i < 3) {   //CORAZZATA
                 battleship *newShip = getIstanceBattleship(input.first, input.second);
