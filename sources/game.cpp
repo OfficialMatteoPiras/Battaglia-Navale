@@ -4,6 +4,10 @@
 
 #include <fstream>
 #include <iostream>
+#include <random>
+#include <functional>
+#include <cstdlib>
+#include <ctime>
 
 
 void game::grid(game::matrix ships, game::matrix attack) {
@@ -134,12 +138,32 @@ bool game::matrix::setElement(char c, int row, int col){
 //FUNZIONI RANDOM
 coords game::getRandomCoord(){
     std::string letters = "ABCDEFGHILMN";
-    return {letters[getRandomInt(letters.size() - 1 )] + std::to_string(getRandomInt(letters.size() ))};
+    coords c = {letters[getRandomInt(letters.size() - 1)] + std::to_string(getRandomInt(letters.size() - 1))};
+    //std::cout << "estrazione-> " << c << std::endl;        //todo: remove
+    return c;
 }
 
-int game::getRandomInt(int range, int offset){
-    int random = offset + (rand() % range);
+coords game::getRandomCoord(coords bow, bool vertical, int distance){ //prende in input la PRUA!
+    coords newCoord = coords(bow.getX(), bow.getY());
+    distance--;
+
+    //check se sommare o sottrarre
+    if(bow.getX() - distance > 0 || bow.getY() - distance > 0) distance *= (-1);
+
+    //mofica della nuova coordinata
+    if (vertical) newCoord = newCoord.add(distance, 0);
+    else newCoord = newCoord.add(0, distance);
+    std::cout << "new coord-> " << newCoord << std::endl;
+
+    return newCoord;
+}
+
+int game::getRandomInt(int range, int start){
+    srand(rand());
+    int random = start + (rand() % range);
     return random;
 }
+
+
 
 

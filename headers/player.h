@@ -22,12 +22,13 @@ class player{
         class invalidCoords : std::exception {};
 
         //istanze per ship
-        battleship getIstanceBattleship(coords bow, coords stern) { return *new battleship(bow, stern); };
-        support getIstanceSupport(coords bow, coords stern){ return *new support(bow, stern); };
-        submarine getIstanceSubmarine(coords bow, coords stern){ return *new submarine(bow, stern); };
+        static battleship getIstanceBattleship(coords bow, coords stern) { return *new battleship(bow, stern); };
+        static support getIstanceSupport(coords bow, coords stern){ return *new support(bow, stern); };
+        static submarine getIstanceSubmarine(coords bow, coords stern){ return *new submarine(bow, stern); };
 
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
+
 
     public:
         //Constructors
@@ -35,6 +36,8 @@ class player{
 
         //inizializzazione flotta flotta
         void startFleet();
+        void startRandomFleet();
+        void printFleet();  //todo: rimuovere
 
         //Getters
         //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate

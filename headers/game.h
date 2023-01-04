@@ -29,16 +29,18 @@ namespace game {
         bool isEmpty(coords target);      //true se è vuoto
     };
 
+    //FUNZIONI RANDOM
+    coords getRandomCoord();
+    coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
+    int getRandomInt(int range = 11, int start = 0);
+
+    //FUNZIONI DI SUPPORTO
     //visualisation
     void visual();
     //void grid(std::vector<std::pair<coords, coords>>);
     void grid(game::matrix ships, game::matrix attack);
     std::vector<std::pair<coords, coords>> read_file();
     bool write_file();          //da vedere cosa prende in input
-
-    //FUNZIONI RANDOM
-    coords getRandomCoord();
-    int getRandomInt(int range, int offset = 0);
 };
 
 

@@ -64,7 +64,11 @@ bool coords::operator>(const coords& c) const{
 }
 
 bool coords::operator>=(const coords& c) const{
-    return ((x >= c.getX())&&(y >= c.getY()));
+    return ((x != c.getX())&&(y != c.getY()));
+}
+
+bool coords::operator!=(const coords &) const {
+    return false;
 }
 
 

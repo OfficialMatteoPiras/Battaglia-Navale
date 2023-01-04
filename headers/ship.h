@@ -20,11 +20,21 @@ public:
         vertical = bow.getY() == stern.getY();      //se le ordinate sono UGUALI = true altrimenti false
         //CENTER
         if(vertical) {      //se la nave è verticale
+            if(bow.getY() < stern.getY()){  //se la poppa è sopra la prua
+                coords temp = stern;
+                stern = bow;
+                bow = temp;
+            }
             int x = bow.getX() - stern.getX();
             if(x < 0) x*= (-1);             //se la differenza è >0 moltiplico per -1
             center = coords (x, bow.getY());    //dichiaro center
         }
         else{
+            if(bow.getX() < stern.getX()){  //se la poppa è più a destra la prua
+                coords temp = stern;
+                stern = bow;
+                bow = temp;
+            }
             int y = bow.getY() - stern.getY();
             if(y < 0) y*= (-1);             //se la differenza è >0 moltiplico per -1
             center = coords (bow.getX(), y);    //dichiaro center
@@ -43,6 +53,7 @@ public:
     void removeLife() { life--; }
     void restoreLife() { life = dim; }
 
+    //todo: aggiungere DISTRUTTORE
 };
 
 class battleship : public ship{

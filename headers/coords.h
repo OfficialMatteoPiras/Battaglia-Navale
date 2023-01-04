@@ -28,15 +28,19 @@ class coords{
         //ADD
         coords addRow(int n);
         coords addCol(int n);
-        coords add(int r, int c) const;
+        coords add(int r, int c) const;     //todo: aggiungere check coordinate
 
         //OVERLOAD
         bool operator==(const coords&) const;
+        bool operator!=(const coords&) const;
         bool operator<(const coords&) const;
         bool operator>(const coords&) const;
         bool operator>=(const coords&) const;
 
-    private:
+    //EXCEPTION
+    class invalidCoords : std::exception {};
+
+private:
         int x;  //riga della matrice (0-11)
         int y;  //colonna della matrice (0-11)
 
@@ -44,8 +48,6 @@ class coords{
         static char rowToChar(int r);
         static int rowToInt(char r);
 
-        //EXCEPTION
-        class invalidCoords : std::exception {};
 };
 
 //OPERATOR << (stampa come "B10")

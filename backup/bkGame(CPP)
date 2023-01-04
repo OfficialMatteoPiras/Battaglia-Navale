@@ -1,0 +1,8 @@
+int game::getRandomInt(int range, int start){
+    /*std::random_device dev;
+    std::mt19937 random(dev());
+    std::uniform_int_distribution<std::mt19937::result_type> dist6(start,range); // distribution in range [start, range]
+    return dist6(random);
+*/
+    //std::cout << dist6(random) << std::endl;
+}

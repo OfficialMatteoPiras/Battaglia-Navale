@@ -6,7 +6,7 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
-#include "../headers/coords.h"
+#include "headers/coords.h"
 //boh
 namespace backing {
     class matrix {
