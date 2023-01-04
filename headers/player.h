@@ -31,9 +31,9 @@ class player{
         class notEnoughSpace : std::exception {};
 
         //istanze per ship
-        static battleship getIstanceBattleship(coords bow, coords stern) { return *new battleship(bow, stern); };
-        static support getIstanceSupport(coords bow, coords stern){ return *new support(bow, stern); };
-        static submarine getIstanceSubmarine(coords bow, coords stern){ return *new submarine(bow, stern); };
+        static battleship * getIstanceBattleship(coords bow, coords stern) { return new battleship(bow, stern); };
+        static support * getIstanceSupport(coords bow, coords stern){ return new support(bow, stern); };
+        static submarine * getIstanceSubmarine(coords bow, coords stern){ return new submarine(bow, stern); };
 
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);

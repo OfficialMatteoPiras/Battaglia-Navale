@@ -3,7 +3,7 @@
 #include "../headers/player.h"
 
 player::player() {
-
+    fleet = {};
 }
 
 std::pair<coords, coords> player::getCoords(const std::string& message){
@@ -18,7 +18,7 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
 void player::startFleet() {
 
     //START CORAZZATA
-    for (int i = 0; i < 3; ++i) {
+    /*for (int i = 0; i < 3; ++i) {
         std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i + 1));
         battleship newShip = getIstanceBattleship(input.first, input.second);
         fleet[newShip.getCenter()] = &newShip;
@@ -41,8 +41,8 @@ void player::startFleet() {
         std::cout << std::endl;
     }
 
-    std::cout << "\n\t ******* LA FLOTTA STA SALPANDO CAPITANO! *******" << std::endl;
-    fleet = {};
+    std::cout << "\n\t ******* LA FLOTTA STA SALPANDO CAPITANO! *******" << std::endl;*/
+
 }
 
 void player::printFleet() {
@@ -53,31 +53,29 @@ void player::printFleet() {
 
 void player::startRandomFleet() {
     //todo: sovrapposizione delle navi!
+
     int dim = 5;
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
+            if(i == 3 || i == 6) dim -= 2;
             coords c1 = game::getRandomCoord();
             bool vtr = game::getRandomInt(100) % 2 == 0;
             coords c2 = game::getRandomCoord(c1, vtr, dim);
             std::pair<coords, coords> input(c1, c2);
 
-            if(i == 3 || i == 6) dim -= 2;
 
             if (i >= 0 && i < 3) {   //CORAZZATA
-                battleship newShip = getIstanceBattleship(input.first, input.second);
-                fleet.insert({newShip.getCenter(), &newShip});
-                //fleet[newShip.getCenter()] = &newShip;
+                battleship *newShip = getIstanceBattleship(input.first, input.second);
+                fleet[newShip->getCenter()] = newShip;
             }
             if (i >= 3 && i < 6) {   //SUPPORTO
-                support newShip = getIstanceSupport(input.first, input.second);
-                fleet.insert({newShip.getCenter(), &newShip});
-                //fleet[newShip.getCenter()] = &newShip;
+                support *newShip = getIstanceSupport(input.first, input.second);
+                fleet[newShip->getCenter()] = newShip;
             }
             if (i >= 6) {   //SOTTOMARINO
-                submarine newShip = getIstanceSubmarine(input.first, input.second);
-                fleet.insert({newShip.getCenter(), &newShip});
-                //fleet[newShip.getCenter()] = &newShip;
+                submarine *newShip = getIstanceSubmarine(input.first, input.second);
+                fleet[newShip->getCenter()] = newShip;
             }
             std::cout << c1 << " " << c2 << " " << vtr << " " << dim << std::endl;
         }
@@ -85,12 +83,9 @@ void player::startRandomFleet() {
             std::cout << " ** invalid coordinates **" << std::endl;
             i--;
         }
-        std::cout << "map size:" << fleet.size() << std::endl;
         std::cout << "-------------------" << std::endl;
     }
 }
-
-
 
 //ACTIONS
 //XYorigin XYtarget
@@ -259,6 +254,8 @@ int player::getShipLife(coords origin){
     ship* s = fleet.find(origin)->second;
     return s->getLife();
 }
+
+
 
 
 

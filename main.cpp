@@ -19,6 +19,7 @@ int main(int argc, char **argv){
 
     player pl1;
     pl1.startRandomFleet();
+    pl1.printFleet();
 
     return 0;
 }
