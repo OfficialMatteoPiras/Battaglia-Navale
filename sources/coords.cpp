@@ -27,11 +27,11 @@ coords::coords(std::string s){  //"YX" ("riga-colonna")
 
 
 //ADD
-coords coords::addRow(int n) {
+coords coords::addRow (int n) const {
     return coords(x+n, y);
 }
 
-coords coords::addCol(int n) {
+coords coords::addCol(int n) const {
     return coords(x, y+n);
 }
 

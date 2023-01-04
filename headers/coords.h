@@ -14,7 +14,6 @@ class coords{
         coords(int r, int c);       //costruisce dalle coordinate della matrice (0-12)
         coords(std::string);        //legge "B10" e inizializza con x=1, y=9
 
-    coords(int i);
 
 //GETTERS
         //matrix coordinates
@@ -26,8 +25,8 @@ class coords{
         int getCol() const { return y+1; }   //colonna della griglia (1-12)
 
         //ADD
-        coords addRow(int n);
-        coords addCol(int n);
+        coords addRow(int n) const;
+        coords addCol(int n) const;
         coords add(int r, int c) const;     //todo: aggiungere check coordinate
 
         //OVERLOAD

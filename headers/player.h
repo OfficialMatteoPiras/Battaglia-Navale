@@ -18,8 +18,19 @@ class player{
         //std::vector<std::pair<coords, ship*>> fleet;  //mappa per la flotta
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
+        //actions
+        void fire(coords origin, coords target, player& opponent);
+        void moveAndRepair(coords origin, coords target);
+        void moveAndSearch(coords origin, coords target, player& opponent);
+
+        //funzioni di supporto alle azioni non serve chiamarle per altro ciao
+        void move(coords origin, coords target);
+        void repairFullShip(coords target);    //(RIPARA INTERA NAVE DA UNA SUA COMPONENTE)
+        bool wasHit(coords target);
+
         //exceptions
-        class invalidCoords : std::exception {};
+        class invalidOrigin : std::exception {};
+        class notEnoughSpace : std::exception {};
 
         //istanze per ship
         static battleship getIstanceBattleship(coords bow, coords stern) { return *new battleship(bow, stern); };
@@ -28,7 +39,6 @@ class player{
 
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
-
 
     public:
         //Constructors
@@ -39,15 +49,33 @@ class player{
         void startRandomFleet();
         void printFleet();  //todo: rimuovere
 
+        //FUNZIONI STUPIDE E BRUTTE NON GUARDARE
+        void insert(coords origin, char c);
+        void newShip(coords stern, coords bow, char c);
+        int getShipLife(coords c);
+
         //Getters
         //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate
         //coords getShipCoords(ship playerShip);      //getter delle coordinate di una nave
 
         //Setters
 
+
+        //robe che servono all'avversario cattivo (leggono/scrivono SOLO defence)
+        bool isEmpty(coords target) { return defence.isEmpty(target); };
+        void hit(coords target);
+
+        //ACTIONS
+        //XX XX
         void visual(){
             game::grid(defence, attack);
         }
+
+        //AA AA
+
+        //XYorigin XYtarget
+        void action(coords origin, coords target, player& opponent);
+
 };
 
 

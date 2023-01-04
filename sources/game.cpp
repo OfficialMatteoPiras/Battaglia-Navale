@@ -112,6 +112,20 @@ char game::matrix::getElement(int row, int col) {
     return _matrix[row][col];
 }
 
+int game::matrix::getShipDim(coords c){
+    char letter = getElement(c);
+    int dim;
+    if (letter == 'c' || letter == 'C')
+        dim = 5;
+    if (letter == 's' || letter == 'S')
+        dim = 3;
+    if (letter == 'e' || letter == 'E')
+        dim = 1;
+    else
+        dim = 0;
+    return dim;
+}
+
 void game::matrix::hit(coords target){
     int x = target.getX();
     int y = target.getY();
@@ -163,7 +177,3 @@ int game::getRandomInt(int range, int start){
     int random = start + (rand() % range);
     return random;
 }
-
-
-
-

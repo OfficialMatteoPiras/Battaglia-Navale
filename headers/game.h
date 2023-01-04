@@ -22,6 +22,9 @@ namespace game {
         char* getRow(int);
         char getElement(coords);
         char getElement(int row, int col);
+        int getShipDim(coords c);
+
+
         //setters
         bool setElement(char, int, int);
         void hit(coords target);
