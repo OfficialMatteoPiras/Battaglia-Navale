@@ -79,6 +79,19 @@ bool coords::operator!=(const coords& c) const {
     return !(operator==(c));
 }
 
+int coords::operator-(const coords &c) const {
+    int n;
+    if(c.getX() - x != 0){  //se è orizzontale ho x diverse
+        n = c.getX() - x;
+        if(n < 0) n*= (-1);
+    }
+    else{       //se è verticale ho y diverse
+        n = c.getY() - y;
+        if(n < 0) n*= (-1);
+    }
+    return n;
+}
+
 
 //OPERATOR <<
 std::ostream& operator<< (std::ostream& os, coords& c){

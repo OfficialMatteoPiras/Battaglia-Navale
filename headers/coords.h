@@ -36,6 +36,7 @@ class coords{
         bool operator>(const coords&) const;
         bool operator>=(const coords&) const;
         bool operator<=(const coords&) const;
+        int operator-(const coords&) const;
 
     //EXCEPTION
     class invalidCoords : std::exception {};

@@ -19,6 +19,7 @@ class player{
         void fire(coords origin, coords target, player& opponent);
         void moveAndRepair(coords origin, coords target);
         void moveAndSearch(coords origin, coords target, player& opponent);
+        static std::string funnyMessage();
 
         //funzioni di supporto alle azioni non serve chiamarle per altro ciao
         void checkSpace(ship* s, coords center);

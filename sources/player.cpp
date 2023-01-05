@@ -19,8 +19,50 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
 void player::startFleet() {
 
     //todo: usare la funzione newShip();
+    int dim = 5, cont = 1;
+    char ch = 'C';
+
+    std::pair<coords, coords> input = {{"A10"},{"B10"}};
 
     //START CORAZZATA
+    for (int i = 0; i < 8; i++) {
+        try{
+            if(i >= 0 && i < 3)
+                input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(cont));
+            if(i >= 3 && i < 6)
+                input = getCoords("Quali sono le coordinate per la nave di supporto " + std::to_string(cont));
+            if(i >= 6)
+                input = getCoords("Quali sono le coordinate per il sottomarino " + std::to_string(cont));
+
+            if((input.first - input.second) + 1 != dim) throw coords::invalidCoords();
+
+            //CHECK E MATRIX INPUT
+            ship s(input.first, input.second, dim);
+            checkSpace(&s, s.getCenter());
+            insertShip(s, ch);
+
+            //FLEET INPUT
+            newShip(s.getStern(), s.getBow(), ch);
+
+            if(i + 1 == 3 || i + 1 == 6) dim -= 2;
+            if(i + 1 == 3) { ch = 'S'; cont = 0; }
+            if(i + 1 == 6) { ch = 'E'; cont = 0; }
+
+            cont ++;
+        }
+        catch (coords::invalidCoords c){
+            std::cout << " ** invalid coordinates **" << std::endl;
+            i--;
+        }
+        catch(notEnoughSpace e){
+            std::cout << " ** not enough space **" << std::endl;
+            i--;
+        }
+        std::cout << "-------------------" << std::endl;
+        //visual();
+    }
+
+
     /*  for (int i = 0; i < 3; ++i) {
         std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i + 1));
         battleship *newShip = getIstanceBattleship(input.first, input.second);
@@ -44,7 +86,7 @@ void player::startFleet() {
         std::cout << std::endl;
     }*/
 
-    std::cout << "\n\t ******* LA FLOTTA STA SALPANDO CAPITANO! *******" << std::endl;
+    std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
 
 }
 
@@ -79,7 +121,7 @@ void player::startRandomFleet() {
             newShip(s.getStern(), s.getBow(), ch);
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
-            if(i + 1== 3) ch = 'S';
+            if(i + 1 == 3) ch = 'S';
             if(i + 1 == 6) ch = 'E';
 
         }
@@ -92,7 +134,9 @@ void player::startRandomFleet() {
             i--;
         }
         std::cout << "-------------------" << std::endl;
+        //visual();
     }
+    std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
 }
 
 //ACTIONS
@@ -112,8 +156,6 @@ void player::action(coords origin, coords target, player& opponent){
         moveAndSearch(origin, target, opponent);
     }
 }
-
-
 
 //ACTIONS - FUNZIONI DI SUPPORTO (PRIVATE)
 //azione della corazzata
@@ -260,13 +302,7 @@ void player::hit(coords target) {
     s->removeLife();
 }
 
-
-
-
 //FUNZIONI STUPIDE NON GUARDARE SIAMO BRUTTE
-
-
-
 void player::newShip(coords stern, coords bow, char c){
     ship* s = nullptr;
     if(c == 'C')
@@ -297,6 +333,20 @@ void player::insertShip(ship s, char c){
         else
             n_c = n_c.add(0,1);
     }
+}
+
+std::string player::funnyMessage() {
+    srand(rand());
+    std::vector<std::string> message = {
+            "NAVI SALPATE!",
+            "LA FLOTTA STA SALPANDO CAPITANO!",
+            "LA BATTAGLIA E' GIA' VINTA!",
+            "LE VELE SONO SPIEGATE!",
+            "SIAMO SALPATI CAPITANO!",
+            "CAPITANO, ATTENDIAMO ORDINI!",
+            "TUTTE LE NAVI SONO IN POSIZIONE!"
+    };
+    return message[rand() % message.size() - 1];
 }
 
 
