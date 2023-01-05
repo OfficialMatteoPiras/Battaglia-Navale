@@ -23,12 +23,12 @@ coords ship::getStern() const {     //poppa
 
 
 bool ship::contains(coords c) const{
-    coords check = c;
+    coords check = center;      //salvo in check le coordinate delle varie unità della nave
     for(int i = -dim/2; i <= dim/2; i++){
         if(vertical)
-            check = c.addRow(i);
+            check = center.addRow(i);
         else
-            check = c.addCol(i);
+            check = center.addCol(i);
         if(check == c)
             return true;
     }

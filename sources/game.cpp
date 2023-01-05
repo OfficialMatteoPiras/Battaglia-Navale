@@ -117,9 +117,9 @@ int game::matrix::getShipDim(coords c){
     int dim;
     if (letter == 'c' || letter == 'C')
         dim = 5;
-    if (letter == 's' || letter == 'S')
+    else if (letter == 's' || letter == 'S')
         dim = 3;
-    if (letter == 'e' || letter == 'E')
+    else if (letter == 'e' || letter == 'E')
         dim = 1;
     else
         dim = 0;
