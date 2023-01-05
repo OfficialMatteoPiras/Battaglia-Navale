@@ -4,15 +4,15 @@
 #define BATTAGLIA_NAVALE_PLAYER_H
 
 #include "../headers/coords.h"
-#include "../headers/game.h"
 #include "../headers/ship.h"
+#include "../headers/matrix.h"
 
 #include <map>
 
 class player{
     private:
-        game::matrix defence;    //griglia difesa (navi)
-        game::matrix attack;     //griglia attacco
+        matrix defence;    //griglia difesa (navi)
+        matrix attack;     //griglia attacco
         std::string name;
 
         //actions

@@ -7,10 +7,10 @@
 #include <random>
 #include <functional>
 #include <cstdlib>
-#include <ctime>
 
 
-void game::grid(game::matrix ships, game::matrix attack) {
+
+void game::grid(matrix ships, matrix attack) {
     std::string letters = "ABCDEFGHILMN";
     std::string token;
 
@@ -45,9 +45,6 @@ void game::grid(game::matrix ships, game::matrix attack) {
         std::cout << std::endl;
     }
 }
-
-
-
 
 //Array di pair
 std::vector<std::pair<coords, coords>> game::read_file(){        //!DA TESTARE
@@ -92,65 +89,6 @@ bool game::write_file() {    //!DA FINIRE E VEDERE COSA PRENDE IN INPUT
     return finish;
 }
 
-game::matrix::matrix(){
-    for(int i = 0; i<12; i++){
-        for(int j = 0; j<12; j++){
-            _matrix[i][j] = ' ';
-        }
-    }
-}
-
-void game::matrix::insert(coords coord, char c) {
-    _matrix[coord.getX()][coord.getY()] = c;
-}
-
-char* game::matrix::getRow(int r){
-    return _matrix[r];
-}
-
-char game::matrix::getElement(coords c) {
-    return _matrix[c.getX()][c.getY()];
-}
-char game::matrix::getElement(int row, int col) {
-    return _matrix[row][col];
-}
-
-int game::matrix::getShipDim(coords c){
-    char letter = getElement(c);
-    int dim;
-    if (letter == 'c' || letter == 'C')
-        dim = 5;
-    else if (letter == 's' || letter == 'S')
-        dim = 3;
-    else if (letter == 'e' || letter == 'E')
-        dim = 1;
-    else
-        dim = 0;
-    return dim;
-}
-
-void game::matrix::hit(coords target){
-    int x = target.getX();
-    int y = target.getY();
-    _matrix[x][y] = char(tolower(_matrix[x][y]));
-}
-
-void game::matrix::restore(coords target){
-    int x = target.getX();
-    int y = target.getY();
-    _matrix[x][y] = char(toupper(_matrix[x][y]));
-}
-
-bool game::matrix::isEmpty(coords target){
-    return _matrix[target.getX()][target.getY()] == ' ';
-}
-
-bool game::matrix::setElement(char c, int row, int col){
-    std::string letters = "ABCDEFGHILMN";
-    if(letters.find(toupper(c)) < 0) throw invalidChar();    //se non trova il carattere inserito nella lista
-    _matrix[row][col] = c;
-    return true;
-}
 
 //FUNZIONI RANDOM
 coords game::getRandomCoord(){
@@ -170,7 +108,7 @@ coords game::getRandomCoord(coords bow, bool vertical, int distance){ //prende i
     //mofica della nuova coordinata
     if (vertical) newCoord = newCoord.add(distance, 0);
     else newCoord = newCoord.add(0, distance);
-    std::cout << "new coord-> " << newCoord << std::endl;
+    std::cout << "nuova nave-> " << newCoord << std::endl;       //todo: rimuovere
 
     return newCoord;
 }
