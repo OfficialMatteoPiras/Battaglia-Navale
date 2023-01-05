@@ -1,6 +1,4 @@
-//
-// Created by mattp on 05/01/2023.
-//
+//Matteo Piras
 
 #ifndef BATTAGLIA_NAVALE_MATRIX_H
 #define BATTAGLIA_NAVALE_MATRIX_H

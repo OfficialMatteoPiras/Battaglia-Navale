@@ -1,4 +1,4 @@
-// Created by Claudia De Carlo
+// Created by Claudia De Carlo and Matteo Piras
 
 #ifndef BATTAGLIA_NAVALE_PLAYER_H
 #define BATTAGLIA_NAVALE_PLAYER_H

@@ -17,8 +17,10 @@ int main(int argc, char **argv){
         d+=2;
     }*/
 
-    player pl1("PANE TOSTATO");
-    pl1.startRandomFleet();
+    game::turn();
+
+    //player pl1("PANE TOSTATO");
+    //pl1.startRandomFleet();
     //pl1.startFleet();
     //pl1.visual();
     //pl1.printFleet();

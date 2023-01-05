@@ -6,13 +6,23 @@
 #include <iostream>
 #include <vector>
 #include <fstream>
+#include <random>
+#include <map>
+#include <functional>
+#include <cstdlib>
+
 #include "../headers/coords.h"
 #include "../headers/matrix.h"
 //#include "../headers/player.h"
 
 namespace game {
-
-
+    class turn{
+        private:
+            int MAX_TURN;   //turni massimi
+            std::map<coords, coords> history;   //storia delle mosse
+        public:
+            turn();
+    };
 
     //FUNZIONI RANDOM
     coords getRandomCoord();

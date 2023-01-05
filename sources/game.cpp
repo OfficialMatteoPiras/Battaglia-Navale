@@ -2,14 +2,6 @@
 
 #include "../headers/game.h"
 
-#include <fstream>
-#include <iostream>
-#include <random>
-#include <functional>
-#include <cstdlib>
-
-
-
 void game::grid(matrix ships, matrix attack) {
     std::string letters = "ABCDEFGHILMN";
     std::string token;
@@ -89,7 +81,6 @@ bool game::write_file() {    //!DA FINIRE E VEDERE COSA PRENDE IN INPUT
     return finish;
 }
 
-
 //FUNZIONI RANDOM
 coords game::getRandomCoord(){
     std::string letters = "ABCDEFGHILMN";
@@ -117,4 +108,40 @@ int game::getRandomInt(int range, int start){
     srand(rand());
     int random = start + (rand() % range);
     return random;
+}
+
+//TURNI
+game::turn::turn() {
+    char input;
+    bool ok = true;
+    while(ok) {
+        std::cout << "** SELEZIONA LA DIFFICOLTA' ** \n";
+        std::cout << "1 - Facile (100 turni)\n";
+        std::cout << "2 - Medio (60 turni)\n";
+        std::cout << "3 - Difficile (30 turni)\n";
+        std::cout << "-> ";
+        std::cin >> input;
+        switch (input) {
+            case '1': {
+                MAX_TURN = 100;
+                ok = false;
+                break;
+            }
+            case '2': {
+                MAX_TURN = 60;
+                ok = false;
+                break;
+            }
+            case '3': {
+                MAX_TURN = 30;
+                ok = false;
+                break;
+            }
+            default: {
+                std::cout << "\n** input non valido! **" << std::endl;
+                break;
+            }
+        }
+    }
+    std::cout << MAX_TURN << std::endl;
 }
