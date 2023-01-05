@@ -23,7 +23,7 @@ public:
         //DIMENSION
         dim = d;
         //VERTICAL
-        vertical = bow.getY() == stern.getY();      //se le ordinate sono UGUALI = true altrimenti false
+        vertical = bow.getY() == stern.getY();      //se la colonna delle ordinate è la stessa restituisce true true altrimenti false
         //CENTER
         if(vertical) {      //se la nave è verticale
             if(bow.getY() < stern.getY()){  //se la poppa è sopra la prua
@@ -71,7 +71,7 @@ class battleship : public ship{
 
 public:
     //COSTRUTTORI
-    //chiamata ai costruttori della super e dichiarazione dei membri per battleship
+    //chiamata ai costruttori della classe base e dichiarazione dei membri per battleship
     battleship(coords ctr, bool vtr) : ship(ctr) {
         ship::vertical = vtr;
         ship::dim = 5;
@@ -84,7 +84,6 @@ public:
         ship::life = 5;
         c = 'C';
     }
-
 
 };
 
@@ -102,6 +101,7 @@ public:
         ship::dim = 3;
         ship::life = 3;
     }
+
 };
 
 class submarine : public ship{
