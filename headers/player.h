@@ -13,8 +13,6 @@ class player{
     private:
         game::matrix defence;    //griglia difesa (navi)
         game::matrix attack;     //griglia attacco
-        //std::vector<std::pair<coords, ship*>> fleet;  //mappa per la flotta
-        std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //actions
         void fire(coords origin, coords target, player& opponent);
@@ -22,7 +20,9 @@ class player{
         void moveAndSearch(coords origin, coords target, player& opponent);
 
         //funzioni di supporto alle azioni non serve chiamarle per altro ciao
+        void checkSpace(ship* s, coords center);
         void move(coords origin, coords target);
+        ship* getShipPointer(coords c);
         void repairFullShip(coords target);    //(RIPARA INTERA NAVE DA UNA SUA COMPONENTE)
         bool wasHit(coords target);
 
@@ -42,7 +42,7 @@ class player{
         //Constructors
         explicit player();       //costruttore che inizializza tutta la flotta
 
-        //inizializzazione flotta flotta
+        //inizializzazione flotta
         void startFleet();
         void startRandomFleet();
         void printFleet();  //todo: rimuovere
@@ -51,7 +51,7 @@ class player{
         void insert(coords origin, char c);
         void newShip(coords stern, coords bow, char c);
         int getShipLife(coords c);
-
+        std::map<coords, ship*> fleet;  //mappa per la flotta
         //Getters
         //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate
         //coords getShipCoords(ship playerShip);      //getter delle coordinate di una nave

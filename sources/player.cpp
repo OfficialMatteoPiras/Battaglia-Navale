@@ -123,7 +123,7 @@ void player::fire(coords origin, coords target, player& opponent){
 void player::moveAndRepair(coords origin, coords target){
     move(origin, target);   //lancia eccezione se non c'è spazio
 
-    ship* s = fleet.find(origin)->second;
+    ship* s = fleet.find(target)->second;
     coords c = target;
     for(int i = -1; i <= 1; i++){
         for(int j = -1; j<= 1; j++){
@@ -140,35 +140,43 @@ void player::moveAndRepair(coords origin, coords target){
     }
 }
 
-
-//repairfullship
-void player::repairFullShip(coords c){
+//restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate    //TODO gestire c vuota
+ship* player::getShipPointer(coords c){
     int dim = defence.getShipDim(c);
+    //if(dim == 0)
+    //    throw invalidOrigin;
     coords center = c;
+    ship* s = nullptr;
     bool found = false;
     for(int i = -dim/2; i <= dim/2 && !found; i++) {
-        for(int k = 0; k <= 1 && !found; k++){
+        for (int k = 0; k <= 1 && !found; k++) {
             if (k = 0)
                 center = c.addCol(i);
             else
                 center = c.addRow(i);
 
             if (fleet.find(center) != fleet.end()) {   //esiste una nave con quel centro?
-                ship* s = fleet.find(center)->second;
+                s = fleet.find(center)->second;
                 //chiede se quella cella appartiene (funzione della nave)
                 found = s->contains(c);
-                if (found) {
-                    //se sì cura tutta la nave
-                    s->restoreLife();
-                    for (int n = -dim/2; n <= dim/2; n++){
-                        if(s->isVertical())
-                            defence.restore(center.addRow(n));
-                        else
-                            defence.restore(center.addCol(n));
-                    }
-                }
             }
         }
+    }
+    return s;
+}
+
+
+//repairfullship
+void player::repairFullShip(coords c){
+    ship* s = getShipPointer(c);
+    s->restoreLife();
+    int dim = s->getDimension();
+    coords center = s->getCenter();
+    for (int n = -dim/2; n <= dim/2; n++) {
+        if (s->isVertical())
+            defence.restore(center.addRow(n));
+        else
+            defence.restore(center.addCol(n));
     }
 }
 
@@ -188,25 +196,32 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
 }
 
 
+
 //MOVE
-//sposta una nave QUALSIASI da origin a target, lancia eccezione se non c'è spazio
-void player::move(coords origin, coords target) {
-    ship* s = fleet.find(origin)->second;
-    int dim = defence.getShipDim(origin);
+
+//
+void player::checkSpace(ship* s, coords center){
+    int dim = s->getDimension();
     bool valid = true;
 
     for(int i = -dim/2; i <= dim/2 && valid; i++){      //controllo spazio
         if(s->isVertical()) {
-            if (!defence.isEmpty(target.addRow(i)))
+            if (!defence.isEmpty(center.addRow(i)))
                 valid = false;
         } else {
-            if (!defence.isEmpty(target.addCol(i)))
+            if (!defence.isEmpty(center.addCol(i)))
                 valid = false;
         }
     }
     if (!valid)
         throw notEnoughSpace();     //eccezione non c'è spazio
+}
 
+//sposta una nave QUALSIASI da origin a target, lancia eccezione se non c'è spazio
+void player::move(coords origin, coords target) {
+    ship* s = fleet.find(origin)->second;
+    checkSpace(s, target);
+    int dim = s->getDimension();
     for(int i = -dim/2; i <= dim/2; i++){       //riscrittura defense
         if(s->isVertical()) {
             defence.insert(target.addRow(i), defence.getElement(origin.addRow(i)));
@@ -217,6 +232,8 @@ void player::move(coords origin, coords target) {
         }
     }
     s->moved(target);
+    fleet.erase(origin);
+    fleet.insert(std::make_pair(target, s));
 }
 
 bool player::wasHit(coords target){
@@ -226,7 +243,7 @@ bool player::wasHit(coords target){
 
 void player::hit(coords target) {
     defence.hit(target);
-    ship *s = fleet.find(target)->second;
+    ship* s = getShipPointer(target);
     s->removeLife();
 }
 
@@ -245,7 +262,8 @@ void player::newShip(coords stern, coords bow, char c){
         s = new support(bow, stern);
     if(c == 'E')
         s = new submarine(bow, stern);
-    fleet.insert(std::make_pair(s->getCenter() , s ));
+    //fleet.insert(std::make_pair(s->getCenter(), s));      //uguale!!!
+    fleet[s->getCenter()] = s;
 }
 
 int player::getShipLife(coords origin){
