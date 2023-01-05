@@ -148,20 +148,22 @@ ship* player::getShipPointer(coords c){
     coords center = c;
     ship* s = nullptr;
     bool found = false;
-    for(int i = -dim/2; i <= dim/2 && !found; i++) {
-        for (int k = 0; k <= 1 && !found; k++) {
-            if (k = 0)
-                center = c.addCol(i);
-            else
-                center = c.addRow(i);
+    try {
+        for (int i = -dim / 2; i <= dim / 2 && !found; i++) {
+            for (int k = 0; k <= 1 && !found; k++) {
+                if (k == 0)
+                    center = c.addCol(i);
+                else
+                    center = c.addRow(i);
 
-            if (fleet.find(center) != fleet.end()) {   //esiste una nave con quel centro?
-                s = fleet.find(center)->second;
-                //chiede se quella cella appartiene (funzione della nave)
-                found = s->contains(c);
+                if (fleet.find(center) != fleet.end()) {   //esiste una nave con quel centro?
+                    s = fleet.find(center)->second;
+                    //chiede se quella cella appartiene (funzione della nave)
+                    found = s->contains(c);
+                }
             }
         }
-    }
+    } catch(coords::invalidCoords& e) {}
     return s;
 }
 
@@ -198,8 +200,7 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
 
 
 //MOVE
-
-//
+//controlla se c'è spazio per una nave
 void player::checkSpace(ship* s, coords center){
     int dim = s->getDimension();
     bool valid = true;
@@ -246,6 +247,8 @@ void player::hit(coords target) {
     ship* s = getShipPointer(target);
     s->removeLife();
 }
+
+
 
 
 //FUNZIONI STUPIDE NON GUARDARE SIAMO BRUTTE
