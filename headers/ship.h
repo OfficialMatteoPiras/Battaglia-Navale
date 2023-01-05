@@ -19,7 +19,9 @@ protected:
 public:
     //COSTRUTTORI
     explicit ship(coords ctr): center{ctr} {};      //costruttore
-    explicit ship(coords bow, coords stern){        //costrtuttore che ricava il centro da prua e poppa
+    explicit ship(coords bow, coords stern, int d = 1){        //costrtuttore che ricava il centro da prua e poppa
+        //DIMENSION
+        dim = d;
         //VERTICAL
         vertical = bow.getY() == stern.getY();      //se le ordinate sono UGUALI = true altrimenti false
         //CENTER
@@ -48,8 +50,8 @@ public:
     bool isVertical() const{ return vertical; }
     int getDimension() const { return dim; }
     int getLife() const { return life; }
-    coords getStern() const;
-    coords getBow() const;
+    coords getStern() const;        //poppa
+    coords getBow() const;          //prua
     bool contains(coords c) const;
 
     char getC() const {return c;};
@@ -58,6 +60,7 @@ public:
     void removeLife() { life--; }
     void restoreLife() { life = dim; }
     void moved(coords newCenter) { center = newCenter; }
+
 
     //todo: aggiungere DISTRUTTORE
 };

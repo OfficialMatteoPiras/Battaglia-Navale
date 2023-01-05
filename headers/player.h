@@ -31,9 +31,9 @@ class player{
         class notEnoughSpace : std::exception {};
 
         //istanze per ship
-        static battleship * getIstanceBattleship(coords bow, coords stern) { return new battleship(bow, stern); };
-        static support * getIstanceSupport(coords bow, coords stern){ return new support(bow, stern); };
-        static submarine * getIstanceSubmarine(coords bow, coords stern){ return new submarine(bow, stern); };
+        //static battleship * getIstanceBattleship(coords bow, coords stern) { return new battleship(bow, stern); };
+        //static support * getIstanceSupport(coords bow, coords stern){ return new support(bow, stern); };
+        //static submarine * getIstanceSubmarine(coords bow, coords stern){ return new submarine(bow, stern); };
 
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
@@ -47,17 +47,13 @@ class player{
         void startRandomFleet();
         void printFleet();  //todo: rimuovere
 
-        //FUNZIONI STUPIDE E BRUTTE NON GUARDARE
-        void insert(coords origin, char c);
+        //FUNZIONI STUPIDE E BRUTTE NON GUARDARE            //todo: sistemare le funzioni stupide brutte da non guardare
         void newShip(coords stern, coords bow, char c);
         int getShipLife(coords c);
         std::map<coords, ship*> fleet;  //mappa per la flotta
-        //Getters
-        //ship getPlayerShip(coords coordsShip);     //getter di una nave date le sue coordinate
-        //coords getShipCoords(ship playerShip);      //getter delle coordinate di una nave
 
         //Setters
-
+        void insertShip(ship origin, char c);
 
         //robe che servono all'avversario cattivo (leggono/scrivono SOLO defence)
         bool isEmpty(coords target) { return defence.isEmpty(target); };
@@ -77,18 +73,5 @@ class player{
 };
 
 
-/*
-class player {
-    public:
-        void placeShip(ship, coords, coords);   //aggiunge in defense, aggiorna myShips
-        void actionAAAA();      //chiama una funzione di matrix che cancella tutte le Y da attack
-        void action(coords origin, coords target, player opponent);      //check origin in fleet, chiama fleet[origin].value.action(target, attack, defense, p.defense), aggiorna fleet se è S o E
-
-    private:
-        game::matrix defense;
-        game::matrix attack;
-        std::map<ship, coords> fleet;   //mappa per le navi
-        int aliveUnits = 8;
-};*/
 
 #endif //BATTAGLIA_NAVALE_PLAYER_H

@@ -34,4 +34,3 @@ bool ship::contains(coords c) const{
     }
     return false;
 }
-
