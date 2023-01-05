@@ -7,6 +7,7 @@
 #include <vector>
 #include <fstream>
 #include "../headers/coords.h"
+//#include "../headers/player.h"
 
 namespace game {
     class matrix {
@@ -38,8 +39,6 @@ namespace game {
     int getRandomInt(int range = 11, int start = 0);
 
     //FUNZIONI DI SUPPORTO
-    //visualisation
-    void visual();
     //void grid(std::vector<std::pair<coords, coords>>);
     void grid(game::matrix ships, game::matrix attack);
     std::vector<std::pair<coords, coords>> read_file();

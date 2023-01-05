@@ -46,6 +46,9 @@ void game::grid(game::matrix ships, game::matrix attack) {
     }
 }
 
+
+
+
 //Array di pair
 std::vector<std::pair<coords, coords>> game::read_file(){        //!DA TESTARE
     std::vector<std::pair<coords, coords>> read_coords;         //vettore per la lettura delle coordinate

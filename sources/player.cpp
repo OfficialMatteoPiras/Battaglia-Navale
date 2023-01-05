@@ -2,7 +2,8 @@
 
 #include "../headers/player.h"
 
-player::player() {
+player::player(std::string n) {
+    name = n;
     fleet = {};
 }
 
@@ -155,9 +156,9 @@ ship* player::getShipPointer(coords c){
     coords center = c;
     ship* s = nullptr;
     bool found = false;
-    try {
-        for (int i = -dim / 2; i <= dim / 2 && !found; i++) {
-            for (int k = 0; k <= 1 && !found; k++) {
+    for (int i = -dim/2; i <= dim/2 && !found; i++) {
+        for (int k = 0; k <= 1 && !found; k++) {
+            try{
                 if (k == 0)
                     center = c.addCol(i);
                 else
@@ -168,9 +169,10 @@ ship* player::getShipPointer(coords c){
                     //chiede se quella cella appartiene (funzione della nave)
                     found = s->contains(c);
                 }
-            }
+            }catch (coords::invalidCoords &e) {}
+
         }
-    } catch(coords::invalidCoords& e) {}
+    }
     return s;
 }
 

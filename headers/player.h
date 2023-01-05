@@ -13,6 +13,7 @@ class player{
     private:
         game::matrix defence;    //griglia difesa (navi)
         game::matrix attack;     //griglia attacco
+        std::string name;
 
         //actions
         void fire(coords origin, coords target, player& opponent);
@@ -40,7 +41,10 @@ class player{
 
     public:
         //Constructors
-        explicit player();       //costruttore che inizializza tutta la flotta
+        explicit player(std::string n);       //costruttore che inizializza tutta la flotta
+
+        //getter
+        std::string getName() const{ return name; };
 
         //inizializzazione flotta
         void startFleet();
