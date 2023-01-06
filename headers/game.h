@@ -13,7 +13,8 @@
 
 #include "../headers/coords.h"
 #include "../headers/matrix.h"
-//#include "../headers/player.h"
+#include "../headers/player.h"
+#include "../headers/ship.h"
 
 namespace game {
     class turn{
@@ -24,14 +25,15 @@ namespace game {
             turn();
     };
 
-    //FUNZIONI RANDOM
-    coords getRandomCoord();
-    coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
-    int getRandomInt(int range = 11, int start = 0);
+    //FUNZIONI PER I TURNI
+    std::pair<std::string, std::string> computerRound(player& pl, player& opponent);
+    std::pair<std::string, std::string> humanRound(player& pl, player& opponent);
+
+
 
     //FUNZIONI DI SUPPORTO
     //void grid(std::vector<std::pair<coords, coords>>);
-    void grid(matrix ships, matrix attack);
+
     std::vector<std::pair<coords, coords>> read_file();
     bool write_file();          //da vedere cosa prende in input
 };

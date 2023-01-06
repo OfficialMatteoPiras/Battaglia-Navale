@@ -93,7 +93,13 @@ int coords::operator-(const coords &c) const {
 }
 
 
+std::string coords::toString(){
+    std::string s;
+    s += getRow() + std::to_string(getCol());
+    return s;
+}
+
 //OPERATOR <<
 std::ostream& operator<< (std::ostream& os, coords& c){
-    return os << c.getRow() << c.getCol();
+    return os << c.toString();
 }

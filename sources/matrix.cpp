@@ -62,3 +62,40 @@ bool matrix::setElement(char c, int row, int col){
     _matrix[row][col] = c;
     return true;
 }
+
+
+void grid(matrix ships, matrix attack) {
+    std::string letters = "ABCDEFGHILMN";
+    std::string token;
+
+    for (int i = 0; i < 13; i++) {
+        for (int k = 0; k < 2; ++k) {
+            for (int j = 0; j < 13; j++) {
+                token = "";
+                if(i == 0){                     // prima riga stampa i numeri
+                    if(j == 0) token = "  |";       //se è la prima riga e la prima ripetizione deve stampare uno spazio
+                    else{
+                        if(j < 10) token = " " + std::to_string(j ) + " |";  //se il numero occupa un solo carattere
+                        else token = std::to_string(j ) + " |";         //se il numero occupa 2 caratteri
+                    }
+                }
+                else{
+                    if (j == 0) std::cout << letters[i - 1] << " |";        //stampa della lettera
+                    else{
+                        token = " ";
+                        if(k == 0) {    //! griglia 1
+                            token += ships.getElement(i - 1, j - 1);
+                        }
+                        else { //! griglia 2
+                            token += attack.getElement(i - 1, j - 1);
+                        }
+                        token += " |";
+                    }
+                }
+                std::cout << token;
+            }
+            std::cout << "\t";
+        }
+        std::cout << std::endl;
+    }
+}

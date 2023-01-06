@@ -34,3 +34,8 @@ bool ship::contains(coords c) const{
     }
     return false;
 }
+
+void ship::removeLife(){
+    if(isAlive())
+        life--;
+}

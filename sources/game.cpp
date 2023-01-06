@@ -2,41 +2,6 @@
 
 #include "../headers/game.h"
 
-void game::grid(matrix ships, matrix attack) {
-    std::string letters = "ABCDEFGHILMN";
-    std::string token;
-
-    for (int i = 0; i < 13; i++) {
-        for (int k = 0; k < 2; ++k) {
-            for (int j = 0; j < 13; j++) {
-                token = "";
-                if(i == 0){                     // prima riga stampa i numeri
-                    if(j == 0) token = "  |";       //se è la prima riga e la prima ripetizione deve stampare uno spazio
-                    else{
-                        if(j < 10) token = " " + std::to_string(j ) + " |";  //se il numero occupa un solo carattere
-                        else token = std::to_string(j ) + " |";         //se il numero occupa 2 caratteri
-                    }
-                }
-                else{
-                    if (j == 0) std::cout << letters[i - 1] << " |";        //stampa della lettera
-                    else{
-                        token = " ";
-                        if(k == 0) {    //! griglia 1
-                            token += ships.getElement(i - 1, j - 1);
-                        }
-                        else { //! griglia 2
-                            token += attack.getElement(i - 1, j - 1);
-                        }
-                        token += " |";
-                    }
-                }
-                std::cout << token;
-            }
-            std::cout << "\t";
-        }
-        std::cout << std::endl;
-    }
-}
 
 //Array di pair
 std::vector<std::pair<coords, coords>> game::read_file(){        //!DA TESTARE
@@ -81,33 +46,65 @@ bool game::write_file() {    //!DA FINIRE E VEDERE COSA PRENDE IN INPUT
     return finish;
 }
 
-//FUNZIONI RANDOM
-coords game::getRandomCoord(){
-    std::string letters = "ABCDEFGHILMN";
-    coords c = {letters[getRandomInt(letters.size() - 1)] + std::to_string(getRandomInt(letters.size() - 1))};
-    //std::cout << "estrazione-> " << c << std::endl;        //todo: remove
+
+//FUNZIONI TURNI
+std::pair<std::string, std::string> game::computerRound(player& pl, player& opponent) {
+    //nave random da p1.fleet e salva in origin
+    coords origin = pl.getRandomOrigin();
+    coords target = origin; //inizializzazione provvisoria
+    //(AA AA ?)
+    bool done = false;
+    //finché non trova coords target valide per l'azione)
+    while (!done) {
+        target = pl.getRandomCoord();
+        try {       //try catch azione
+            pl.action(origin, target, opponent);      //coordinate random
+            done = true;
+        }
+        catch (coords::invalidCoords &e) {}
+        catch (player::notEnoughSpace &e) {}
+        catch (player::invalidOrigin &e) {}
+    }
+    std::pair<std::string, std::string> c = std::make_pair(origin.toString(), target.toString());
     return c;
 }
 
-coords game::getRandomCoord(coords bow, bool vertical, int distance){ //prende in input la PRUA!
-    coords newCoord = coords(bow.getX(), bow.getY());
-    distance--;
+std::pair<std::string, std::string> game::humanRound(player& pl, player& opponent) {
+    std::string origin;
+    std::string target;
+    bool done = false;
+    while (!done) {
+        try {
+            //legge la mossa come stringa e salva in origin e target
 
-    //check se sommare o sottrarre
-    if(bow.getX() - distance > 0 || bow.getY() - distance > 0) distance *= (-1);
+            //if AA AA  cancella le Y da attack e salva su log
+            if (origin.compare("AA") == 0 && target.compare("AA") == 0) {
+                //chiede e legge nuova mossa e salva in move
+            }
 
-    //mofica della nuova coordinata
-    if (vertical) newCoord = newCoord.add(distance, 0);
-    else newCoord = newCoord.add(0, distance);
-    std::cout << "nuova nave-> " << newCoord << std::endl;       //todo: rimuovere
-
-    return newCoord;
-}
-
-int game::getRandomInt(int range, int start){
-    srand(rand());
-    int random = start + (rand() % range);
-    return random;
+                //if XX XX  stampa le griglie DI P2
+            else if (origin.compare("XX") == 0 && target.compare("XX") == 0) {
+                //chiede e legge nuova mossa e salva in move
+            } else {
+                //chiama l'azione (altrimenti propaga eccezione)
+                pl.action(origin, target, opponent);
+                //salva roundFlag, origin, target su log
+                done = true;
+            }
+        }
+        catch (coords::invalidCoords e) {
+            //le coordinate non sono valide
+            // chiede di riprovare (done = false)
+        }
+        catch (player::invalidOrigin e) {
+            //l'origine non corrisponde a nessuna nave
+        }
+        catch (player::notEnoughSpace e) {
+            //non c'è spazio per spostare la nave
+        }
+    }
+    std::pair<std::string, std::string> c = std::make_pair(origin, target);
+    return c;
 }
 
 //TURNI

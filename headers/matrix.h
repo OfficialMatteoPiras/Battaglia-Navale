@@ -31,4 +31,6 @@ public:
     bool isEmpty(coords target);      //true se è vuoto
 };
 
+void grid(matrix ships, matrix attack);
+
 #endif //BATTAGLIA_NAVALE_MATRIX_H

@@ -4,55 +4,96 @@
 #include "../headers/ship.h"
 #include "../headers/coords.h"
 #include "../headers/game.h"
+using namespace std;
 
+//ESEGUIBILE con argomenti (A = pcpc | B = pcumano)
+/*int main(){
 
-//MAIN con argomenti (A = pcpc | B = pcumano)
+    //FORSE SERVE SRAND(RAND())
+    bool human;
+    //settare human
+
+    const int maxRounds = 40;
+    std::string origin;
+    std::string target;
 
     //creare giocatori p1 e p2
-    /*player p1, p2;      //p1 sempre computer
-    coords origin ("A1");   //inizializzate sulla prima cella
-    coords target ("A1");   //inizializzate sulla prima cella
-    std::string move;*/
+    player p1, p2;      //p1 sempre computer
+    if(human){
+        cout << "Inserisci il tuo nome!" << endl;
+        string name;
+        cin >> name;
+        p2.setName(name);
+        p1.setName("Computer");
+    }
+    else{
+        p1.setName("Giocatore 1");
+        p2.setName("Giocatore 2");
+    }
 
-    //vettore log per salvare tutte le mosse (boolean, coords, coords) | (player, origin, target)
+    //vettore log per salvare tutte le mosse (bool, coords, coords) | (player, origin, target)
+    vector<tuple<bool, std::string, std::string>> log;
 
     //posizionare navi p1 random
+    p1.startRandomFleet();
     //posizionare navi p2 (A random | B cout/cin)
+    if(human){
+        p2.startFleet();
+    }
+    else {
+        p2.startRandomFleet();
+    }
 
-    //random primo giocatore: p1 roundFlag = true, p2 roundFlag = false        //(p1 = true, p2 = false)
+    //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
+    bool roundP1 = false;
+    if (rand()%2 == 1)
+        roundP1 = true;
 
-    //for (int j = 0; j < maxRounds && p1.alive && p2.alive; j++)
-        //try (forse meglio due separati dopo)
-            //if(roundFlag)     //round P1
-                //nave random da p1.fleet e salva in origin
-                //(AA AA ?)
-                //while (!trova coords target valide per l'azione)
-                    //coordinate random
-                    //try catch azione
-
-            //else              //round P2
-                //while (!done)
-                    //try
-                        //legge la mossa come stringa
-
-                        //if AA AA  cancella le Y da attack e salva su log
-                            //chiede e legge nuova mossa e salva in move
-
-                        //if XX XX  stampa le griglie DI P2
-                            //chiede e legge nuova mossa e salva in move
-
-                        //divide in due coords origin e target
-                        //controlla se origin è in myShips
-                            //se sì chiama l'azione (altrimenti propaga eccezione)
-                            //salva roundFlag, origin, target su log
-                            //done
-
-                    //catch
-                    //chiede di riprovare (done = false)
-
-            // !roundFlag;
-        // catch eccezioni varie, messaggi a schermo, decrementa j se no conta un turno non fatto
+    //turni
+    for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); i++){
+        std::pair<std::string, std::string> move;
+        bool done = false;
+        if(roundP1) {     //round P1 (computer)
+           move =  game::computerRound(p1, p2);
+        }
+        else{              //round P2
+            if(human){
+                move = game::humanRound(p2, p1);
+            }
+            else {
+                move = game::computerRound(p2, p1);
+            }
+        }
+        origin = move.first;
+        target = move.second;
+        log.push_back(make_tuple(roundP1, origin, target));
+        if(origin.compare("AA") != 0 && origin.compare("XX") != 0 )
+            !roundP1;
+    }
     //FINE PARTITA
         //if p1 è morto
+        if(!p1.isAlive()){
+            //P1 HA PERSO SFIGATO è MORTO
+        }
+
         //if p2 è morto
+        else if(!p2.isAlive()){
+            //P2 HA PERSO SFIGATO è MORTO
+        }
+
         //if mosse finite: confronto "punteggi" (unità vive)
+        else{
+            if(p1.getPoints() > p2.getPoints()){
+                //HA VINTO P2 << PUNTI
+            }
+            else if(p1.getPoints() < p2.getPoints()){
+                //HA VINTO P2 << PUNTI
+            }
+            else{
+                //PAREGGIO
+            }
+        }
+
+
+    return 0;
+}*/

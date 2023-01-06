@@ -29,6 +29,8 @@ class coords{
         coords addCol(int n) const;
         coords add(int r, int c) const;     //todo: aggiungere check coordinate
 
+        std::string toString();
+
         //OVERLOAD
         bool operator==(const coords&) const;
         bool operator!=(const coords&) const;

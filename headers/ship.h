@@ -6,7 +6,6 @@
 #include <iostream>
 #include <utility>
 #include "../headers/coords.h"
-#include "../headers/game.h"
 
 
 class ship{
@@ -53,11 +52,11 @@ public:
     coords getStern() const;        //poppa
     coords getBow() const;          //prua
     bool contains(coords c) const;
-
+    bool isAlive() const { return life>0; }
     char getC() const {return c;};
 
     //SETTERS
-    void removeLife() { life--; }
+    void removeLife();
     void restoreLife() { life = dim; }
     void moved(coords newCenter) { center = newCenter; }
 

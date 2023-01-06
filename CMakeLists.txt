@@ -8,8 +8,9 @@ include_directories(.)
 add_executable(Battaglia_Navale
         main.cpp
         sources/coords.cpp
-        sources/player.cpp
+        sources/matrix.cpp
         sources/ship.cpp
-        sources/replay.cpp
+        sources/player.cpp
         sources/game.cpp
-        sources/matrix.cpp)
+        sources/replay.cpp
+        )

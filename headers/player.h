@@ -8,6 +8,7 @@
 #include "../headers/matrix.h"
 
 #include <map>
+#include <vector>
 
 class player{
     private:
@@ -22,15 +23,20 @@ class player{
         static std::string funnyMessage();
 
         //funzioni di supporto alle azioni non serve chiamarle per altro ciao
-        void checkSpace(ship* s, coords center);
+        void checkSpace(ship* s, coords target);
         void move(coords origin, coords target);
         ship* getShipPointer(coords c);
         void repairFullShip(coords target);    //(RIPARA INTERA NAVE DA UNA SUA COMPONENTE)
         bool wasHit(coords target);
+        void removeShip(coords c);
 
-        //exceptions
-        class invalidOrigin : std::exception {};
-        class notEnoughSpace : std::exception {};
+        //FUNZIONI RANDOM
+
+        static coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
+        static int getRandomInt(int range = 11, int start = 0);
+
+
+
 
         //istanze per ship
         //static battleship * getIstanceBattleship(coords bow, coords stern) { return new battleship(bow, stern); };
@@ -44,15 +50,18 @@ class player{
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //Constructors
-        explicit player(std::string n);       //costruttore che inizializza tutta la flotta
+        explicit player();       //costruttore che inizializza tutta la flotta
 
         //getter
-        std::string getName() const{ return name; };
+        std::string getName() const{ return name; }
+        int getPoints();
+        bool isAlive() {return getPoints() > 0; }
 
         //inizializzazione flotta
         void startFleet();
         void startRandomFleet();
         void printFleet();  //todo: rimuovere
+        coords getRandomOrigin();
 
         //FUNZIONI STUPIDE E BRUTTE NON GUARDARE            //todo: sistemare le funzioni stupide brutte da non guardare
         void newShip(coords stern, coords bow, char c);
@@ -60,21 +69,28 @@ class player{
 
         //Setters
         void insertShip(ship origin, char c);
+        void setName(std::string n) { name = n; }
 
         //robe che servono all'avversario cattivo (leggono/scrivono SOLO defence)
         bool isEmpty(coords target) { return defence.isEmpty(target); };
         void hit(coords target);
 
+        static coords getRandomCoord();
+
         //ACTIONS
         //XX XX
-        void visual(){
-            game::grid(defence, attack);
-        }
+        void visual();
 
         //AA AA
+        void deleteY();
 
         //XYorigin XYtarget
         void action(coords origin, coords target, player& opponent);
+
+        //exceptions
+        class invalidOrigin : std::exception {};
+        class notEnoughSpace : std::exception {};
+        class ilProblemaSonoIo : std::exception {};
 
 };
 
