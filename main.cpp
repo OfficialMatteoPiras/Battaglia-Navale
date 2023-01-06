@@ -57,7 +57,7 @@ int main(){
     //posizionare navi p1 random
     p1.startRandomFleet();
 
-    print(p1, p2);
+
 
     //posizionare navi p2 (A random | B cout/cin)
     if(human){
@@ -67,6 +67,7 @@ int main(){
         p2.startRandomFleet();
     }
 
+    print(p1, p2);
 
     //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
     bool roundP1 = false;

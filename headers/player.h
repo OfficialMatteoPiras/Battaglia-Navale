@@ -90,7 +90,6 @@ class player{
         //exceptions
         class invalidOrigin : std::exception {};
         class notEnoughSpace : std::exception {};
-        class ilProblemaSonoIo : std::exception {};
 
 };
 

@@ -26,21 +26,12 @@ void player::startFleet() {
     //START CORAZZATA
     for (int i = 0; i < 8; i++) {
         try{
-            if(i == 3 || i == 6)
-                cont = 1;
-            if(i >= 0 && i < 3) {
+            if(i >= 0 && i < 3)
                 input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(cont));
-            }
-            if(i >= 3 && i < 6) {
+            if(i >= 3 && i < 6)
                 input = getCoords("Quali sono le coordinate per la nave di supporto " + std::to_string(cont));
-                ch = 'S';
-                dim = 3;
-            }
-            if(i >= 6){
+            if(i >= 6)
                 input = getCoords("Quali sono le coordinate per il sottomarino " + std::to_string(cont));
-                ch = 'E';
-                dim = 1;
-            }
 
             if((input.first - input.second) + 1 != dim) throw coords::invalidCoords();
 
@@ -52,6 +43,10 @@ void player::startFleet() {
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
 
+            if(i + 1 == 3 || i + 1 == 6) dim -= 2;
+            if(i + 1 == 3) { ch = 'S'; cont = 0; }
+            if(i + 1 == 6) { ch = 'E'; cont = 0; }
+
             cont ++;
         }
         catch (coords::invalidCoords& c){
@@ -60,10 +55,6 @@ void player::startFleet() {
         }
         catch(notEnoughSpace& e){
             std::cout << " ** not enough space **" << std::endl;
-            i--;
-        }
-        catch(ilProblemaSonoIo& e){
-            std::cout << " ** IL PROBLEMA SONO IO **" << std::endl;
             i--;
         }
         std::cout << "-------------------" << std::endl;
@@ -385,9 +376,9 @@ void player::insertShip(ship s, char c){
     for (int i = -dim/2; i <= dim/2; i++) {
         //std::cout << "new: " << n_c << std::endl;
         if (s.isVertical())
-            n_c = n_c.addRow(i);
+            n_c = center.addRow(i);
         else
-            n_c = n_c.addCol(i);
+            n_c = center.addCol(i);
         defence.insert(n_c, c);
     }
 }
