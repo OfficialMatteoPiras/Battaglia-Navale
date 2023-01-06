@@ -302,7 +302,6 @@ void player::hit(coords target) {
     s->removeLife();
 }
 
-//FUNZIONI STUPIDE NON GUARDARE SIAMO BRUTTE
 void player::newShip(coords stern, coords bow, char c){
     ship* s = nullptr;
     if(c == 'C')
@@ -315,6 +314,7 @@ void player::newShip(coords stern, coords bow, char c){
     fleet[s->getCenter()] = s;
 }
 
+//FUNZIONI STUPIDE NON GUARDARE SIAMO BRUTTE
 int player::getShipLife(coords origin){
     if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
         throw invalidOrigin();

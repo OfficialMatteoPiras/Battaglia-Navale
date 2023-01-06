@@ -41,6 +41,8 @@ class player{
         std::pair<coords, coords> getCoords(const std::string& message);
 
     public:
+        std::map<coords, ship*> fleet;  //mappa per la flotta
+
         //Constructors
         explicit player(std::string n);       //costruttore che inizializza tutta la flotta
 
@@ -55,7 +57,6 @@ class player{
         //FUNZIONI STUPIDE E BRUTTE NON GUARDARE            //todo: sistemare le funzioni stupide brutte da non guardare
         void newShip(coords stern, coords bow, char c);
         int getShipLife(coords c);
-        std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //Setters
         void insertShip(ship origin, char c);

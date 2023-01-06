@@ -1,3 +1,4 @@
+#include "headers/player.h"
 #include "headers/ship.h"
 #include <iostream>
 #include <string.h>
@@ -36,13 +37,13 @@ int main(int argc, char **argv){
         d+=2;
     }*/
 
-    game::turn();
+    //game::turn();
 
-    //player pl1("PANE TOSTATO");
-    //pl1.startRandomFleet();
+    player pl1("PANE TOSTATO");
+    pl1.startRandomFleet();
     //pl1.startFleet();
-    //pl1.visual();
-    //pl1.printFleet();
+    pl1.visual();
+    pl1.printFleet();
 
     return 0;
 }
