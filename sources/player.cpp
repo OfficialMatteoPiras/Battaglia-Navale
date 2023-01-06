@@ -346,7 +346,8 @@ std::string player::funnyMessage() {
             "CAPITANO, ATTENDIAMO ORDINI!",
             "TUTTE LE NAVI SONO IN POSIZIONE!"
     };
-    return message[rand() % message.size() - 1];
+    int pos = message.size() - 1;
+    return message[rand() % pos];
 }
 
 
