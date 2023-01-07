@@ -2,6 +2,8 @@
 #include "headers/player.h"
 #include "headers/game.h"
 #include <iostream>
+#include <cstdlib>
+#include <unistd.h>
 
 void print(player p1, player p2){
     std::string token = " ------------------------------------- ";
@@ -15,6 +17,7 @@ void print(player p1, player p2){
         std::cout << c << ": " << *iter.second << std::endl;
     }
 
+    sleep(1);
     std::cout <<std::endl << token << n2 << token << std::endl;
     p2.visual();
     std::cout << "FLOTTA: " << std::endl;
@@ -23,6 +26,7 @@ void print(player p1, player p2){
         std::cout << c << ": " << *iter.second << std::endl;
     }
     std::cout << std::endl;
+    sleep(1);
 }
 
 using namespace std;
