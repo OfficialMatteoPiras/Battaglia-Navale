@@ -6,6 +6,38 @@ player::player() {
     fleet = {};
 }
 
+void player::startReplayFleet(const std::vector<std::pair<coords, coords>>& ship_vector) {
+    int dim = 0;
+    char ch = 'C';
+    coords bow{}, stern{} , temp{};
+
+    for (const auto & i : ship_vector) {
+        bow = i.first;
+        stern = i.second;
+        if(bow < stern){
+            temp = bow;
+            bow = stern;
+            stern = temp;
+        }
+
+        dim = stern - bow + 1;
+
+        if(dim < 0) dim*= (-1);
+
+        if(dim == 5) ch = 'C';
+        if(dim == 3) ch = 'S';
+        if(dim == 1) ch = 'E';
+
+        try{
+            ship *s = newShip(stern, bow, ch);
+            insertShip(*s, ch);
+        }catch(coords::invalidCoords){
+            std::cout << "** invalid coords **" << std::endl;
+        }
+    }
+}
+
+
 std::pair<coords, coords> player::getCoords(const std::string& message){
     std::string origin, target, delimiter = " ";
     //input
@@ -161,13 +193,13 @@ void player::action(coords origin, coords target, player& opponent){
     if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
         throw invalidOrigin();
     ship* s = fleet.find(origin)->second;
-    if (s->getDimension() == 5){
+    if (s->getDimension() == 5){             //azione corazzata
         fire(origin, target, opponent);
     }
-    else if (s->getDimension() == 3){
+    else if (s->getDimension() == 3){        //azione supporto
         moveAndRepair(origin, target);
     }
-    else {
+    else {                                   //azione sottomarino
         moveAndSearch(origin, target, opponent);
     }
     std::cout << "\nMossa: " <<  origin << " -> " << target << std::endl;
@@ -339,7 +371,7 @@ void player::hit(coords target) {
     }
 }
 
-void player::newShip(coords stern, coords bow, char c){
+ship* player::newShip(coords stern, coords bow, char c){
     ship* s = nullptr;
     if(c == 'C')
         s = new battleship(bow, stern);
@@ -349,6 +381,7 @@ void player::newShip(coords stern, coords bow, char c){
         s = new submarine(bow, stern);
     //fleet.insert(std::make_pair(s->getCenter(), s));      //uguale!!!
     fleet[s->getCenter()] = s;
+    return s;
 }
 
 void player::removeShip(coords center){
@@ -477,3 +510,7 @@ int player::getRandomInt(int range, int start){
     int random = start + (rand() % range);
     return random;
 }
+
+
+
+

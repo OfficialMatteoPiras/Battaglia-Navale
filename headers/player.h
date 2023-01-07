@@ -37,8 +37,6 @@ class player{
         static int getRandomInt(int range = 11, int start = 0);
 
 
-
-
         //istanze per ship
         //static battleship * getIstanceBattleship(coords bow, coords stern) { return new battleship(bow, stern); };
         //static support * getIstanceSupport(coords bow, coords stern){ return new support(bow, stern); };
@@ -47,11 +45,16 @@ class player{
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
 
+
+
     public:
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //Constructors
         explicit player();       //costruttore che inizializza tutta la flotta
+
+        //REPLAY functions
+        void startReplayFleet(const std::vector<std::pair<coords, coords>>& ship_vector);
 
         //getter
         std::string getName() const{ return name; }
@@ -67,7 +70,7 @@ class player{
         coords getRandomOrigin();
 
         //FUNZIONI STUPIDE E BRUTTE NON GUARDARE            //todo: sistemare le funzioni stupide brutte da non guardare
-        void newShip(coords stern, coords bow, char c);
+        ship* newShip(coords stern, coords bow, char c);
         int getShipLife(coords c);
 
         //Setters
@@ -87,12 +90,13 @@ class player{
         //AA AA
         void deleteY();
 
-        //XYorigin XYtarget
+        //XYorigin XYtarget     -> azione giocatore umano
         void action(coords origin, coords target, player& opponent);
 
         //exceptions
         class invalidOrigin : std::exception {};
         class notEnoughSpace : std::exception {};
+        class invalidTarget : std::exception {};    //se il target esce dalla griglia   todo: usare coords per il check?
 
 };
 

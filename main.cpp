@@ -29,11 +29,7 @@ void print(player p1, player p2){
     sleep(1);
 }
 
-using namespace std;
-
-//ESEGUIBILE con argomenti (pcpc | pcumano)
-int main(){
-    srand(time(0));
+void startGame(){
     bool human = false;
     //settare human
 
@@ -44,9 +40,9 @@ int main(){
     //creare giocatori p1 e p2
     player p1, p2;      //p1 sempre computer
     if(human){
-        cout << "Inserisci il tuo nome!" << endl;
-        string name;
-        cin >> name;
+        std::cout << "Inserisci il tuo nome!" << std::endl;
+        std::string name;
+        std::cin >> name;
         p2.setName(name);
         p1.setName("Computer");
     }
@@ -56,7 +52,7 @@ int main(){
     }
 
     //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
-    vector<tuple<bool, std::string, std::string>> log;
+    std::vector<std::tuple<bool, std::string, std::string>> log;
 
     //posizionare navi p1 random
     p1.startRandomFleet();
@@ -77,23 +73,23 @@ int main(){
     bool roundP1 = false;
     if (rand()%2 == 1)
         roundP1 = true;
-    cout << "\nINIZIA IL GIOCATORE: ";
+    std::cout << "\nINIZIA IL GIOCATORE: ";
     if(roundP1)
-        cout << p1.getName() << endl;
+        std::cout << p1.getName() << std::endl;
     else
-        cout << p2.getName() << endl;
+        std::cout << p2.getName() << std::endl;
 
-    string prova = "Ciao";
+    std::string prova = "Ciao";
 
     //turni
     for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); i++){
         std::pair<std::string, std::string> move;
         if(roundP1) {     //round P1 (computer)
-            cout << "TURNO " << i+1 << ":  TOCCA A " << p1.getName() << endl;
+            std::cout << "TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             move =  game::computerRound(p1, p2);
         }
         else{              //round P2
-            cout << "TURNO " << i+1 << ":  TOCCA A " << p2.getName() << endl;
+            std::cout << "TURNO " << i+1 << ":  TOCCA A " << p2.getName() << std::endl;
             if(human){
 
                 move = game::humanRound(p2, p1);
@@ -115,8 +111,8 @@ int main(){
     }
 
     for(auto& iter: log){
-        cout << std::get<0>(iter) << " " << std::get<1>(iter) << " " << std::get<2>(iter);
-        cout << endl;
+        std::cout << std::get<0>(iter) << " " << std::get<1>(iter) << " " << std::get<2>(iter);
+        std::cout << std::endl;
     }
 
     //FINE PARTITA
@@ -125,17 +121,55 @@ int main(){
         //P1 HA PERSO SFIGATO è MORTO
     }
 
-    //if p2 è morto
+        //if p2 è morto
     else if(!p2.isAlive()){
         //P2 HA PERSO SFIGATO è MORTO
     }
 
-    //if mosse finite: confronto "punteggi" (unità vive)
+        //if mosse finite: confronto "punteggi" (unità vive)
     else{
         //PAREGGIO
         //punti?
     }
+}
 
+
+
+//ESEGUIBILE con argomenti (pcpc | pcumano)
+int main(){
+    srand(time(0));
+
+    //startGame();
+    std::vector<std::pair<coords, coords>> vect1 {
+            {{"A1"}, {"A5"}},
+            {{"B1"}, {"B5"}},
+            {{"C1"}, {"C5"}},    //CORAZZATA
+            {{"D1"}, {"D3"}},
+            {{"E1"}, {"E3"}},
+            {{"F1"}, {"F3"}},    //SUPPORTO
+            {{"G1"}, {"G1"}},
+            {{"H1"}, {"H1"}},    //SOTTOMARINO
+    };
+    std::vector<std::pair<coords, coords>> vect2 {
+            {{"A1"}, {"E1"}},
+            {{"A2"}, {"E2"}},
+            {{"A3"}, {"E3"}},    //CORAZZATA
+            {{"A4"}, {"C4"}},
+            {{"A5"}, {"C5"}},
+            {{"A6"}, {"C6"}},    //SUPPORTO
+            {{"A7"}, {"A7"}},
+            {{"A8"}, {"A8"}},    //SOTTOMARINO
+    };
+
+    player pl1;
+    pl1.startReplayFleet(vect1);
+    pl1.visual();
+
+    std::cout << " ---------------------  " << std::endl;
+
+    player pl2;
+    pl2.startReplayFleet(vect2);
+    pl2.visual();
 
     return 0;
 }
