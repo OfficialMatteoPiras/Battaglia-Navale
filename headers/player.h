@@ -30,6 +30,7 @@ class player{
         bool wasHit(coords target);
         void removeShip(coords c);
 
+
         //FUNZIONI RANDOM
 
         static coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
@@ -56,6 +57,8 @@ class player{
         std::string getName() const{ return name; }
         int getPoints();
         bool isAlive() {return getPoints() > 0; }
+        std::string findY();
+        bool isABattleship(coords origin);
 
         //inizializzazione flotta
         void startFleet();

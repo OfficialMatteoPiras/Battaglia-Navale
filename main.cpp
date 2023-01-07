@@ -98,13 +98,15 @@ int main(){
                 move = game::computerRound(p2, p1);
             }
         }
-        origin = move.first;
-        target = move.second;
-        log.emplace_back(roundP1, origin, target);
-        cout << origin << " -> " << target << endl;
-        cout << std::get<0>(log[i]) << " " << std::get<1>(log[i]) << " " << std::get<2>(log[i]);
-        if(origin != "AA" && origin != "XX")
+        if(origin != "AA" && origin != "XX") {
+            origin = move.first;
+            target = move.second;
+            log.emplace_back(roundP1, origin, target);
+            //cout << origin << " -> " << target << endl;
+            //cout << std::get<0>(log[i]) << " " << std::get<1>(log[i]) << " " << std::get<2>(log[i]);
+
             roundP1 = !roundP1;
+        }
         print(p1, p2);
     }
 
@@ -126,15 +128,8 @@ int main(){
 
     //if mosse finite: confronto "punteggi" (unità vive)
     else{
-        if(p1.getPoints() > p2.getPoints()){
-            //HA VINTO P2 << PUNTI
-        }
-        else if(p1.getPoints() < p2.getPoints()){
-            //HA VINTO P2 << PUNTI
-        }
-        else{
-            //PAREGGIO
-        }
+        //PAREGGIO
+        //punti?
     }
 
 

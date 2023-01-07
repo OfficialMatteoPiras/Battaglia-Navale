@@ -263,9 +263,14 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
         for (int j = -2; j <= 2; j++) {         //ciclo per le colonne
             try {
                 check = target.add(i, j);
-                if (!opponent.isEmpty(check)) {       //se la cella non è vuota
-                    if (attack.getElement(check) != 'X')     //se nella griglia di attacco c'è O o niente
-                        attack.insert(check, 'Y');
+                if (opponent.isEmpty(check)) {        //se la cella dell'avversario è vuota
+                    if (attack.getElement(check) != 'O')
+                        attack.insert(check, ' ');              //rimuove eventuali X e Y precedenti non più valide
+                } else {                                    //se la cella dell'avversario non è vuota
+                    if (opponent.wasHit(check))
+                        attack.insert(check, 'X');              //se trova una lettera minuscola mette X (segmento colpito)
+                    else
+                        attack.insert(check, 'Y');              //se trova una lettera maiuscola mette Y (segmento non colpito)
                 }
             }
             catch (coords::invalidCoords& e){}
@@ -383,6 +388,8 @@ void player::insertShip(ship s, char c){
     }
 }
 
+
+
 std::string player::funnyMessage() {
     srand(rand());
     std::vector<std::string> message = {
@@ -417,6 +424,31 @@ int player::getPoints(){
     return points;
 }
 
+
+std::string player::findY(){
+    std::string s;
+    std::vector<coords> v;
+    for(int i = 0; i < 12; i++){
+        for (int  j = 0; j < 12; j++){
+            coords c(i, j);
+            if(attack.getElement(c) == 'Y')
+                v.push_back(c);
+        }
+    }
+    if(!v.empty()){
+        coords randomY = v[getRandomInt(v.size())];
+        s = randomY.toString();
+    }
+    return s;
+}
+
+
+bool player::isABattleship(coords origin){
+    ship* s = fleet.find(origin)->second;
+    if (s->getDimension() == 5)
+        return true;
+    return false;
+}
 
 //FUNZIONI RANDOM
 coords player::getRandomCoord(){

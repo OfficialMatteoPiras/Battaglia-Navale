@@ -56,7 +56,13 @@ std::pair<std::string, std::string> game::computerRound(player& pl, player& oppo
     bool done = false;
     //finché non trova coords target valide per l'azione)
     while (!done) {
-        target = pl.getRandomCoord();
+        if(pl.isABattleship(origin)) {
+            std::string targ = pl.findY();
+            if (targ != "")
+                target = coords(targ);
+        }
+        else
+            target = pl.getRandomCoord();
         try {       //try catch azione
             pl.action(origin, target, opponent);      //coordinate random
             done = true;
