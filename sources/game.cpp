@@ -84,12 +84,12 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
             //legge la mossa come stringa e salva in origin e target
 
             //if AA AA  cancella le Y da attack e salva su log
-            if (origin.compare("AA") == 0 && target.compare("AA") == 0) {
+            if (origin == "AA" && target == "AA") {
                 //chiede e legge nuova mossa e salva in move
             }
 
                 //if XX XX  stampa le griglie DI P2
-            else if (origin.compare("XX") == 0 && target.compare("XX") == 0) {
+            else if (origin == "XX" && target == "XX") {
                 //chiede e legge nuova mossa e salva in move
             } else {
                 //chiama l'azione (altrimenti propaga eccezione)
@@ -98,14 +98,14 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 done = true;
             }
         }
-        catch (coords::invalidCoords e) {
+        catch (coords::invalidCoords& e) {
             //le coordinate non sono valide
             // chiede di riprovare (done = false)
         }
-        catch (player::invalidOrigin e) {
+        catch (player::invalidOrigin& e) {
             //l'origine non corrisponde a nessuna nave
         }
-        catch (player::notEnoughSpace e) {
+        catch (player::notEnoughSpace& e) {
             //non c'è spazio per spostare la nave
         }
     }
