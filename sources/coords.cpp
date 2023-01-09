@@ -88,6 +88,9 @@ int coords::operator-(const coords &c) const {
         if(c.getX() - x == 0 && c.getY() - y != 0) n = c.getY() - y;
         else throw invalidCoords();
     }
+
+    if(n < 0) n*= (-1);
+
     return n;
 }
 
