@@ -84,13 +84,15 @@ void player::startFleet() {
 
     //todo: usare la funzione newShip();
     int dim = 5, cont = 1;
+    unsigned int dif;
     char ch = 'C';
 
-    std::pair<coords, coords> input = {{"A10"},{"B10"}};
+    std::pair<coords, coords> input;
 
     //START CORAZZATA
     for (int i = 0; i < 8; i++) {
         try{
+            visual();       //todo: vedere se va bene visualizzare la griglia ogni ciclo
             if(i >= 0 && i < 3)
                 input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(cont));
             if(i >= 3 && i < 6)
@@ -98,7 +100,9 @@ void player::startFleet() {
             if(i >= 6)
                 input = getCoords("Quali sono le coordinate per il sottomarino " + std::to_string(cont));
 
-            if((input.first - input.second) + 1 != dim) throw coords::invalidCoords();
+            dif = (input.first - input.second) + 1;
+
+            if(dif != dim) throw coords::invalidCoords();
 
             //CHECK E MATRIX INPUT
             ship s(input.first, input.second, dim);
@@ -122,9 +126,9 @@ void player::startFleet() {
             std::cout << " ** not enough space **" << std::endl;
             i--;
         }
-        std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
         //visual();
     }
+    std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
 
 
     /*  for (int i = 0; i < 3; ++i) {

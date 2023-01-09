@@ -8,7 +8,7 @@
 int main(){
     srand(time(0));
 
-    game::start_game(false);
+    game::start_game(true);
 
     //startGame();
     /*player pl1{"Pippo Baudo"}, pl2{"Gianni Morandi"};

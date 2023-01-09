@@ -163,8 +163,9 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
 void game::create_players(bool human, player &p1, player &p2){
     //crea i giocatori
     if(human){
-        std::cout << "Inserisci il tuo nome!" << std::endl;
-        std::string name;
+        std::cout << "Inserisci il tuo nome! \n>>";
+        //std::string name;           //todo: sistemare
+        char name[50];
         std::cin >> name;
         p2.setName(name);
         p1.setName("Computer");
@@ -190,7 +191,7 @@ void game::start_game(bool human){
     //creazione dei giocatori
     create_players(human, p1, p2);
 
-    p1.startRandomFleet();
+    p1.startRandomFleet();                          //todo: sistemare output a schermo
 
     //posizionare navi p2 (A random | B cout/cin)
     if(human){
@@ -253,12 +254,12 @@ void game::start_game(bool human){
 
     //FINE PARTITA
     //if p1 è morto
-    if(!p1.isAlive() || p1.getSumShipLife() < p2.getSumShipLife()){
+    if(!p1.isAlive()){
         //P1 HA PERSO SFIGATO è MORTO
         std::cout << "IL VINCITORE E': " + p2.getName() << std::endl;
     }
         //if p2 è morto
-    else if(!p2.isAlive() || p1.getSumShipLife() > p2.getSumShipLife()){
+    else if(!p2.isAlive()){
         //P2 HA PERSO SFIGATO è MORTO
         std::cout << "IL VINCITORE E': " + p1.getName() << std::endl;
     }
@@ -395,10 +396,8 @@ void game::start_game(bool human) {
 }*/
 
 void game::print(player p1, player p2){
-    std::string token = " ------------------------------------- ";
     std::string n1 = p1.getName();
     std::string n2 = p2.getName();
-    std::cout <<std::endl << token << n1 << token << std::endl;
     p1.visual();
     std::cout << "FLOTTA: " << std::endl;
     for(auto& iter: p1.fleet) {
@@ -407,7 +406,6 @@ void game::print(player p1, player p2){
     }
 
     sleep(1);
-    std::cout <<std::endl << token << n2 << token << std::endl;
     p2.visual();
     std::cout << "FLOTTA: " << std::endl;
     for(auto& iter: p2.fleet) {

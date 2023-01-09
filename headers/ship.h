@@ -18,27 +18,27 @@ protected:
 public:
     //COSTRUTTORI
     explicit ship(coords ctr): center{ctr} {};      //costruttore
-    explicit ship(coords bow, coords stern, int d = 1){        //costrtuttore che ricava il centro da prua e poppa
+    explicit ship(coords bow, coords stern, unsigned int d = 1){        //costrtuttore che ricava il centro da prua e poppa
         //DIMENSION
         dim = d;
         //VERTICAL
         vertical = bow.getY() == stern.getY();      //se la colonna delle ordinate è la stessa restituisce true true altrimenti false
         //CENTER
+        if(bow.getY() < stern.getY() || bow.getX() < stern.getX()){  //se la poppa è sopra la prua
+            coords temp = stern;
+            stern = bow;
+            bow = temp;
+        }
         if(vertical) {      //se la nave è verticale
-            if(bow.getY() < stern.getY()){  //se la poppa è sopra la prua
-                coords temp = stern;
-                stern = bow;
-                bow = temp;
-            }
-            int x = (bow.getX() + stern.getX())/2;
+            int x = (bow.getX() + stern.getX()) / 2;
             center = coords (x, bow.getY());    //dichiaro center
         }
         else{
-            if(bow.getX() < stern.getX()){  //se la poppa è più a destra la prua
+           /* if(){  //se la poppa è più a destra la prua
                 coords temp = stern;
                 stern = bow;
                 bow = temp;
-            }
+            }*/
             int y = (bow.getY() + stern.getY())/2;
             center = coords (bow.getX(), y);    //dichiaro center
         }
