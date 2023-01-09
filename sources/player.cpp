@@ -3,15 +3,16 @@
 #include "../headers/player.h"
 
 player::player() {
+    name = "Player";
     fleet = {};
 }
 
 void player::startReplayFleet(const std::vector<std::pair<coords, coords>>& ship_vector) {
-    int dim = 0;
+    unsigned int dim = 0;
     char ch = 'C';
     coords bow{}, stern{} , temp{};
 
-    for (const auto & i : ship_vector) {
+    /*for (const auto & i : ship_vector) {
         bow = i.first;
         stern = i.second;
         if(bow < stern){
@@ -28,12 +29,44 @@ void player::startReplayFleet(const std::vector<std::pair<coords, coords>>& ship
         if(dim == 3) ch = 'S';
         if(dim == 1) ch = 'E';
 
+
+
         try{
             ship *s = newShip(stern, bow, ch);
             insertShip(*s, ch);
         }catch(coords::invalidCoords){
             std::cout << "** invalid coords **" << std::endl;
         }
+
+    } */
+    for (int i = 0; i < ship_vector.size(); i++) {
+        bow = ship_vector[i].first;
+        stern = ship_vector[i].second;
+
+        dim = stern - bow + 1;
+
+        if(dim < 0) dim*= (-1);
+
+        if(dim == 5) ch = 'C';
+        if(dim == 3) ch = 'S';
+        if(dim == 1) ch = 'E';
+
+        try{
+            ship *s = newShip(stern, bow, ch);
+            insertShip(*s, ch);
+        }catch(coords::invalidCoords){
+            std::cout << "** invalid coords **" << std::endl;
+        }
+        if(i < ship_vector.size())
+            dim = ship_vector[i + 1].second - ship_vector[i + 1].first + 1;
+
+        if(dim < 0) dim*= (-1);
+
+        if(dim == 5) ch = 'C';
+        if(dim == 3) ch = 'S';
+        if(dim == 1) ch = 'E';
+
+
     }
 }
 
@@ -89,7 +122,7 @@ void player::startFleet() {
             std::cout << " ** not enough space **" << std::endl;
             i--;
         }
-        std::cout << "-------------------" << std::endl;
+        std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
         //visual();
     }
 
@@ -141,7 +174,7 @@ void player::startRandomFleet() {
             bool vtr = getRandomInt(99) % 2 == 0;
             coords c2 = getRandomCoord(c1, vtr, dim);
             //std::pair<coords, coords> input(c1, c2);
-            std::cout << c1 << " " << c2 << " " << vtr << " " << dim << std::endl;
+            //std::cout << c1 << " " << c2 << " " << vtr << " " << dim << std::endl;
 
             //CHECK E MATRIX INPUT
             ship s(c1,c2,dim);
@@ -164,15 +197,21 @@ void player::startRandomFleet() {
             std::cout << " ** not enough space **" << std::endl;
             i--;
         }
-        std::cout << "-------------------" << std::endl;
+        //std::cout << "-------------------" << std::endl;
         //visual();
     }
-    std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
+    std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
 }
 
 //ACTIONS
 //XX XX
 void player::visual(){
+    std::cout << std::endl;
+    unsigned int rep = (108/2) - name.size();      //lunghezza stringa + 6 spazi / 2
+    //52 + 4 + 52 = 108 -> caratteri della griglia in una riga 108 / 2 = 54 caratteri a metà
+    //centro la scritta
+    for (int i = 0; i < rep; i++) std::cout << " ";
+    std::cout << "**** " << name << " ****" << std::endl;
     grid(defence, attack);
 }
 
@@ -202,7 +241,7 @@ void player::action(coords origin, coords target, player& opponent){
     else {                                   //azione sottomarino
         moveAndSearch(origin, target, opponent);
     }
-    std::cout << "\nMossa: " <<  origin << " -> " << target << std::endl;
+    std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
 }
 
 //ACTIONS - FUNZIONI DI SUPPORTO (PRIVATE)
@@ -509,6 +548,14 @@ int player::getRandomInt(int range, int start){
     srand(rand());
     int random = start + (rand() % range);
     return random;
+}
+
+int player::getSumShipLife() {
+    int tot_life = 0;
+    for (auto& iter: fleet) {
+        tot_life += iter.second->getLife();
+    }
+    return tot_life;
 }
 
 

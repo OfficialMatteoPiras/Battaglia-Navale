@@ -45,13 +45,12 @@ class player{
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
 
-
-
     public:
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //Constructors
         explicit player();       //costruttore che inizializza tutta la flotta
+        explicit player(const std::string &n){ name = n; };       //costruttore che inizializza tutta la flotta
 
         //REPLAY functions
         void startReplayFleet(const std::vector<std::pair<coords, coords>>& ship_vector);
@@ -62,6 +61,7 @@ class player{
         bool isAlive() {return getPoints() > 0; }
         std::string findY();
         bool isABattleship(coords origin);
+        int getSumShipLife();
 
         //inizializzazione flotta
         void startFleet();
