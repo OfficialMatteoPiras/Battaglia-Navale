@@ -80,14 +80,15 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
     return {{origin},{target}};
 }
 
-void player::startFleet() {
+    std::vector<std::pair<std::string, std::string>> player::startFleet() {
 
     //todo: usare la funzione newShip();
     int dim = 5, cont = 1;
     unsigned int dif;
     char ch = 'C';
 
-    std::pair<coords, coords> input;
+    std::pair<coords, coords> input = {{"A10"},{"B10"}};
+    std::vector<std::pair<std::string, std::string>> log;
 
     //START CORAZZATA
     for (int i = 0; i < 8; i++) {
@@ -111,6 +112,7 @@ void player::startFleet() {
 
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
+            log.emplace_back(input.first.toString(), input.second.toString());
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) { ch = 'S'; cont = 0; }
@@ -127,8 +129,9 @@ void player::startFleet() {
             i--;
         }
         //visual();
+
+
     }
-    std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
 
 
     /*  for (int i = 0; i < 3; ++i) {
@@ -155,7 +158,7 @@ void player::startFleet() {
     }*/
 
     std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
-
+    return log;
 }
 
 void player::printFleet() {
@@ -166,9 +169,11 @@ void player::printFleet() {
     }
 }
 
-void player::startRandomFleet() {
+std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
     int dim = 5;
     char ch = 'C';
+
+    std::vector<std::pair<std::string, std::string>> log;
 
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
@@ -188,6 +193,8 @@ void player::startRandomFleet() {
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
 
+            log.emplace_back(s.getBow().toString(), s.getStern().toString());
+
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) ch = 'S';
             if(i + 1 == 6) ch = 'E';
@@ -205,6 +212,7 @@ void player::startRandomFleet() {
         //visual();
     }
     std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
+    return log;
 }
 
 //ACTIONS

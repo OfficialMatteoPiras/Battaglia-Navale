@@ -64,8 +64,8 @@ class player{
         int getSumShipLife();
 
         //inizializzazione flotta
-        void startFleet();
-        void startRandomFleet();
+        std::vector<std::pair<std::string, std::string>> startFleet();
+        std::vector<std::pair<std::string, std::string>> startRandomFleet();
         void printFleet();  //todo: rimuovere
         coords getRandomOrigin();
 
