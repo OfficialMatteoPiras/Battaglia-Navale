@@ -81,13 +81,12 @@ bool coords::operator!=(const coords& c) const {
 
 int coords::operator-(const coords &c) const {
     int n;
-    if(c.getX() - x != 0 && c.getY() - y == 0){  //se è orizzontale ho x diverse
+    if(c.getY() == y)       //se è verticale ho y uguali
         n = c.getX() - x;
-    }
-    else{       //se è verticale ho y diverse
-        if(c.getX() - x == 0 && c.getY() - y != 0) n = c.getY() - y;
-        else throw invalidCoords();
-    }
+    else if(c.getX() == x)      //se è orizzontale ho x uguali
+        n = c.getY() - y;
+    else
+        throw invalidCoords();
 
     if(n < 0) n*= (-1);
 
