@@ -179,10 +179,8 @@ void game::create_players(bool human, player &p1, player &p2){
 void game::start_game(bool human){
     //VARIABILI
     const int maxRounds = 40;       //bisogna farlo settare al giocatore?
-    std::string origin;
-    std::string target;
     //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
-    std::vector<std::tuple<bool, std::string, std::string>> log;
+    std::vector<std::pair<std::string, std::string>> log;
     //creare giocatori p1 e p2
     player p1, p2;      //p1 sempre computer
     std::pair<std::string, std::string> move;   //per le mosse decise
@@ -194,19 +192,29 @@ void game::start_game(bool human){
     p1.startRandomFleet();                          //todo: sistemare output a schermo
 
     //posizionare navi p2 (A random | B cout/cin)
+    std::vector<std::pair<std::string, std::string>> logTemp;
     if(human){
-        p2.startFleet();
+        logTemp = p2.startFleet();
     }
     else {
-        p2.startRandomFleet();
+        logTemp = p2.startRandomFleet();
+    }
+
+    for(int i = 0; i < logTemp.size(); i++){
+        log.push_back(logTemp[i]);
     }
 
     print(p1, p2);
 
     //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
     bool roundP1 = false;
-    if (rand()%2 == 1)
+    if (rand()%2 == 1) {
         roundP1 = true;
+        log.emplace_back("P", "1");
+    }
+    else
+        log.emplace_back("P", "2");
+
     std::cout << "\nINIZIA IL GIOCATORE: ";
     if(roundP1)
         std::cout << p1.getName() << std::endl;
@@ -216,7 +224,7 @@ void game::start_game(bool human){
 
     for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); ++i) {
         if(roundP1) {     //round P1 (computer)
-            std::cout << " ** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
+            std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             move =  game::computerRound(p1, p2);
         }
         else{              //round P2
@@ -229,19 +237,9 @@ void game::start_game(bool human){
             }
         }
 
-        origin = move.first;
-        target = move.second;
-/*
-        for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
-            std::cout << std::get<0>(iter) << " " << std::get<1>(iter) << " " << std::get<2>(iter);
-            std::cout << std::endl;
-        }
-*/
-
-        if(origin != "AA" && origin != "XX") {
-            origin = move.first;
-            target = move.second;
-            log.emplace_back(roundP1, origin, target);
+        std::string s = move.first;
+        if(s != "AA" && s != "XX") {
+            log.push_back(move);
             //cout << origin << " -> " << target << endl;
             //cout << std::get<0>(log[i]) << " " << std::get<1>(log[i]) << " " << std::get<2>(log[i]);
 
@@ -253,6 +251,11 @@ void game::start_game(bool human){
     }
 
     //FINE PARTITA
+
+    for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
+        std::cout << iter.first << " -> " << iter.second;
+        std::cout << std::endl;
+    }
     //if p1 è morto
     if(!p1.isAlive()){
         //P1 HA PERSO SFIGATO è MORTO
@@ -341,7 +344,7 @@ void game::start_game(bool human) {
     std::vector<std::tuple<bool, std::string, std::string>> log;
 
     //posizionare navi p1 random
-    p1.startRandomFleet();
+    log = p1.startRandomFleet();
 
     //posizionare navi p2 (A random | B cout/cin)
     if(human){
