@@ -24,7 +24,7 @@ std::string getExeName(std::string path){
         path.erase(0, pos + delimiter.length());
     }
 
-    //cancello se presente l'estenzione
+    //cancello se presente l'estensione
     if(path.find(str_exe)){     //se trova '.' è presente l'estensione, quindi la rimuovo
         path.erase(  path.find(str_exe), path.size() - 1);
     }

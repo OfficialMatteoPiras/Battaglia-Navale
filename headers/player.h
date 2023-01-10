@@ -26,7 +26,7 @@ class player{
         static std::string funnyMessage();
 
         //funzioni di supporto alle azioni non serve chiamarle per altro ciao
-        void checkSpace(ship* s, coords target);
+        void checkSpace(ship* s, coords target, bool alreadyExists);
         void move(coords origin, coords target);
         ship* getShipPointer(coords c);
         void repairFullShip(coords target);    //(RIPARA INTERA NAVE DA UNA SUA COMPONENTE)

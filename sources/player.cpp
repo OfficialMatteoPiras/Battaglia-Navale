@@ -43,7 +43,7 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
 
             //CHECK E MATRIX INPUT
             ship s(input.first, input.second, dim);
-            checkSpace(&s, s.getCenter());
+            checkSpace(&s, s.getCenter(), false);
             insertShip(s, ch);
 
             //FLEET INPUT
@@ -97,7 +97,7 @@ std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
 
             //CHECK E MATRIX INPUT
             ship s(c1,c2,dim);
-            checkSpace(&s, s.getCenter());
+            checkSpace(&s, s.getCenter(), false);
             insertShip(s, ch);
 
             //FLEET INPUT
@@ -277,8 +277,7 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
 
 //CHECK SPACE
 //controlla se c'è spazio per una nave
-void player::checkSpace(ship* s, coords target){
-    std::vector<char> v;
+void player::checkSpace(ship* s, coords target, bool alreadyExists){
     int dim = s->getDimension();
     coords check;
 
@@ -290,8 +289,13 @@ void player::checkSpace(ship* s, coords target){
             else
                 check = target.addCol(i);
 
-            if (!defence.isEmpty(check) && !s->contains(check))
-                valid = false;
+            if(alreadyExists) {
+                if (!defence.isEmpty(check) && !s->contains(check))
+                    valid = false;
+            } else {
+                if (!defence.isEmpty(check))
+                    valid = false;
+            }
         }
     }catch(coords::invalidCoords& c){
         valid = false;
@@ -304,19 +308,30 @@ void player::checkSpace(ship* s, coords target){
 //MOVE
 //sposta una nave QUALSIASI da origin a target, lancia eccezione se non c'è spazio
 void player::move(coords origin, coords target) {
+    std::vector<char> v;
     ship* s = fleet.find(origin)->second;
-    checkSpace(s, target);
+    checkSpace(s, target, true);
 
     int dim = s->getDimension();
-    for(int i = -dim/2; i <= dim/2; i++){       //riscrittura defense
+    //copia la nave in un vettore
+    for(int i = -dim/2; i <= dim/2; i++){
         if(s->isVertical()) {
-            defence.insert(target.addRow(i), defence.getElement(origin.addRow(i)));
-            defence.insert(origin.addRow(i), ' ');
+            v.push_back(defence.getElement(origin.addRow(i)));
         } else {
-            defence.insert(target.addCol(i), defence.getElement(origin.addCol(i)));
-            defence.insert(origin.addCol(i), ' ');
+            v.push_back(defence.getElement(origin.addCol(i)));
         }
     }
+    //riscrive defence
+    for(int i = -dim/2; i <= dim/2; i++){
+        if(s->isVertical()) {
+            defence.insert(origin.addRow(i), ' ');
+            defence.insert(target.addRow(i), v[i+dim/2]);
+        } else {
+            defence.insert(origin.addCol(i), ' ');
+            defence.insert(target.addCol(i), v[i+dim/2]);
+        }
+    }
+
     s->moved(target);
     fleet.erase(origin);
     fleet.insert(std::make_pair(target, s));

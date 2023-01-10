@@ -185,7 +185,7 @@ void game::create_players(bool human, player &p1, player &p2){
 
 void game::start_game(bool human){
     //VARIABILI
-    const int maxRounds = 100;       //bisogna farlo settare al giocatore?
+    const int maxRounds = 500;       //bisogna farlo settare al giocatore?
     //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
     std::vector<std::pair<std::string, std::string>> log;
     //creare giocatori p1 e p2
