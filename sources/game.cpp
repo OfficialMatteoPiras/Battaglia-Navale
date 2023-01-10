@@ -411,7 +411,7 @@ void game::print(player p1, player p2){
     std::string n2 = p2.getName();
     p1.visual();
     std::cout << "FLOTTA: " << std::endl;
-    for(auto& iter: p1.fleet) {
+    for(auto& iter: p1.getFleet()) {
         coords c = iter.first;
         std::cout << c << ": " << *iter.second << std::endl;
     }
@@ -419,7 +419,7 @@ void game::print(player p1, player p2){
     sleep(1);
     p2.visual();
     std::cout << "FLOTTA: " << std::endl;
-    for(auto& iter: p2.fleet) {
+    for(auto& iter: p2.getFleet()) {
         coords c = iter.first;
         std::cout << c << ": " << *iter.second << std::endl;
     }

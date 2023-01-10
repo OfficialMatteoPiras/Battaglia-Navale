@@ -1,4 +1,6 @@
 #include "headers/game.h"
+#include "headers/replay.h"
+
 #include <iostream>
 #include <cstdlib>
 #include <unistd.h>

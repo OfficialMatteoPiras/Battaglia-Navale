@@ -25,4 +25,4 @@ add_executable(replay
         sources/player.cpp
         sources/game.cpp
         sources/replay.cpp
-        )
+        sources/replayPlayer.cpp headers/replayPlayer.h)

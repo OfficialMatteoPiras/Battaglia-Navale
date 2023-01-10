@@ -10,8 +10,11 @@
 #include <map>
 #include <vector>
 
+//todo: alleggerire il codice
+//- unire startRandomFleet e startFleet
+
 class player{
-    private:
+    protected:
         matrix defence;    //griglia difesa (navi)
         matrix attack;     //griglia attacco
         std::string name;
@@ -30,9 +33,7 @@ class player{
         bool wasHit(coords target);
         void removeShip(coords c);
 
-
         //FUNZIONI RANDOM
-
         static coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
         static int getRandomInt(int range = 11, int start = 0);
 
@@ -45,15 +46,13 @@ class player{
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
 
+        std::map<coords, ship*> fleet;  //mappa per la flotta       //todo: rimettere privato
+
     public:
-        std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //Constructors
         explicit player();       //costruttore che inizializza tutta la flotta
         explicit player(const std::string &n){ name = n; };       //costruttore che inizializza tutta la flotta
-
-        //REPLAY functions
-        void startReplayFleet(const std::vector<std::pair<coords, coords>>& ship_vector);
 
         //getter
         std::string getName() const{ return name; }
@@ -62,10 +61,11 @@ class player{
         std::string findY();
         bool isABattleship(coords origin);
         int getSumShipLife();
+        std::map<coords, ship*> getFleet() { return fleet; };
 
         //inizializzazione flotta
-        std::vector<std::pair<std::string, std::string>> startFleet();
-        std::vector<std::pair<std::string, std::string>> startRandomFleet();
+        std::vector<std::pair<std::string, std::string>> startFleet();          //start della flotta con input del giocatore
+        std::vector<std::pair<std::string, std::string>> startRandomFleet();    //start della flotta randomico
         void printFleet();  //todo: rimuovere
         coords getRandomOrigin();
 
