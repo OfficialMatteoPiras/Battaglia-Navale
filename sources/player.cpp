@@ -129,33 +129,7 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
             i--;
         }
         //visual();
-
-
     }
-
-
-    /*  for (int i = 0; i < 3; ++i) {
-        std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(i + 1));
-        battleship *newShip = getIstanceBattleship(input.first, input.second);
-        fleet[newShip->getCenter()] = newShip;
-        std::cout << std::endl;
-    }
-
-    //START SUPPORTO
-  for (int i = 0; i < 3; ++i) {
-        std::pair<coords, coords> input = getCoords("Quali sono le coordinate per la nave di supporto " + std::to_string(i + 1));
-        support *newShip = getIstanceSupport(input.first, input.second);
-        fleet[newShip->getCenter()] = newShip;
-        std::cout << std::endl;
-    }
-
-    //START SOTTOMARINO
-    for (int i = 0; i < 2; ++i) {
-        std::pair<coords, coords> input = getCoords("Quali sono le coordinate per il sottomarino " + std::to_string(i + 1));
-        submarine *newShip = getIstanceSubmarine(input.first, input.second);
-        fleet[newShip->getCenter()] = newShip;
-        std::cout << std::endl;
-    }*/
 
     std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
     return log;
@@ -219,19 +193,22 @@ std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
 //XX XX
 void player::visual(){
     std::cout << std::endl;
-    unsigned int rep = (108/2) - name.size();      //lunghezza stringa + 6 spazi / 2
+    std::string name_ = "**** " + name + " ****";
+    unsigned int rep = (106 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
+
     //52 + 4 + 52 = 108 -> caratteri della griglia in una riga 108 / 2 = 54 caratteri a metà
     //centro la scritta
     for (int i = 0; i < rep; i++) std::cout << " ";
-    std::cout << "**** " << name << " ****" << std::endl;
+
+    std::cout << name_ << std::endl;
     grid(defence, attack);
 }
 
 //AA AA
 void player::deleteY(){
     coords c(0, 0);
-    for(int i = 0; i < 13; i++){
-        for(int j = 0; j < 13; j++){
+    for(int i = 0; i < 12; i++){
+        for(int j = 0; j < 12; j++){
             c = coords(i, j);
             if(attack.getElement(c) == 'Y')
                 attack.insert(c, ' ');

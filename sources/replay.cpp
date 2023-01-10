@@ -1,31 +1,67 @@
-//Created by Claudia De Carlo
+//Created by Andrea Nalin
 
+#include <iostream>
+#include <vector>
+#include "../headers/replay.h"
+#include "../headers/replayPlayer.h"
 
-//MAIN con argomenti (A = schermo | B = file)
+void replay::replay_main(char ch_, const std::string& nome_file_log, const std::string& output_replay) {
+    //lettura del file -> fatta in ogni caso, sia trascrittura che replay
+    read_file(nome_file_log);
+    //funzione che fa partire il replay
+    if(ch_ == 'v'){
+        startReplay();
+    }
+    else{
+        //write file
+    }
 
-//output (schermo | file)
-//legge dal file log
-//scrive in un vettore log
-//ciclo while (scorre il vettore)
-//esegue una mossa
-//scrive la mossa in output
-//chiama XX XX su quel giocatore
-//fine partita...
-/*
-#include "../headers/player.h"
-#include "../headers/ship.h"
-#include "../headers/coords.h"
-#include "../headers/game.h"
-#include <fstream>
+}
 
-int main(){
-    std::string lines;
-    std::ifstream inFile("log.txt");
+std::vector<std::pair<coords, coords>> replay::getSubVector(int start, int end) {
+    std::vector<std::pair<coords, coords>> subVector;
+    for (int i = start; i <= end; ++i) {
+        subVector.emplace_back(_vector[i].first, _vector[i].second);
+    }
+    return subVector;
+}
 
-    while(getline(inFile, lines)){
-        std::cout << lines << std::endl;
+void replay::read_file(const std::string& file_in_name) {
+    std::string path = "../file/" + file_in_name, str, s1, s2, delimiter = " ";
+    std::ifstream inFile(path);
+    if(!inFile){
+        throw FileNotValid();
+    }
+    else{
+        getline(inFile, str);
+        if(str[0] == '0'){
+            std::cout << "Inizia player 1" << std::endl;
+        }
+        else{
+            std::cout << "Inizia player 2" << std::endl;
+        }
+        while (getline(inFile, str)){           //inserimento di log.txt nel vettore
+            if(!str.empty() && str[0] != '0') {
+                s1 = str.substr(0, str.find(delimiter));
+                s2 = str.substr(str.find(delimiter)+1, str.length()-1);
+                _vector.emplace_back(s1, s2);           //salvataggio nell'array
+            }
+        }
     }
     inFile.close();
-    std::cout << "END";
-    return 0;
-}*/
+}
+
+void replay::startReplay() {
+    //creazione dei giocatori
+    replayPlayer p1, p2;
+    //inizializzazione della flotta
+    p1.startReplayFleet(getSubVector(1,8));
+    p2.startReplayFleet(getSubVector(8,16));
+    //todo: vettore con mosse
+    //partita (replay)
+
+
+
+    //chiusura partita
+
+}

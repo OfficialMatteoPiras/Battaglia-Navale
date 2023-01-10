@@ -10,7 +10,6 @@
 #include <map>
 #include <functional>
 #include <cstdlib>
-#include <cstdlib>
 #include <unistd.h>
 
 #include "../headers/coords.h"

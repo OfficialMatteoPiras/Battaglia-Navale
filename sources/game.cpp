@@ -9,30 +9,33 @@ void game::start_menu(){
         std::cout << "*** START MENU ***" << std::endl;
         std::cout << "s - inizia partita " << std::endl;
         std::cout << "i - info" << std::endl;
-        std::cout << "c - crediti" << std::endl;
+        //std::cout << "c - crediti" << std::endl;
         std::cin >> ch;
         switch (ch) {
             case 's':
                 std::cout << "START GAME" << std::endl;
                 ok = false;
                 break;
-            case 'r':
+            case 'i':
                 std::cout << "\t** INFORMAZIONI UTILI **" << std::endl;
                 std::cout << "Lettere che rappresentano le navi: " << std::endl;
                 std::cout << "-> il carattere 'C' rappresenta una corazzata armata" << std::endl;
                 std::cout << "-> il carattere 'S' rappresenta una nave di supporto " << std::endl;
                 std::cout << "-> il carattere 'E' rappresenta un sottomarino di esplorazione" << std::endl;
                 std::cout << "-> NB: le navi colpite sono rappresentate dalla rispettiva lettera minuscola" << std::endl;
-                std::cout << "\nCaratteri speciali: " << std::endl;
+                std::cout << "\nMosse delle navi: " << std::endl;
                 std::cout << "-> dopo un movimento del sottomarino questo scannerizza in un'area 5x5, nella griglia di attacco comparirà una 'Y' che senga le navi individuate" << std::endl;
                 std::cout << "-> dopo un movimento della nave di supporto questa cura totalmente le navi alleate in un'area 5x5" << std::endl;
+                std::cout << "\nCaratteri speciali: " << std::endl;
+                std::cout << "-> con il comando 'XX XX' puoi visualizzare le tue griglie " << std::endl;
+                std::cout << "-> con il comando 'AA AA' puoi cancellare tutti gli avvistamenti sonar ('Y') dalla griglia di attacco " << std::endl;
 
                 ok = false;
                 break;
-            case 'c':
-                std::cout << "" << std::endl;
-                ok = false;
-                break;
+//            case 'c':
+//                std::cout << "" << std::endl;
+//                ok = false;
+//                break;
             default:
                 break;
         }
@@ -133,12 +136,16 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 pl.visual();
                 //chiede e legge nuova mossa e salva in move
             } else {
-                //chiama l'azione (altrimenti propaga eccezione)
-                pl.action(origin, target, opponent);
-                //se non ha lanciato l'eccezione salvo la mossa su hystory
-                //todo: salvare su history le mosse
-                //salva roundFlag, origin, target su log
-                done = true;
+
+                if(origin == "YY" && target == "YY") opponent.visual();     //todo: RIMUOVERE ASSOLUTAMENTE if - else!!!!!!
+                else{
+                    //chiama l'azione (altrimenti propaga eccezione)
+                    pl.action(origin, target, opponent);
+                    //se non ha lanciato l'eccezione salvo la mossa su hystory
+                    //todo: salvare su history le mosse
+                    //salva roundFlag, origin, target su log
+                    done = true;
+                }
             }
         }
         catch (coords::invalidCoords& e) {
@@ -164,9 +171,9 @@ void game::create_players(bool human, player &p1, player &p2){
     //crea i giocatori
     if(human){
         std::cout << "Inserisci il tuo nome! \n>>";
-        //std::string name;           //todo: sistemare
-        char name[50];
-        std::cin >> name;
+        std::string name;           //todo: sistemare
+        std::getline(std::cin, name);
+        //std::cin >> name;
         p2.setName(name);
         p1.setName("Computer");
     }
@@ -194,7 +201,8 @@ void game::start_game(bool human){
     //posizionare navi p2 (A random | B cout/cin)
     std::vector<std::pair<std::string, std::string>> logTemp;
     if(human){
-        logTemp = p2.startFleet();
+        if(p2.getName() == "admin") logTemp = p2.startRandomFleet();        //todo: RIMUOVERE ASSOLUTAMENTE!!!!
+        else logTemp = p2.startFleet();
     }
     else {
         logTemp = p2.startRandomFleet();

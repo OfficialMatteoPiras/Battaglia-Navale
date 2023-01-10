@@ -96,7 +96,6 @@ class player{
         //exceptions
         class invalidOrigin : std::exception {};
         class notEnoughSpace : std::exception {};
-        class invalidTarget : std::exception {};    //se il target esce dalla griglia   todo: usare coords per il check?
 
 };
 

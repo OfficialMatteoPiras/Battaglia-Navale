@@ -3,56 +3,72 @@
 #include <cstdlib>
 #include <unistd.h>
 
+//todo: rimuovere commento -> passare parametri al main con CLion run | Edit Configurations | Program Parameters
+
+std::string getExeName(std::string path){
+    std::string delimiter = "\\", str_exe = ".", token;
+    //ricavo il nome.exe (se presente l'estenezione)
+    //int pos = path.find(delimiter);
+    int pos = 0;
+
+    //cancello il percorso
+    while ((pos = path.find(delimiter)) != std::string::npos) {
+        path.erase(0, pos + delimiter.length());
+    }
+
+    //cancello i caratteri speciali dell'esecuzione
+    delimiter = "./";
+    while ((pos = path.find(delimiter)) != std::string::npos) {
+        path.erase(0, pos + delimiter.length());
+    }
+
+    //cancello se presente l'estenzione
+    if(path.find(str_exe)){     //se trova '.' è presente l'estensione, quindi la rimuovo
+        path.erase(  path.find(str_exe), path.size() - 1);
+    }
+
+    std::cout << path << std::endl;
+
+    return path;
+}
+
 
 //ESEGUIBILE con argomenti (pcpc | pcumano)
-int main(){
+int main(int argc, char **argv){
     srand(time(0));
 
-    game::start_game(true);
+    //eliminazione
+    std::string name = getExeName(argv[0]);
 
-    //startGame();
-    /*player pl1{"Pippo Baudo"}, pl2{"Gianni Morandi"};
-    pl1.startRandomFleet();
-    pl2.startRandomFleet();
-    std::cout << "---- PLAYER 1 ----" << std::endl;
-    pl1.printFleet();
-    std::cout << "\n---- PLAYER 2 ----" << std::endl;
-    pl2.printFleet();
-    std::cout << std::endl;
-    game::humanRound(pl1, pl2);
-    pl2.visual();*/
+    //switch
+    if(name == "battaglia_navale"){  //PARTITA
+        if(strcmp(argv[1], "pc") == 0 ){            //!segmentation fault -> sistemare
+            game::start_game(true);
+        }
+        else if(strcmp(argv[1], "cc") == 0 ){
+            game::start_game(false);
+        }
+        else{
+            std::cout << "**** PARAMETRI INVALIDI ****" << std::endl;
+        }
+    }
+    else    //REPLAY
+        if(name == "replay"){
+            replay rep;
+            if(strcmp(argv[1], "v") == 0){
+                rep.replay_main('v', argv[2]);
+            }
+            else{
+                if(strcmp(argv[1], "f") == 0 ){
+                    rep.replay_main('v', argv[2], argv[3]);
+                }
+                else{
+                    std::cout << "**** PARAMETRI INVALIDI ****" << std::endl;
+                }
 
-    //startGame();
-   /* std::vector<std::pair<coords, coords>> vect1 {
-            {{"A1"}, {"A5"}},
-            {{"B1"}, {"B5"}},
-            {{"C1"}, {"C5"}},    //CORAZZATA
-            {{"D1"}, {"D3"}},
-            {{"E1"}, {"E3"}},
-            {{"F1"}, {"F3"}},    //SUPPORTO
-            {{"G1"}, {"G1"}},
-            {{"H1"}, {"H1"}},    //SOTTOMARINO
-    };
-    std::vector<std::pair<coords, coords>> vect2 {
-            {{"A1"}, {"E1"}},
-            {{"A2"}, {"E2"}},
-            {{"A3"}, {"E3"}},    //CORAZZATA
-            {{"A4"}, {"C4"}},
-            {{"A5"}, {"C5"}},
-            {{"A6"}, {"C6"}},    //SUPPORTO
-            {{"A7"}, {"A7"}},
-            {{"A8"}, {"A8"}},    //SOTTOMARINO
-    };
+            }
+        }
 
-    player pl1;
-    pl1.startReplayFleet(vect1);
-    pl1.visual();
-
-    std::cout << " ---------------------  " << std::endl;
-
-    player pl2;
-    pl2.startReplayFleet(vect2);
-    pl2.visual();*/
 
     return 0;
 }
