@@ -278,21 +278,25 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
 //CHECK SPACE
 //controlla se c'è spazio per una nave
 void player::checkSpace(ship* s, coords target){
+    std::vector<char> v;
     int dim = s->getDimension();
+    coords check;
+
     bool valid = true;
     try {
-        for (int i = -dim / 2; i <= dim / 2 && valid; i++) {      //controllo spazio che serviret
-            if (s->isVertical()) {
-                if (!defence.isEmpty(target.addRow(i)))
-                    valid = false;
-            } else {
-                if (!defence.isEmpty(target.addCol(i)))
-                    valid = false;
-            }
+        for (int i = -dim/2; i <= dim/2 && valid; i++) {      //controllo spazio che serve
+            if (s->isVertical())
+                check = target.addRow(i);
+            else
+                check = target.addCol(i);
+
+            if (!defence.isEmpty(check) && !s->contains(check))
+                valid = false;
         }
     }catch(coords::invalidCoords& c){
         valid = false;
     }
+
     if (!valid)
         throw notEnoughSpace();     //eccezione non c'è spazio
 }
