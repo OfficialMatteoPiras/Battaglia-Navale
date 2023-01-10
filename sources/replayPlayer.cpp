@@ -2,11 +2,11 @@
 
 #include "headers/replayPlayer.h"
 
-void replayPlayer::startReplayFleet(const std::vector<std::pair<coords, coords>>& _vector) {
+void replayPlayer::startReplayFleet(const std::vector<std::pair<coords, coords>>& vector) {
 
-    for (const auto & i : _vector) {
+    for (const auto & i : vector) {
         ship s {i.first, i.second};
-        fleet[ s.getCenter()] = &s;
+        fleet[s.getCenter()] = &s;
     }
 
     /*unsigned int dim = 0;

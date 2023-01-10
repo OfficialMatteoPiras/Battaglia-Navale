@@ -1,9 +1,6 @@
 //Created by Andrea Nalin
 
-#include <iostream>
-#include <vector>
 #include "../headers/replay.h"
-#include "../headers/replayPlayer.h"
 
 void replay::replay_main(char ch_, const std::string& nome_file_log, const std::string& output_replay) {
     //lettura del file -> fatta in ogni caso, sia trascrittura che replay
@@ -21,7 +18,7 @@ void replay::replay_main(char ch_, const std::string& nome_file_log, const std::
 std::vector<std::pair<coords, coords>> replay::getSubVector(int start, int end) {
     std::vector<std::pair<coords, coords>> subVector;
     for (int i = start; i <= end; ++i) {
-        subVector.emplace_back(_vector[i].first, _vector[i].second);
+        subVector.emplace_back(vector[i].first, vector[i].second);
     }
     return subVector;
 }
@@ -44,7 +41,7 @@ void replay::read_file(const std::string& file_in_name) {
             if(!str.empty() && str[0] != '0') {
                 s1 = str.substr(0, str.find(delimiter));
                 s2 = str.substr(str.find(delimiter)+1, str.length()-1);
-                _vector.emplace_back(s1, s2);           //salvataggio nell'array
+                vector.emplace_back(s1, s2);           //salvataggio nell'array
             }
         }
     }
@@ -53,10 +50,10 @@ void replay::read_file(const std::string& file_in_name) {
 
 void replay::startReplay() {
     //creazione dei giocatori
-    replayPlayer p1, p2;
+    //replayPlayer p1, p2;
     //inizializzazione della flotta
-    p1.startReplayFleet(getSubVector(1,8));
-    p2.startReplayFleet(getSubVector(8,16));
+    //p1.startReplayFleet(getSubVector(1,8));
+    //p2.startReplayFleet(getSubVector(8,16));
     //todo: vettore con mosse
     //partita (replay)
 

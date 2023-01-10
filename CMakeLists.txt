@@ -15,7 +15,7 @@ add_executable(battaglia_navale
         sources/player.cpp
         sources/game.cpp
         sources/replay.cpp
-        )
+        sources/replayPlayer.cpp headers/replayPlayer.h)
 
 add_executable(replay
         main.cpp
@@ -25,4 +25,4 @@ add_executable(replay
         sources/player.cpp
         sources/game.cpp
         sources/replay.cpp
-        sources/replayPlayer.cpp headers/replayPlayer.h)
+        sources/replayPlayer.cpp)

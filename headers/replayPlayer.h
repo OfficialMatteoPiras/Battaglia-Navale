@@ -3,13 +3,12 @@
 #ifndef BATTAGLIA_NAVALE_REPLAYPLAYER_H
 #define BATTAGLIA_NAVALE_REPLAYPLAYER_H
 
-
 #include "player.h"
 
 class replayPlayer : public player{
 public:
     replayPlayer() = default;
-    void startReplayFleet(const std::vector<std::pair<coords, coords>>& _vector);    //inizializzazioned della flotta
+    void startReplayFleet(const std::vector<std::pair<coords, coords>>& vector);    //inizializzazioned della flotta
 };
 
 

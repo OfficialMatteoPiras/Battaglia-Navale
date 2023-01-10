@@ -6,13 +6,14 @@
 #include <unistd.h>
 #include "../headers/coords.h"
 #include "../headers/player.h"
+#include "../headers/replayPlayer.h"
 
 class replay{
     private:
-        static std::vector<std::pair<coords, coords>> _vector;      //vettore per il salvataggio
+        std::vector<std::pair<coords, coords>> vector;      //vettore per il salvataggio
 
         //MEMBRI PRIVATI
-        static std::vector<std::pair<coords, coords>>getSubVector(int start, int end);     //funzione per ottenere un sottovettore
+        std::vector<std::pair<coords, coords>>getSubVector(int start, int end);     //funzione per ottenere un sottovettore
         void read_file(const std::string& file_in_name);      //lettura del file txt
         void print(player p);       //!funzione per la stampa (usare visual di player?)
         static void startReplay();
