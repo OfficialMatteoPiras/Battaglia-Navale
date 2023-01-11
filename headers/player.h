@@ -24,6 +24,8 @@ class player{
         void moveAndRepair(coords origin, coords target);
         void moveAndSearch(coords origin, coords target, player& opponent);
 
+        //funzioni di supporto alle azioni non serve chiamarle per altro ciao
+        void checkSpace(ship* s, coords target, bool alreadyExists);
     //funzioni di supporto alle azioni non serve chiamarle per altro ciao
         void checkSpace(ship* s, coords target);
         void move(coords origin, coords target);
