@@ -42,50 +42,6 @@ void game::start_menu(){
     }
 }
 
-//Array di pair
-std::vector<std::pair<coords, coords>> game::read_file(){        //!DA TESTARE
-    std::vector<std::pair<coords, coords>> read_coords;         //vettore per la lettura delle coordinate
-    std::ifstream inFile("../file/log.txt");      //apertura del file ("../" serve per cercare in automatico il percorso del file)
-
-    if (!inFile) {      //controllo corretta apertura
-        std::cout << "Errore di apertura del file" << std::endl; // controllo
-    } else {
-        //lettura delle mosse dal file log
-        std::string str, start;
-        std::string delimiter = " ";
-
-        while (std::getline(inFile, str)){
-            //estraggo start
-            start = str.substr(0, str.find(delimiter));     //estraggo dalla lettura la mossa di partenza
-            str.erase(0, str.find(delimiter) + delimiter.length());     //cancello dalla string la mossa di partenza estrapolando la mossa di destinazione
-            coords first (start);       //creo l'oggetto partendo dalla prima stringa
-            coords second (str);        //creo l'oggetto partendo dalla seconda stringa
-            read_coords.emplace_back(first, second);        //salvo la composizione degli oggetti nell'array
-        }
-    }
-
-    inFile.close(); //chiusura del collegamento
-    return read_coords;
-}
-
-bool game::write_file() {    //!DA FINIRE E VEDERE COSA PRENDE IN INPUT
-    std::ofstream outFile; // Dichiarazione di tipo
-    bool finish = false;
-    //OutFile.open("file.txt", std::ios::app); // Apertura del file con sovrascrittura
-    outFile.open("file.txt"); // Apertura del file senza sovrascrittura
-    if (!outFile) {
-        std::cout << "Errore di apertura del file" << std::endl; // controllo
-    } else {
-        //codice per la scrittura su file
-        //! OutFile << std::endl;       //inserisco nel file (comando per inserimento outFile::)
-        finish = true;
-    }
-
-    outFile.close();
-    return finish;
-}
-
-
 //FUNZIONI TURNI
 std::pair<std::string, std::string> game::computerRound(player& pl, player& opponent) {
     //nave random da p1.fleet e salva in origin
@@ -185,43 +141,51 @@ void game::create_players(bool human, player &p1, player &p2){
 
 void game::start_game(bool human){
     //VARIABILI
-    const int maxRounds = 500;       //TODO: bisogna farlo settare al giocatore?
+    int MAX_ROUNDS = 100;       // numero round per la partita CC
     //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
     std::vector<std::pair<std::string, std::string>> log;
     //creare giocatori p1 e p2
     player p1, p2;      //p1 sempre computer
     std::pair<std::string, std::string> move;   //per le mosse decise
+    bool roundP1 = false, startPlayer = false;   //decisione del giocatore che inizia
 
 
     //creazione dei giocatori
     create_players(human, p1, p2);
 
-    p1.startRandomFleet();                          //todo: sistemare output a schermo
 
     //posizionare navi p2 (A random | B cout/cin)
-    std::vector<std::pair<std::string, std::string>> logTemp;
+    std::vector<std::pair<std::string, std::string>> logMovesOne, logMovesTwo;
+    logMovesOne = p1.startRandomFleet();                          //todo: sistemare output a schermo
     if(human){
-        if(p2.getName() == "admin") logTemp = p2.startRandomFleet();        //todo: RIMUOVERE ASSOLUTAMENTE!!!!
-        else logTemp = p2.startFleet();
+        if(p2.getName() == "admin") logMovesTwo = p2.startRandomFleet();        //todo: RIMUOVERE ASSOLUTAMENTE!!!!
+        else logMovesTwo = p2.startFleet();
     }
     else {
-        logTemp = p2.startRandomFleet();
+        logMovesTwo = p2.startRandomFleet();
     }
 
-    for(const auto & i : logTemp){
+    //salvo le mosse del 1 giocatore
+    for(const auto & i : logMovesOne){
         log.push_back(i);
     }
 
-    print(p1, p2);
+    //salvo le mosse del 2 giocatore
+    for(const auto & i : logMovesTwo){
+        log.push_back(i);
+    }
+
+    print(p1, p2);      //todo: rivedere la stampa
 
     //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
-    bool roundP1 = false;
+
     if (rand()%2 == 1) {
         roundP1 = true;
-        log.emplace_back("P", "1");
+        //log.emplace_back("P", "1");
+        startPlayer = true;
     }
     else
-        log.emplace_back("P", "2");
+        //log.emplace_back("P", "2");
 
     std::cout << "\nINIZIA IL GIOCATORE: ";
     if(roundP1)
@@ -230,7 +194,7 @@ void game::start_game(bool human){
         std::cout << p2.getName() << std::endl;
 
 
-    for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); ++i) {
+    for (int i = 0; i < MAX_ROUNDS && p1.isAlive() && p2.isAlive(); ++i) {
         if(roundP1) {     //round P1 (computer)
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             move =  game::computerRound(p1, p2);
@@ -255,15 +219,17 @@ void game::start_game(bool human){
         }
 
         std::cout << std::endl;
-        //sleep(1);
+
+        if(human) MAX_ROUNDS++;     //aumento la variabile del massimo dei turni se è una partita PC
+        sleep(1);         //timer
     }
 
     //FINE PARTITA
     //todo: rimuovere
-    for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
+    /*for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
         std::cout << iter.first << " -> " << iter.second;
         std::cout << std::endl;
-    }
+    }*/
     //if p1 è morto
     if(!p1.isAlive()){
         //P1 HA PERSO SFIGATO è MORTO
@@ -285,126 +251,12 @@ void game::start_game(bool human){
     std::cout << ">> " + p1.getName() + ": " << p1.getSumShipLife() << std::endl;
     std::cout << ">> " + p2.getName() + ": " << p2.getSumShipLife() << std::endl;
 
+    //salvataggio della partita
+    std::string file_name = human ? "logPC" : "logCC";
+
+    game::write_game(file_name, startPlayer, game::stringToCoords(log));
 }
 
-
-/*
-std::tuple<bool, std::string, std::string> game::turn(bool human, bool roundP1, player p1, player p2, unsigned int i) {           //funzione per un turno
-    std::tuple<bool, std::string, std::string> tuple;
-    std::pair<std::string, std::string> move;   //per le mosse decise
-
-    std::string origin, target;
-
-    if(roundP1) {     //round P1 (computer)
-        std::cout << " ** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
-        move =  game::computerRound(p1, p2);
-    }
-    else{              //round P2
-        std::cout << "TURNO " << i+1 << ":  TOCCA A " << p2.getName() << std::endl;
-        if(human){
-            move = game::humanRound(p2, p1);
-        }
-        else {
-            move = game::computerRound(p2, p1);
-        }
-    }
-
-    origin = move.first;
-    target = move.second;
-
-    if(origin != "AA" && origin != "XX") {
-        origin = move.first;
-        target = move.second;
-        tuple = std::make_tuple(roundP1,origin, target);        //inserisco nella tupla
-        //log.emplace_back(roundP1, origin, target);
-        //cout << origin << " -> " << target << endl;
-        //cout << std::get<0>(log[i]) << " " << std::get<1>(log[i]) << " " << std::get<2>(log[i]);
-
-        roundP1 = !roundP1;
-    }
-    //print(p1, p2);
-
-    return tuple;
-
-}
-void game::start_game(bool human) {
-    //settare human
-
-    const int maxRounds = 40;       //bisogna farlo settare al giocatore?
-    std::string origin;
-    std::string target;
-
-    //creare giocatori p1 e p2
-    player p1, p2;      //p1 sempre computer
-    if(human){
-        std::cout << "Inserisci il tuo nome!" << std::endl;
-        std::string name;
-        std::cin >> name;
-        p2.setName(name);
-        p1.setName("Computer");
-    }
-    else{
-        p1.setName("Giocatore 1");
-        p2.setName("Giocatore 2");
-    }
-
-    //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
-    std::vector<std::tuple<bool, std::string, std::string>> log;
-
-    //posizionare navi p1 random
-    log = p1.startRandomFleet();
-
-    //posizionare navi p2 (A random | B cout/cin)
-    if(human){
-        p2.startFleet();
-    }
-    else {
-        p2.startRandomFleet();
-    }
-
-    //print(p1, p2);
-
-    //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
-    bool roundP1 = false;
-    if (rand()%2 == 1)
-        roundP1 = true;
-    std::cout << "\nINIZIA IL GIOCATORE: ";
-    if(roundP1)
-        std::cout << p1.getName() << std::endl;
-    else
-        std::cout << p2.getName() << std::endl;
-
-    std::string prova = "Ciao";
-
-    //turni
-    for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); i++){        //ciclo per i turni -> chiamo la funzione turn
-        log.emplace_back(game::turn(human, roundP1, p1, p2, i));
-    }
-
-    std::cout << " ***********" << std::endl;
-
-    for(auto& iter: log){
-        std::cout << std::get<0>(iter) << " " << std::get<1>(iter) << " " << std::get<2>(iter);
-        std::cout << std::endl;
-    }
-
-    //FINE PARTITA
-    //if p1 è morto
-    if(!p1.isAlive()){
-        //P1 HA PERSO SFIGATO è MORTO
-        std::cout << "IL VINCITORE E': " + p2.getName();
-    }
-        //if p2 è morto
-    else if(!p2.isAlive()){
-        //P2 HA PERSO SFIGATO è MORTO
-        std::cout << "IL VINCITORE E': " + p1.getName();
-    }
-        //if mosse finite: confronto "punteggi" (unità vive)
-    else{
-        //PAREGGIO
-        //punti?
-    }
-}*/
 
 void game::print(player p1, player p2){
     std::string n1 = p1.getName();
@@ -427,39 +279,38 @@ void game::print(player p1, player p2){
     sleep(1);
 }
 
+void game::write_game(const std::string &out_file, bool startPlayer, std::vector<std::pair<coords, coords>> vector) {
+    std::ofstream outFile;              // Dichiarazione di tipo
+    std::string path = "../file/" + out_file;      //creazione del percorso per il salvataggio
 
-/*
-game::turn::turn() {
-    char input;
-    bool ok = true;
-    while(ok) {
-        std::cout << "** SELEZIONA LA DIFFICOLTA' ** \n";
-        std::cout << "1 - Facile (100 turni)\n";
-        std::cout << "2 - Medio (60 turni)\n";
-        std::cout << "3 - Difficile (30 turni)\n";
-        std::cout << "-> ";
-        std::cin >> input;
-        switch (input) {
-            case '1': {
-                MAX_TURN = 100;
-                ok = false;
-                break;
-            }
-            case '2': {
-                MAX_TURN = 60;
-                ok = false;
-                break;
-            }
-            case '3': {
-                MAX_TURN = 30;
-                ok = false;
-                break;
-            }
-            default: {
-                std::cout << "\n** input non valido! **" << std::endl;
-                break;
-            }
+    if(path.find(".txt") == std::string::npos) path += ".txt";      //se non trova l'estensione la aggiunge
+
+    outFile.open(path);             // Apertura del file senza sovrascrittura
+    if (!outFile) {
+        std::cout << "Errore di apertura del file" << std::endl;         // controllo
+    } else {
+        outFile << startPlayer << std::endl;
+        for (auto & i : vector) {       //scorro il vettore per scrivere nel nuovo file
+            outFile << i.first << " " << i.second << std::endl;
         }
     }
-    std::cout << MAX_TURN << std::endl;
-}*/
+    outFile.close();
+}
+
+std::vector<std::pair<coords, coords>>  game::stringToCoords(const std::vector<std::pair<std::string, std::string>>& vector){
+    std::vector<std::pair<coords, coords>> outVect;
+    coords first{}, second{};
+    for (auto & i : vector) {
+       //std::cout << i.first << " " << i.second << std::endl;
+
+       first  = (coords) i.first;
+       second  = (coords) i.second;
+
+       outVect.emplace_back(first, second);
+    }
+
+    return outVect;
+}
+
+
+

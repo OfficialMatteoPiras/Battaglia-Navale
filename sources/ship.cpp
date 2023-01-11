@@ -1,6 +1,4 @@
-//Created by Andrea Nalin
-
-//Created by Andrea Nalin
+//Created by Matteo Piras
 
 #include "../headers/ship.h"
 #include <utility>

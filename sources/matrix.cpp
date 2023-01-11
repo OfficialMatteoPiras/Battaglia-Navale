@@ -1,6 +1,6 @@
 //Matteo Piras
 
-#include "headers/matrix.h"
+#include "../headers/matrix.h"
 
 
 matrix::matrix(){

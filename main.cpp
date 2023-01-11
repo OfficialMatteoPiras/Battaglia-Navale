@@ -1,11 +1,9 @@
+//Matteo Piras
+
 #include "headers/game.h"
 #include "headers/replay.h"
 
 #include <iostream>
-#include <cstdlib>
-#include <unistd.h>
-
-//todo: rimuovere commento -> passare parametri al main con CLion run | Edit Configurations | Program Parameters
 
 std::string getExeName(std::string path){
     std::string delimiter = "\\", str_exe = ".", token;
@@ -29,7 +27,7 @@ std::string getExeName(std::string path){
         path.erase(  path.find(str_exe), path.size() - 1);
     }
 
-    std::cout << path << std::endl;
+    //std::cout << path << std::endl;
 
     return path;
 }
@@ -62,7 +60,7 @@ int main(int argc, char **argv){
             }
             else{
                 if(strcmp(argv[1], "f") == 0 ){
-                    rep.replay_main('v', argv[2], argv[3]);
+                    rep.replay_main('f', argv[2], argv[3]);
                 }
                 else{
                     std::cout << "**** PARAMETRI INVALIDI ****" << std::endl;

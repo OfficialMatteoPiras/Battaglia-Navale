@@ -1,4 +1,4 @@
-//Created by Andrea Nalin
+//Created by Matteo Piras
 
 #include "../headers/replay.h"
 
@@ -9,8 +9,8 @@ void replay::replay_main(char ch_, const std::string& nome_file_log, const std::
     if(ch_ == 'v'){
         startReplay();
     }
-    else{
-        //write file
+    else{       //write file
+        game::write_game(output_replay, startPlayer, vector);       //chiamo la funzione di scrittura in game
     }
 
 }
@@ -26,6 +26,9 @@ std::vector<std::pair<coords, coords>> replay::getSubVector(int start, int end) 
 void replay::read_file(const std::string& file_in_name) {
     std::string path = "../file/" + file_in_name, str, s1, s2, delimiter = " ";
     std::ifstream inFile(path);
+
+    if(path.find(".txt") == std::string::npos) path += ".txt";      //se non trova l'estensione la aggiunge
+
     if(!inFile){
         throw FileNotValid();
     }
@@ -52,7 +55,7 @@ void replay::read_file(const std::string& file_in_name) {
 
 void replay::startReplay() {
     //creazione dei giocatori
-    replayPlayer p1, p2;
+    replayPlayer p1("Player 1"), p2("Player 2");        //inizializzazione dei giocatori
     std::vector<std::pair<coords, coords>> moves = getSubVector(16, vector.size());     //vettore con solo le mosse da replicare
     const int maxRounds = moves.size() - 1;
     //INIZIALIZZAZIONE DELLA FLOTTA
@@ -82,36 +85,38 @@ void replay::startReplay() {
     for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); ++i) {
         if(!startPlayer) {     //round P1
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
+            p1.visual();
             replayPlayer::makeMove(p1, p2, moves[i]);
         }
         else{              //round P2
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p2.getName() << std::endl;
+            p2.visual();
             replayPlayer::makeMove(p2, p1, moves[i]);
         }
         //todo: aggiungere grafica e tempo del replay
         startPlayer = !startPlayer; //cambio turno
+        sleep(2);
     }
 
     //FINE PARTITA
     //if p1 è morto
-    if(!p1.isAlive()){
-        //P1 HA PERSO SFIGATO è MORTO
+    if(!p1.isAlive()){      //vincitore P2
         std::cout << "IL VINCITORE E': " + p2.getName() << std::endl;
     }
         //if p2 è morto
-    else if(!p2.isAlive()){
-        //P2 HA PERSO SFIGATO è MORTO
+    else if(!p2.isAlive()){     //vincitore P1
         std::cout << "IL VINCITORE E': " + p1.getName() << std::endl;
     }
-        //if mosse finite: confronto "punteggi" (unità vive)
+    //if mosse finite: confronto "punteggi" (unità vive)
     else{
         std::cout << "LA PARTITA E' FINITA IN PAREGGIO!" << std::endl;
-        //PAREGGIO
-        //punti?
     }
 
+    //RIASSUNTO FINALE
+    std::cout << std::endl;
     std::cout << "*** TOTALE DANNI INFLITTI ***" << std::endl;
     std::cout << ">> " + p1.getName() + ": " << p1.getSumShipLife() << std::endl;
     std::cout << ">> " + p2.getName() + ": " << p2.getSumShipLife() << std::endl;
 
 }
+
