@@ -23,9 +23,8 @@ class player{
         void fire(coords origin, coords target, player& opponent);
         void moveAndRepair(coords origin, coords target);
         void moveAndSearch(coords origin, coords target, player& opponent);
-        static std::string funnyMessage();
 
-        //funzioni di supporto alle azioni non serve chiamarle per altro ciao
+    //funzioni di supporto alle azioni non serve chiamarle per altro ciao
         void checkSpace(ship* s, coords target);
         void move(coords origin, coords target);
         ship* getShipPointer(coords c);
@@ -68,9 +67,9 @@ class player{
         std::vector<std::pair<std::string, std::string>> startRandomFleet();    //start della flotta randomico
         void printFleet();  //todo: rimuovere
         coords getRandomOrigin();
+        ship* newShip(coords stern, coords bow, char c);
 
         //FUNZIONI STUPIDE E BRUTTE NON GUARDARE            //todo: sistemare le funzioni stupide brutte da non guardare
-        ship* newShip(coords stern, coords bow, char c);
         int getShipLife(coords c);
 
         //Setters
@@ -97,6 +96,8 @@ class player{
         class invalidOrigin : std::exception {};
         class notEnoughSpace : std::exception {};
 
+        //altro
+        static std::string funnyMessage();
 };
 
 

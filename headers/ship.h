@@ -21,6 +21,7 @@ public:
     explicit ship(coords bow, coords stern, unsigned int d = 1){        //costrtuttore che ricava il centro da prua e poppa
         //DIMENSION
         dim = d;
+        life = dim;
         //VERTICAL
         vertical = bow.getY() == stern.getY();      //se la colonna delle ordinate è la stessa restituisce true true altrimenti false
         //CENTER

@@ -8,7 +8,8 @@
 class replayPlayer : public player{
 public:
     replayPlayer() = default;
-    void startReplayFleet(const std::vector<std::pair<coords, coords>>& vector);    //inizializzazioned della flotta
+    void startReplayFleet(const std::vector<std::pair<coords, coords>>& _vector);    //inizializzazioned della flotta
+    static void makeMove(player& pl, player& opponent, std::pair<coords, coords> move);
 };
 
 

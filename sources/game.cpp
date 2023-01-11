@@ -90,14 +90,14 @@ bool game::write_file() {    //!DA FINIRE E VEDERE COSA PRENDE IN INPUT
 std::pair<std::string, std::string> game::computerRound(player& pl, player& opponent) {
     //nave random da p1.fleet e salva in origin
     coords origin = pl.getRandomOrigin();
-    coords target = origin; //inizializzazione provvisoria
+    coords target = origin;             //todo:inizializzazione provvisoria
     //(AA AA ?)
     bool done = false;
     //finché non trova coords target valide per l'azione)
     while (!done) {
         if(pl.isABattleship(origin)) {
             std::string targ = pl.findY();
-            if (targ != "")
+            if (!targ.empty())
                 target = coords(targ);
         }
         else
@@ -185,7 +185,7 @@ void game::create_players(bool human, player &p1, player &p2){
 
 void game::start_game(bool human){
     //VARIABILI
-    const int maxRounds = 40;       //bisogna farlo settare al giocatore?
+    const int maxRounds = 100;       //bisogna farlo settare al giocatore?
     //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
     std::vector<std::pair<std::string, std::string>> log;
     //creare giocatori p1 e p2
@@ -208,8 +208,8 @@ void game::start_game(bool human){
         logTemp = p2.startRandomFleet();
     }
 
-    for(int i = 0; i < logTemp.size(); i++){
-        log.push_back(logTemp[i]);
+    for(const auto & i : logTemp){
+        log.push_back(i);
     }
 
     print(p1, p2);
@@ -259,7 +259,7 @@ void game::start_game(bool human){
     }
 
     //FINE PARTITA
-
+    //todo: rimuovere
     for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
         std::cout << iter.first << " -> " << iter.second;
         std::cout << std::endl;
