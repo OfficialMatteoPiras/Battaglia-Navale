@@ -16,7 +16,7 @@ protected:
 public:
     //COSTRUTTORI
     explicit ship(coords ctr): center{ctr} {};      //costruttore
-    explicit ship(coords bow, coords stern, unsigned int d){        //costruttore che ricava il centro da prua e poppa
+    explicit ship(coords bow, coords stern, unsigned int d = 1){        //costruttore che ricava il centro da prua e poppa
         dim = d;
         life = dim;
         vertical = bow.getY() == stern.getY();      //se la colonna delle ordinate è la stessa restituisce true

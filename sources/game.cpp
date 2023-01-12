@@ -264,8 +264,8 @@ void game::start_game(bool human){
     }
 
     std::cout << "*** TOTALE DANNI INFLITTI ***" << std::endl;
-    std::cout << ">> " + p1.getName() + ": " << p1.getSumShipLife() << std::endl;
-    std::cout << ">> " + p2.getName() + ": " << p2.getSumShipLife() << std::endl;
+    std::cout << ">> " + p1.getName() + ": " << p1.getPoints() << std::endl;
+    std::cout << ">> " + p2.getName() + ": " << p2.getPoints() << std::endl;
 
     //salvataggio della partita
     std::string file_name = human ? "logPC" : "logCC";
