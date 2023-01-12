@@ -27,7 +27,7 @@ class coords{
         //ADD
         coords addRow(int n) const;
         coords addCol(int n) const;
-        coords add(int r, int c) const;     //todo: aggiungere check coordinate
+        coords add(int r, int c) const;     //aggiunge r e c alle coordinate iniziali
 
         std::string toString();
 

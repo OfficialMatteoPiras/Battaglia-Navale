@@ -111,17 +111,17 @@ std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
 
         }
         catch (coords::invalidCoords& c){
-            std::cout << " ** invalid coordinates **" << std::endl;
+            //std::cout << " ** invalid coordinates **" << std::endl;
             i--;
         }
         catch(notEnoughSpace& e){
-            std::cout << " ** not enough space **" << std::endl;
+            //std::cout << " ** not enough space **" << std::endl;
             i--;
         }
         //std::cout << "-------------------" << std::endl;
         //visual();
     }
-    std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
+    //std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
     return log;
 }
 
@@ -130,9 +130,8 @@ std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
 void player::visual(){
     std::cout << std::endl;
     std::string name_ = "**** " + name + " ****";
-    unsigned int rep = (106 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
+    unsigned int rep = (102 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
 
-    //52 + 4 + 52 = 108 -> caratteri della griglia in una riga 108 / 2 = 54 caratteri a metà
     //centro la scritta
     for (int i = 0; i < rep; i++) std::cout << " ";
 
@@ -166,7 +165,7 @@ void player::action(coords origin, coords target, player& opponent){
     else {                                   //azione sottomarino
         moveAndSearch(origin, target, opponent);
     }
-    std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
+    //std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
 }
 
 //ACTIONS - FUNZIONI DI SUPPORTO (PRIVATE)
@@ -483,7 +482,7 @@ coords player::getRandomCoord(coords bow, bool vertical, int distance){ //prende
     //mofica della nuova coordinata
     if (vertical) newCoord = newCoord.add(distance, 0);
     else newCoord = newCoord.add(0, distance);
-    std::cout << "nuova nave-> " << newCoord << std::endl;       //todo: rimuovere
+    //std::cout << "nuova nave-> " << newCoord << std::endl;       //todo: rimuovere
 
     return newCoord;
 }

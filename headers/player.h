@@ -47,7 +47,7 @@ class player{
         //membri privati
         std::pair<coords, coords> getCoords(const std::string& message);
 
-        std::map<coords, ship*> fleet;  //mappa per la flotta       //todo: rimettere privato
+        std::map<coords, ship*> fleet;  //mappa per la flotta
 
     public:
 

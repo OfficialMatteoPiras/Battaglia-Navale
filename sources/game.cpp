@@ -153,7 +153,6 @@ void game::start_game(bool human){
     //creazione dei giocatori
     create_players(human, p1, p2);
 
-
     //posizionare navi p2 (A random | B cout/cin)
     std::vector<std::pair<std::string, std::string>> logMovesOne, logMovesTwo;
     logMovesOne = p1.startRandomFleet();                          //todo: sistemare output a schermo
@@ -188,16 +187,14 @@ void game::start_game(bool human){
         //log.emplace_back("P", "2");
 
     std::cout << "\nINIZIA IL GIOCATORE: ";
-    if(roundP1)
-        std::cout << p1.getName() << std::endl;
-    else
-        std::cout << p2.getName() << std::endl;
 
+    std::cout << (roundP1 ? p1.getName() : p2.getName()) << std::endl;
 
     for (int i = 0; i < MAX_ROUNDS && p1.isAlive() && p2.isAlive(); ++i) {
         if(roundP1) {     //round P1 (computer)
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             move =  game::computerRound(p1, p2);
+            //todo: mettere messaggio simpatico random per la mossa del computer
         }
         else{              //round P2
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p2.getName() << std::endl;
@@ -221,6 +218,9 @@ void game::start_game(bool human){
         std::cout << std::endl;
 
         if(human) MAX_ROUNDS++;     //aumento la variabile del massimo dei turni se è una partita PC
+        else std::cout << "Mossa: " <<  log[i].first << " -> " << log[i].second << std::endl;        //stampa la mossa se è una partita CC
+
+
         sleep(1);         //timer
     }
 
@@ -258,7 +258,7 @@ void game::start_game(bool human){
 }
 
 
-void game::print(player p1, player p2){
+void game::print(player p1, player p2){     //todo: rivedere la funzione -> non bisogna stampare la griglia del computer se la partita è PC (stampa solo se !human)
     std::string n1 = p1.getName();
     std::string n2 = p2.getName();
     p1.visual();
