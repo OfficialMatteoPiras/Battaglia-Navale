@@ -6,9 +6,11 @@ void game::start_menu(){
     char ch;
     bool done = false;
     while(!done){
-        std::cout << "*** START MENU ***" << std::endl;
+        std::cout << "\n*** START MENU ***" << std::endl;
         std::cout << "s - inizia partita " << std::endl;
         std::cout << "i - info" << std::endl;
+        std::cout << "e - esci" << std::endl;
+        std::cout << ">>";
         //std::cout << "c - crediti" << std::endl;
         std::cin >> ch;
         switch (ch) {
@@ -17,8 +19,8 @@ void game::start_menu(){
                 done = true;
                 break;
             case 'i':
-                std::cout << "** INFORMAZIONI UTILI **" << std::endl;
-                std::cout << "\nRegole del gioco:" << std::endl;
+                std::cout << "\n*** INFORMAZIONI UTILI ***" << std::endl;
+                std::cout << "Regole del gioco:" << std::endl;
                 std::cout << "-> Ogni giocatore, a turno, compie un'azione usando una delle sue otto navi \n   (identificata dalla coordinata del suo centro) e fornendo le coordinate di target." << std::endl;
                 std::cout << "-> I tre tipi di navi compiono azioni diverse:" << std::endl;
                 std::cout << "\t- la corazzata fa fuoco sulle coordinate di target nel campo avversario; nella griglia di attacco compare \n\t  una X se il colpo va a buon fine, altrimenti una O;" << std::endl;
@@ -38,12 +40,11 @@ void game::start_menu(){
                 std::cout << "-> Griglia di attacco (a destra):" << std::endl;
                 std::cout << "\t- il carattere X rappresenta un colpo andato a segno" << std::endl;
                 std::cout << "\t- il carattere O rappresenta un colpo a vuoto" << std::endl;
-                std::cout << "\t- il carattere Y rappresenta una nave individuata dal sonar\n\n" << std::endl;
+                std::cout << "\t- il carattere Y rappresenta una nave individuata dal sonar" << std::endl;
                 break;
-//          case 'c':
-//              std::cout << "" << std::endl;
-//              ok = false;
-//              break;
+            case 'e':
+                exit(0);
+                break;
             default:
                 break;
         }
