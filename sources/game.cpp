@@ -109,9 +109,6 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 else{
                     //chiama l'azione (altrimenti propaga eccezione)
                     pl.action(origin, target, opponent);
-                    //se non ha lanciato l'eccezione salvo la mossa su hystory
-                    //todo: salvare su history le mosse
-                    //salva roundFlag, origin, target su log
                     done = true;
                 }
             }
