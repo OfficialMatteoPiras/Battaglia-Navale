@@ -15,18 +15,15 @@ void matrix::insert(coords coord, char c) {
     _matrix[coord.getX()][coord.getY()] = c;
 }
 
-char* matrix::getRow(int r){
-    return _matrix[r];
-}
-
-char matrix::getElement(coords c) {
+char matrix::getElement(coords c) const{
     return _matrix[c.getX()][c.getY()];
 }
-char matrix::getElement(int row, int col) {
+
+char matrix::getElement(int row, int col) const{
     return _matrix[row][col];
 }
 
-int matrix::getShipDim(coords c){
+int matrix::getShipDim(coords c) const{
     char letter = getElement(c);
     int dim;
     if (letter == 'c' || letter == 'C')
@@ -41,7 +38,7 @@ int matrix::getShipDim(coords c){
 }
 
 
-std::vector<coords> matrix::findLetter(char letter){
+std::vector<coords> matrix::findLetter(char letter) const{
     std::vector<coords> v;
     for(int i = 0; i < 12; i++){
         for (int  j = 0; j < 12; j++){
@@ -65,18 +62,11 @@ void matrix::restore(coords target){
     _matrix[x][y] = char(toupper(_matrix[x][y]));
 }
 
-bool matrix::isEmpty(coords target){
+bool matrix::isEmpty(coords target) const{
     return _matrix[target.getX()][target.getY()] == ' ';
 }
 
-bool matrix::setElement(char c, int row, int col){
-    std::string letters = "ABCDEFGHILMN";
-    if(letters.find(toupper(c)) < 0) throw invalidChar();    //se non trova il carattere inserito nella lista
-    _matrix[row][col] = c;
-    return true;
-}
-
-
+//stampa due matrici affiancate
 void grid(matrix ships, matrix attack) {
     std::string letters = "ABCDEFGHILMN";
     std::string token;

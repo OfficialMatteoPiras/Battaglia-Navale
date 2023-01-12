@@ -6,7 +6,6 @@
 #include <string>
 #include <iostream>
 #include <exception>
-#include <set>
 
 class coords{
     public:
