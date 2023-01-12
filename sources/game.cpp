@@ -176,12 +176,11 @@ void game::start_game(bool human){
         logMovesTwo = p2.startRandomFleet();
     }
 
-    //salvo le navi del giocatore 1
+    //salva le navi del giocatore 1
     for(const auto & i : logMovesOne){
         log.push_back(i);
     }
-
-    //salvo le navi del giocatore 2
+    //salva le navi del giocatore 2
     for(const auto & i : logMovesTwo){
         log.push_back(i);
     }
@@ -189,41 +188,33 @@ void game::start_game(bool human){
     print(p1, p2);      //todo: rivedere la stampa
 
     //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
-
     if (rand()%2 == 1) {
         roundP1 = true;
-        //log.emplace_back("P", "1");
         startPlayer = true;
     }
-    else
-        //log.emplace_back("P", "2");
 
     std::cout << "\nINIZIA IL GIOCATORE: ";
 
     std::cout << (roundP1 ? p1.getName() : p2.getName()) << std::endl;
 
     for (int i = 0; i < MAX_ROUNDS && p1.isAlive() && p2.isAlive(); ++i) {
-        if(roundP1) {     //round P1 (computer)
+        //round P1 (computer)
+        if(roundP1) {
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             move =  game::computerRound(p1, p2);
             //todo: mettere messaggio simpatico random per la mossa del computer
         }
-        else{              //round P2
+        //round P2
+        else{
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p2.getName() << std::endl;
-            if(human){
+            if(human)
                 move = game::humanRound(p2, p1);
-            }
-            else {
+            else
                 move = game::computerRound(p2, p1);
-            }
         }
-
         std::string s = move.first;
-        if(s != "AA" && s != "XX") {
+        if(s != "XX" && s != "AA" && s != "BB" && s != "CC") {
             log.push_back(move);
-            //cout << origin << " -> " << target << endl;
-            //cout << std::get<0>(log[i]) << " " << std::get<1>(log[i]) << " " << std::get<2>(log[i]);
-
             roundP1 = !roundP1;
         }
 
@@ -238,11 +229,7 @@ void game::start_game(bool human){
     }
 
     //FINE PARTITA
-    //todo: rimuovere
-    /*for(auto& iter: log){       //stampa delle mosse fatte fino alla i-esima ripetizione
-        std::cout << iter.first << " -> " << iter.second;
-        std::cout << std::endl;
-    }*/
+
     //if p1 è morto
     if(!p1.isAlive()){
         //P1 HA PERSO SFIGATO è MORTO
