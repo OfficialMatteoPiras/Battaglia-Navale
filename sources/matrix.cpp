@@ -40,6 +40,19 @@ int matrix::getShipDim(coords c){
     return dim;
 }
 
+
+std::vector<coords> matrix::findLetter(char letter){
+    std::vector<coords> v;
+    for(int i = 0; i < 12; i++){
+        for (int  j = 0; j < 12; j++){
+            coords c(i, j);
+            if(getElement(c) == letter)
+                v.push_back(c);
+        }
+    }
+    return v;
+}
+
 void matrix::hit(coords target){
     int x = target.getX();
     int y = target.getY();

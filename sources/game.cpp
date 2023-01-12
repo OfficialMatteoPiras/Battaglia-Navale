@@ -4,8 +4,8 @@
 
 void game::start_menu(){
     char ch;
-    bool ok = true;
-    while(ok){
+    bool done = false;
+    while(!done){
         std::cout << "*** START MENU ***" << std::endl;
         std::cout << "s - inizia partita " << std::endl;
         std::cout << "i - info" << std::endl;
@@ -14,28 +14,36 @@ void game::start_menu(){
         switch (ch) {
             case 's':
                 std::cout << "START GAME" << std::endl;
-                ok = false;
+                done = true;
                 break;
             case 'i':
-                std::cout << "\t** INFORMAZIONI UTILI **" << std::endl;
-                std::cout << "Lettere che rappresentano le navi: " << std::endl;
-                std::cout << "-> il carattere 'C' rappresenta una corazzata armata" << std::endl;
-                std::cout << "-> il carattere 'S' rappresenta una nave di supporto " << std::endl;
-                std::cout << "-> il carattere 'E' rappresenta un sottomarino di esplorazione" << std::endl;
-                std::cout << "-> NB: le navi colpite sono rappresentate dalla rispettiva lettera minuscola" << std::endl;
-                std::cout << "\nMosse delle navi: " << std::endl;
-                std::cout << "-> dopo un movimento del sottomarino questo scannerizza in un'area 5x5, nella griglia di attacco comparirà una 'Y' che senga le navi individuate" << std::endl;
-                std::cout << "-> dopo un movimento della nave di supporto questa cura totalmente le navi alleate in un'area 5x5" << std::endl;
-                std::cout << "\nCaratteri speciali: " << std::endl;
-                std::cout << "-> con il comando 'XX XX' puoi visualizzare le tue griglie " << std::endl;
-                std::cout << "-> con il comando 'AA AA' puoi cancellare tutti gli avvistamenti sonar ('Y') dalla griglia di attacco " << std::endl;
-
-                ok = false;
+                std::cout << "** INFORMAZIONI UTILI **" << std::endl;
+                std::cout << "\nRegole del gioco:" << std::endl;
+                std::cout << "-> Ogni giocatore, a turno, compie un'azione usando una delle sue otto navi \n   (identificata dalla coordinata del suo centro) e fornendo le coordinate di target." << std::endl;
+                std::cout << "-> I tre tipi di navi compiono azioni diverse:" << std::endl;
+                std::cout << "\t- la corazzata fa fuoco sulle coordinate di target nel campo avversario; nella griglia di attacco compare \n\t  una X se il colpo va a buon fine, altrimenti una O;" << std::endl;
+                std::cout << "\t- la nave di supporto si sposta sulle coordinate ricevute e cura interamente tutte le navi alleate avvistate \n\t  in un'area 3x3 di cui e' il centro;" << std::endl;
+                std::cout << "\t- il sottomarino si sposta sulle coordinate ricevute e lancia un impulso sonar che rileva le navi nemiche \n\t  in un'area 5x5; nella griglia di attacco compare una Y per segnare le unita' individuate;" << std::endl;
+                std::cout << "\nComandi speciali:" << std::endl;
+                std::cout << "- con il comando XX XX puoi visualizzare le tue griglie" << std::endl;
+                std::cout << "- con il comando AA AA puoi cancellare tutti gli avvistamenti sonar (Y) dalla griglia di attacco" << std::endl;
+                std::cout << "- con il comando BB BB puoi cancellare tutti i colpi andati a segno (X) dalla griglia di attacco" << std::endl;
+                std::cout << "- con il comando CC CC puoi cancellare tutti i colpi a vuoto (O) dalla griglia di attacco" << std::endl;
+                std::cout << "\nVisualizzazione:" << std::endl;
+                std::cout << "-> Griglia di difesa (a sinistra) :" << std::endl;
+                std::cout << "\t- il carattere C rappresenta una corazzata armata" << std::endl;
+                std::cout << "\t- il carattere S rappresenta una nave di supporto" << std::endl;
+                std::cout << "\t- il carattere E rappresenta un sottomarino di esplorazione" << std::endl;
+                std::cout << "\tNB: le navi colpite sono rappresentate dalla rispettiva lettera minuscola" << std::endl;
+                std::cout << "-> Griglia di attacco (a destra):" << std::endl;
+                std::cout << "\t- il carattere X rappresenta un colpo andato a segno" << std::endl;
+                std::cout << "\t- il carattere O rappresenta un colpo a vuoto" << std::endl;
+                std::cout << "\t- il carattere Y rappresenta una nave individuata dal sonar\n\n" << std::endl;
                 break;
-//            case 'c':
-//                std::cout << "" << std::endl;
-//                ok = false;
-//                break;
+//          case 'c':
+//              std::cout << "" << std::endl;
+//              ok = false;
+//              break;
             default:
                 break;
         }
@@ -46,18 +54,15 @@ void game::start_menu(){
 std::pair<std::string, std::string> game::computerRound(player& pl, player& opponent) {
     //nave random da p1.fleet e salva in origin
     coords origin = pl.getRandomOrigin();
-    coords target = origin;             //todo:inizializzazione provvisoria
+    coords target;
     //(AA AA ?)
     bool done = false;
     //finché non trova coords target valide per l'azione)
     while (!done) {
-        if(pl.isABattleship(origin)) {
-            std::string targ = pl.findY();
-            if (!targ.empty())
-                target = coords(targ);
-        }
+        if(pl.isABattleship(origin) && !pl.getRandomY().empty())
+            target = coords(pl.getRandomY());
         else
-            target = pl.getRandomCoord();
+            target = player::getRandomCoord();
         try {       //try catch azione
             pl.action(origin, target, opponent);      //coordinate random
             done = true;
@@ -81,18 +86,24 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
             std::cout << ">> ";
             std::cin >> origin >> target;
 
-            //if AA AA  cancella le Y da attack e salva su log
+            //if AA AA: cancella le Y da attack
             if (origin == "AA" && target == "AA") {
-                //chiede e legge nuova mossa e salva in move
                 pl.deleteY();
             }
-            //if XX XX  stampa le griglie DI P2
+            //if BB BB: cancella le X da attack
+            else if (origin == "BB" && target == "BB") {
+                pl.deleteX();
+            }
+            //if CC CC: cancella le O da attack
+            else if (origin == "CC" && target == "CC") {
+                pl.deleteO();
+            }
+            //if XX XX: stampa le griglie di P2
             else if (origin == "XX" && target == "XX") {
                //stampa
                 pl.visual();
-                //chiede e legge nuova mossa e salva in move
-            } else {
-
+            }
+            else {
                 if(origin == "YY" && target == "YY") opponent.visual();     //todo: RIMUOVERE ASSOLUTAMENTE if - else!!!!!!
                 else{
                     //chiama l'azione (altrimenti propaga eccezione)
@@ -153,6 +164,9 @@ void game::start_game(bool human){
     //creazione dei giocatori
     create_players(human, p1, p2);
 
+    if(human)
+        game::start_menu();
+
     //posizionare navi p2 (A random | B cout/cin)
     std::vector<std::pair<std::string, std::string>> logMovesOne, logMovesTwo;
     logMovesOne = p1.startRandomFleet();                          //todo: sistemare output a schermo
@@ -164,12 +178,12 @@ void game::start_game(bool human){
         logMovesTwo = p2.startRandomFleet();
     }
 
-    //salvo le mosse del 1 giocatore
+    //salvo le navi del giocatore 1
     for(const auto & i : logMovesOne){
         log.push_back(i);
     }
 
-    //salvo le mosse del 2 giocatore
+    //salvo le navi del giocatore 2
     for(const auto & i : logMovesTwo){
         log.push_back(i);
     }
@@ -220,6 +234,7 @@ void game::start_game(bool human){
         if(human) MAX_ROUNDS++;     //aumento la variabile del massimo dei turni se è una partita PC
         else std::cout << "Mossa: " <<  log[i].first << " -> " << log[i].second << std::endl;        //stampa la mossa se è una partita CC
 
+        //todo: sistemare output a schermo
 
         sleep(1);         //timer
     }

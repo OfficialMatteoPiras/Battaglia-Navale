@@ -22,6 +22,7 @@ public:
     char getElement(coords);
     char getElement(int row, int col);
     int getShipDim(coords c);
+    std::vector<coords> findLetter(char letter);
 
 
     //setters

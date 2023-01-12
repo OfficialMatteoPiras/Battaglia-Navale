@@ -59,7 +59,7 @@ class player{
         std::string getName() const{ return name; }
         int getPoints();
         bool isAlive() {return getPoints() > 0; }
-        std::string findY();
+        std::string getRandomY();
         bool isABattleship(coords origin);
         int getSumShipLife();
         std::map<coords, ship*> getFleet() { return fleet; };
@@ -91,8 +91,14 @@ class player{
         //AA AA
         void deleteY();
 
-        //XYorigin XYtarget     -> azione giocatore umano
+        //XYorigin XYtarget -> azione giocatore
         void action(coords origin, coords target, player& opponent);
+
+        //BB BB - cancella tutte le X
+        void deleteX();
+
+        //CC CC - cancella tutte le O
+        void deleteO();
 
         //exceptions
         class invalidOrigin : std::exception {};

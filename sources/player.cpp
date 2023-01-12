@@ -141,13 +141,25 @@ void player::visual(){
 
 //AA AA
 void player::deleteY(){
-    coords c(0, 0);
-    for(int i = 0; i < 12; i++){
-        for(int j = 0; j < 12; j++){
-            c = coords(i, j);
-            if(attack.getElement(c) == 'Y')
-                attack.insert(c, ' ');
-        }
+    std::vector<coords> v = attack.findLetter('Y');
+    for(int i = 0; i < v.size(); i++){
+        attack.insert(v[i], ' ');
+    }
+}
+
+//BB BB
+void player::deleteX(){
+    std::vector<coords> v = attack.findLetter('X');
+    for(int i = 0; i < v.size(); i++){
+        attack.insert(v[i], ' ');
+    }
+}
+
+//CC CC
+void player::deleteO(){
+    std::vector<coords> v = attack.findLetter('O');
+    for(int i = 0; i < v.size(); i++){
+        attack.insert(v[i], ' ');
     }
 }
 
@@ -440,16 +452,10 @@ int player::getPoints(){
 }
 
 
-std::string player::findY(){
+
+std::string player::getRandomY(){
     std::string s;
-    std::vector<coords> v;
-    for(int i = 0; i < 12; i++){
-        for (int  j = 0; j < 12; j++){
-            coords c(i, j);
-            if(attack.getElement(c) == 'Y')
-                v.push_back(c);
-        }
-    }
+    std::vector<coords> v = attack.findLetter('Y');
     if(!v.empty()){
         coords randomY = v[getRandomInt(v.size())];
         s = randomY.toString();
