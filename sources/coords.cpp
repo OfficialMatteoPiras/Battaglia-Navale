@@ -10,7 +10,7 @@ coords::coords(int r, int c){
     y = c;      // y = column
 }
 
-coords::coords(std::string s){  //"YX" ("riga-colonna")
+coords::coords(std::string s){  //"XY" ("riga-colonna")
     int r, c;
     try {
         r = rowToInt(s[0]);
@@ -39,17 +39,13 @@ coords coords::add(int r, int c) const {
     return coords(x+r, y+c);
 }
 
-
-//ROW TYPES CONVERSIONS
-char coords::rowToChar(int r) {
-    std::string s = "ABCDEFGHILMN";
-    return s[r];
+//COORDS TO STRING
+std::string coords::toString() const{
+    std::string s;
+    s += getRow() + std::to_string(getCol());
+    return s;
 }
 
-int coords::rowToInt(char r) {
-    std::string s = "ABCDEFGHILMN";
-    return s.find(r);
-}
 //OVERLOAD ==, <, >
 bool coords::operator==(const coords& c) const{
     return ((x == c.getX())&&(y == c.getY()));
@@ -93,11 +89,18 @@ int coords::operator-(const coords &c) const {
     return n;
 }
 
-std::string coords::toString(){
-    std::string s;
-    s += getRow() + std::to_string(getCol());
-    return s;
+
+//ROW TYPES CONVERSIONS
+char coords::rowToChar(int r) {
+    std::string s = "ABCDEFGHILMN";
+    return s[r];
 }
+
+int coords::rowToInt(char r) {
+    std::string s = "ABCDEFGHILMN";
+    return s.find(r);
+}
+
 
 //OPERATOR <<
 std::ostream& operator<< (std::ostream& os, coords& c){
