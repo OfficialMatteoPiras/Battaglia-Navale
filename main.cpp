@@ -4,6 +4,7 @@
 #include "headers/replay.h"
 
 #include <iostream>
+#include <string.h>
 
 std::string getExeName(std::string path){
     std::string delimiter = "\\", str_exe = ".", token;
