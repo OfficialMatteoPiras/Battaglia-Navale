@@ -37,7 +37,6 @@ int matrix::getShipDim(coords c) const{
     return dim;
 }
 
-
 std::vector<coords> matrix::findLetter(char letter) const{
     std::vector<coords> v;
     for(int i = 0; i < 12; i++){
