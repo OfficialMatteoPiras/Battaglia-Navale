@@ -11,7 +11,7 @@
 class coords{
     public:
         //CONSTRUCTORS
-        coords(int r, int c);       //costruisce dalle coordinate della matrice (0-11)
+        coords(int r, int c);       //costruisce dalle coordinate della matrice (range 0-11)
         coords(std::string);        //legge "B10" e inizializza con x=1, y=9
         coords() = default;
 
@@ -27,7 +27,7 @@ class coords{
         //ADD
         coords addRow(int n) const;
         coords addCol(int n) const;
-        coords add(int r, int c) const;     //aggiunge r e c alle coordinate iniziali
+        coords add(int r, int c) const;
 
         //COORDS TO STRING
         std::string toString() const;
@@ -39,7 +39,7 @@ class coords{
         bool operator>(const coords&) const;
         bool operator>=(const coords&) const;
         bool operator<=(const coords&) const;
-        int operator-(const coords&) const;
+        int operator-(const coords&) const;     //valido solo per coords con stessa riga o colonna (altrimenti lancia eccezione)
 
         //EXCEPTION
         class invalidCoords : std::exception {};

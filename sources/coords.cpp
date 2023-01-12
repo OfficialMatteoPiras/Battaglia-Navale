@@ -6,8 +6,8 @@
 coords::coords(int r, int c){
     if(r < 0 || r > 11 || c < 0 || c > 11)
         throw invalidCoords();
-    x = r;      // x = row
-    y = c;      // y = column
+    x = r;      // x = riga
+    y = c;      // y = colonna
 }
 
 coords::coords(std::string s){  //"XY" ("riga-colonna")
@@ -21,8 +21,8 @@ coords::coords(std::string s){  //"XY" ("riga-colonna")
     }
     if(r < 0 || r > 11 || c < 0 || c > 11)
         throw invalidCoords();
-    x = r;      // x = row
-    y = c;      // y = column
+    x = r;      // x = riga
+    y = c;      // y = colonna
 }
 
 
@@ -77,9 +77,9 @@ bool coords::operator!=(const coords& c) const {
 
 int coords::operator-(const coords &c) const {
     int n;
-    if(c.getY() == y)       //se è verticale ho y uguali
+    if(c.getY() == y)       //se è verticale ha y uguali
         n = c.getX() - x;
-    else if(c.getX() == x)      //se è orizzontale ho x uguali
+    else if(c.getX() == x)      //se è orizzontale ha x uguali
         n = c.getY() - y;
     else
         throw invalidCoords();
