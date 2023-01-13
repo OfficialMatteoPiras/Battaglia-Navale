@@ -140,6 +140,9 @@ void game::create_players(bool human, player &p1, player &p2){
     if(human){
         std::cout << "Inserisci il tuo nome! \n>>";
         std::string name;           //todo: sistemare
+        //cancello il buffer di input
+        std::cin.clear();
+        fflush(stdin);
         std::getline(std::cin, name);
         //std::cin >> name;
         p2.setName(name);
