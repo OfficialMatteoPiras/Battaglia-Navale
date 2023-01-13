@@ -14,11 +14,12 @@ void game::start_menu(){
         //std::cout << "c - crediti" << std::endl;
         std::cin >> ch;
         switch (ch) {
-            case 's':
+            case 's':       //inizia la partita
                 std::cout << "START GAME" << std::endl;
+                game::start_game(true);
                 done = true;
                 break;
-            case 'i':
+            case 'i':   //info sul gioco
                 std::cout << "\n*** INFORMAZIONI UTILI ***" << std::endl;
                 std::cout << "Regole del gioco:" << std::endl;
                 std::cout << "-> Ogni giocatore, a turno, compie un'azione usando una delle sue otto navi \n   (identificata dalla coordinata del suo centro) e fornendo le coordinate di target." << std::endl;
@@ -43,9 +44,11 @@ void game::start_menu(){
                 std::cout << "\t- il carattere Y rappresenta una nave individuata dal sonar" << std::endl;
                 break;
             case 'e':
-                exit(0);
+                //exit(0);
+                done = true;
                 break;
             default:
+                std::cout << "** Impossibile eseguire la richiesta, errore nell'inserimento! **" << std::endl;
                 break;
         }
     }

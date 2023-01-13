@@ -17,8 +17,9 @@ int main(int argc, char **argv){
 
 
     if(name.find("battaglia_navale") != std::string::npos ){  //PARTITA
-        if(strcmp(argv[1], "pc") == 0 ){            //!segmentation fault -> sistemare
-            game::start_game(true);
+        if(strcmp(argv[1], "pc") == 0 ){
+            game::start_menu();     //chiama il menu d'inizio
+            //game::start_game(true);
         }
         else if(strcmp(argv[1], "cc") == 0 ){
             game::start_game(false);
