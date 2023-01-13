@@ -83,7 +83,9 @@ void replay::startReplay() {
 
     //partita (replay)
     for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); ++i) {
-        if(!startPlayer) {     //round P1
+
+        std::cout << std::endl;
+        if(startPlayer == 0) {     //round P1
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             p1.visual();
             replayPlayer::makeMove(p1, p2, moves[i]);
@@ -93,8 +95,9 @@ void replay::startReplay() {
             p2.visual();
             replayPlayer::makeMove(p2, p1, moves[i]);
         }
-        //todo: aggiungere grafica e tempo del replay
+
         startPlayer = !startPlayer; //cambio turno
+        std::cout << std::endl;
         sleep(2);
     }
 

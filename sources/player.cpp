@@ -179,7 +179,7 @@ void player::printFleet() {
 }
 
 //comandi
-void player::action(coords origin, coords target, player& opponent){
+void player::action(coords origin, coords target, player& opponent, bool replay){
     if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
         throw invalidOrigin();
     ship* s = fleet.find(origin)->second;
@@ -192,11 +192,12 @@ void player::action(coords origin, coords target, player& opponent){
     else {                                   //azione sottomarino
         moveAndSearch(origin, target, opponent);
     }
-    //std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
+
+    if(replay) std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
 }
 
 void player::visual(){
-    std::cout << std::endl;
+    //std::cout << std::endl;
     std::string name_ = "**** " + name + " ****";
     unsigned int rep = (102 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
 
@@ -486,4 +487,23 @@ std::pair<coords, coords> player::getCoords(const std::string& message){
     std::cin >> origin >> target;
 
     return {{origin},{target}};
+}
+
+std::string player::funnyComputerMessage() {
+    srand(rand());
+    std::vector<std::string> message = {        //NB: gli spazi vuoti sono voluti, servono a non far stampare ad ogni turno un messaggio
+            "COLPITO OPPURE NO? CHI LO SA...",
+            "",
+            "ATTENTO! IL MARE E' DALLA NOSTRA PARTE!",
+            "",
+            "I MIEI CANNONI SONO PUNTATI SULLE TUE NAVI, STAI ATTENTO!",
+            "*RISATA MALVAGIA*",
+            "",
+            "*SOFFIO DI VENTO*",
+            "SO CHE SEI LI DA QUALCHE PARTE!",
+            "POSSO SENTIRE LA TUA PAURA!",
+            "",
+            "LE MIE NAVI POSSONO CONTINUARE COSI' TUTTO IL GIORNO!",
+    };
+    return message[rand() % message.size()];
 }

@@ -28,7 +28,7 @@ namespace game {
     void create_players(bool human, player &p1, player &p2);
 
     //void start_game(bool human);
-    void print(player p1, player p2);
+    void print(player p1, player p2, bool human);
     std::vector<std::pair<coords, coords>>  stringToCoords(const std::vector<std::pair<std::string, std::string>> &vector);     //conversione di un vettore di stringhe in vettore di coordinate
     void write_game(const std::string &out_file, bool startPlayer, std::vector<std::pair<coords, coords>> vector);      //funzione per la scrittura della partita
 };

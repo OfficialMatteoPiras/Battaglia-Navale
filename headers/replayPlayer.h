@@ -1,4 +1,4 @@
-//Matteo Piras
+//Andrea Nalin
 
 #ifndef BATTAGLIA_NAVALE_REPLAYPLAYER_H
 #define BATTAGLIA_NAVALE_REPLAYPLAYER_H

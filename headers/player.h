@@ -40,7 +40,7 @@ class player{
         void printFleet();  //todo: rimuovere
 
         //comandi
-        void action(coords origin, coords target, player& opponent);    //XYorigin XYtarget -> azione giocatore
+        void action(coords origin, coords target, player& opponent, bool replay = false);    //XYorigin XYtarget -> azione giocatore
         void visual();      //XX XX - mostra griglie di attacco e difesa
         void deleteY();     //AA AA - cancella tutte le Y
         void deleteX();     //BB BB - cancella tutte le X
@@ -52,6 +52,7 @@ class player{
 
         //messaggi output
         static std::string funnyMessage();
+        static std::string funnyComputerMessage();
 
     protected:
         matrix defence;    //griglia difesa (navi)

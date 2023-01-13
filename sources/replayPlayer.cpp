@@ -20,6 +20,6 @@ void replayPlayer::startReplayFleet(const std::vector<std::pair<coords, coords>>
 }
 
 void replayPlayer::makeMove(player& pl, player& opponent, std::pair<coords, coords> move) {
-    pl.action(move.first, move.second, opponent);      //coordinate random
+    pl.action(move.first, move.second, opponent, true);      //coordinate random
 }
 
