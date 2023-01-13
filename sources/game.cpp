@@ -165,8 +165,8 @@ void game::start_game(bool human){
     //creazione dei giocatori
     create_players(human, p1, p2);
 
-    if(human)
-        game::start_menu();
+   // if(human)
+    //    game::start_menu();
 
     //posizionare navi p2 (A random | B cout/cin)
     std::vector<std::pair<std::string, std::string>> logMovesOne, logMovesTwo;
