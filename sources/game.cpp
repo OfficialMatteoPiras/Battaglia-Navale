@@ -316,19 +316,3 @@ void game::write_game(const std::string &out_file, bool firstPlayer, std::vector
     }
     outFile.close();
 }
-
-std::vector<std::pair<coords, coords>>  game::stringToCoords(const std::vector<std::pair<std::string, std::string>>& vector){
-    std::vector<std::pair<coords, coords>> outVect;
-    coords first{}, second{};
-    for (auto & i : vector) {
-       first = (coords) i.first;
-       second = (coords) i.second;
-
-       outVect.emplace_back(first, second);
-    }
-
-    return outVect;
-}
-
-
-
