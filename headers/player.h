@@ -35,8 +35,8 @@ class player{
         void hit(coords target);
 
         //inizializzazione flotta
-        std::vector<std::pair<std::string, std::string>> startFleet();          //start della flotta con input del giocatore
-        std::vector<std::pair<std::string, std::string>> startRandomFleet();    //start della flotta randomico
+        std::vector<std::pair<coords, coords>> startFleet();          //start della flotta con input del giocatore
+        std::vector<std::pair<coords, coords>> startRandomFleet();    //start della flotta randomico
         void printFleet();  //todo: rimuovere
 
         //comandi

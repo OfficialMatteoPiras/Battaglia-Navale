@@ -69,7 +69,7 @@ void player::hit(coords target) {
 }
 
 //inizializzazione flotta
-std::vector<std::pair<std::string, std::string>> player::startFleet() {
+std::vector<std::pair<coords, coords>> player::startFleet() {
 
     //todo: usare la funzione newShip();
     int dim = 5, cont = 1;
@@ -77,7 +77,7 @@ std::vector<std::pair<std::string, std::string>> player::startFleet() {
     char ch = 'C';
 
     std::pair<coords, coords> input = {{"A10"},{"B10"}};
-    std::vector<std::pair<std::string, std::string>> log;
+    std::vector<std::pair<coords, coords>> log;
 
     //START CORAZZATA
     for (int i = 0; i < 8; i++) {
@@ -101,7 +101,7 @@ std::vector<std::pair<std::string, std::string>> player::startFleet() {
 
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
-            log.emplace_back(input.first.toString(), input.second.toString());
+            log.emplace_back(input.first, input.second);
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) { ch = 'S'; cont = 0; }
@@ -124,11 +124,11 @@ std::vector<std::pair<std::string, std::string>> player::startFleet() {
     return log;
 }
 
-std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
+std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     int dim = 5;
     char ch = 'C';
 
-    std::vector<std::pair<std::string, std::string>> log;
+    std::vector<std::pair<coords, coords>> log;
 
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
@@ -148,7 +148,7 @@ std::vector<std::pair<std::string, std::string>> player::startRandomFleet() {
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
 
-            log.emplace_back(s.getBow().toString(), s.getStern().toString());
+            log.emplace_back(s.getBow(), s.getStern());
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) ch = 'S';

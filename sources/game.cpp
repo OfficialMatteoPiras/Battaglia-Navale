@@ -11,7 +11,6 @@ void game::start_menu(){
         std::cout << "i - info" << std::endl;
         std::cout << "e - esci" << std::endl;
         std::cout << ">>";
-        //std::cout << "c - crediti" << std::endl;
         std::cin >> ch;
         switch (ch) {
             case 's':       //inizia la partita
@@ -44,7 +43,6 @@ void game::start_menu(){
                 std::cout << "\t- il carattere Y rappresenta una nave individuata dal sonar" << std::endl;
                 break;
             case 'e':
-                //exit(0);
                 done = true;
                 break;
             default:
@@ -78,6 +76,7 @@ std::pair<std::string, std::string> game::computerRound(player& pl, player& oppo
     std::pair<std::string, std::string> c = std::make_pair(origin.toString(), target.toString());
     return c;
 }
+
 
 std::pair<std::string, std::string> game::humanRound(player& pl, player& opponent) {
     std::string origin;
@@ -117,17 +116,13 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
             }
         }
         catch (coords::invalidCoords& e) {
-            //le coordinate non sono valide
-            // chiede di riprovare (done = false)
             std::cout << ">> coordinate non valide!" << std::endl;
         }
         catch (player::invalidOrigin& e) {
-            //l'origine non corrisponde a nessuna nave
             std::cout << ">> errore nella selezione della nave!" << std::endl;
         }
         catch (player::notEnoughSpace& e) {
-            //non c'è spazio per spostare la nave
-            std::cout << ">> non possiamo spostarci in quella direzione capitano!" << std::endl;
+            std::cout << ">> non possiamo spostarci in quella direzione, capitano!" << std::endl;
         }
     }
     std::pair<std::string, std::string> c = std::make_pair(origin, target);
@@ -155,24 +150,16 @@ void game::create_players(bool human, player &p1, player &p2){
 }
 
 void game::start_game(bool human){
-    //VARIABILI
-    int MAX_ROUNDS = 100;       // numero round per la partita CC
-    //vettore log per salvare tutte le mosse (bool, coords, coords) | (player1, origin, target)
-    std::vector<std::pair<std::string, std::string>> log;
-    //creare giocatori p1 e p2
+    int MAX_ROUNDS = 100;       //numero round per la partita CC
+    std::vector<std::pair<coords, coords>> log;   //vettore log per salvare tutte le mosse (player1, origin, target)
+    std::pair<std::string, std::string> move;   //per salvare le mosse effettuate
+
+    //crea i giocatori p1 e p2
     player p1, p2;      //p1 sempre computer
-    std::pair<std::string, std::string> move;   //per le mosse decise
-    bool roundP1 = false, startPlayer = false;   //decisione del giocatore che inizia
-
-
-    //creazione dei giocatori
     create_players(human, p1, p2);
 
-   // if(human)
-    //    game::start_menu();
-
-    //posizionare navi p2 (A random | B cout/cin)
-    std::vector<std::pair<std::string, std::string>> logMovesOne, logMovesTwo;
+    //posiziona le navi
+    std::vector<std::pair<coords, coords>> logMovesOne, logMovesTwo;
     logMovesOne = p1.startRandomFleet();
     if(human){
         if(p2.getName() == "admin") logMovesTwo = p2.startRandomFleet();        //todo: RIMUOVERE ASSOLUTAMENTE!!!!
@@ -183,8 +170,6 @@ void game::start_game(bool human){
         logMovesTwo = p2.startRandomFleet();
     }
 
-
-    //todo: sistemare il salvataggio delle navi e delle mosse, non si salvano correttamente (?)
     //salva le navi del giocatore 1
     for(const auto & i : logMovesOne){
         log.push_back(i);
@@ -193,17 +178,15 @@ void game::start_game(bool human){
     for(const auto & i : logMovesTwo){
         log.push_back(i);
     }
-
     print(p1, p2, human);
 
-    //sorteggio primo giocatore: p1: roundP1 = true, p2: roundP1 = false        //(p1 = 1, p2 = 0)
-    if (rand()%2 == 1) {
+    //sorteggio del primo giocatore (p1: roundP1 = true, p2: roundP1 = false)
+    bool roundP1 = false;
+    if (rand()%2 == 1)
         roundP1 = true;
-        startPlayer = true;
-    }
+    const bool firstPlayer = roundP1;
 
     std::cout << "\nINIZIA IL GIOCATORE: ";
-
     std::cout << (roundP1 ? p1.getName() : p2.getName()) << std::endl;
 
     for (int i = 0; i < MAX_ROUNDS && p1.isAlive() && p2.isAlive(); ++i) {
@@ -211,7 +194,7 @@ void game::start_game(bool human){
         //round P1 (computer)
         if(roundP1) {
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
-            move =  game::computerRound(p1, p2);
+            move = game::computerRound(p1, p2);
             if(human) std::cout << player::funnyComputerMessage() << std::endl;        //stampa un messaggio divertente randomicamente
             else p1.visual();
         }
@@ -227,14 +210,13 @@ void game::start_game(bool human){
         }
         std::string s = move.first;
         if(s != "XX" && s != "AA" && s != "BB" && s != "CC") {
-            log.push_back(move);
+            log.emplace_back(move);
             roundP1 = !roundP1;
         }
 
         if(human) MAX_ROUNDS++;     //aumento la variabile del massimo dei turni se è una partita PC
         else {
-            //p2.visual();
-            std::cout << "Mossa: " << log[i].first << " -> " << log[i].second << std::endl;        //stampa la mossa se è una partita CC
+            std::cout << "Mossa: " << log[i+16].first << " -> " << log[i+16].second << std::endl;        //stampa la mossa se è una partita CC
         }
 
         std::cout << std::endl;
@@ -244,31 +226,27 @@ void game::start_game(bool human){
 
     //FINE PARTITA
 
-    //if p1 è morto
+    //if p1 ha perso
     if(!p1.isAlive()){
-        //P1 HA PERSO SFIGATO è MORTO
         std::cout << "IL VINCITORE E': " + p2.getName() << std::endl;
     }
-        //if p2 è morto
+    //if p2 ha perso
     else if(!p2.isAlive()){
-        //P2 HA PERSO SFIGATO è MORTO
         std::cout << "IL VINCITORE E': " + p1.getName() << std::endl;
     }
-        //if mosse finite: confronto "punteggi" (unità vive)
+    //if mosse finite: pareggio
     else{
         std::cout << "LA PARTITA E' FINITA IN PAREGGIO!" << std::endl;
-        //PAREGGIO
-        //punti?
     }
 
-    std::cout << "*** TOTALE DANNI INFLITTI ***" << std::endl;
+    std::cout << "*** UNITA' SOPRAVVISSUTE AI DANNI INFLITTI ***" << std::endl;
     std::cout << ">> " + p1.getName() + ": " << p1.getPoints() << std::endl;
     std::cout << ">> " + p2.getName() + ": " << p2.getPoints() << std::endl;
 
     //salvataggio della partita
     std::string file_name = human ? "logPC" : "logCC";
 
-    game::write_game(file_name, startPlayer, game::stringToCoords(log));
+    game::write_game(file_name, firstPlayer, log);
 }
 
 
@@ -320,7 +298,7 @@ void game::print(player p1, player p2, bool human){     //todo: rivedere la funz
     sleep(1);
 }
 
-void game::write_game(const std::string &out_file, bool startPlayer, std::vector<std::pair<coords, coords>> vector) {
+void game::write_game(const std::string &out_file, bool firstPlayer, std::vector<std::pair<coords, coords>> vector) {
     std::ofstream outFile;              // Dichiarazione di tipo
     std::string path = "../file/" + out_file;      //creazione del percorso per il salvataggio
 
@@ -331,7 +309,7 @@ void game::write_game(const std::string &out_file, bool startPlayer, std::vector
     if (!outFile) {
         std::cout << "Errore di apertura del file" << std::endl;         // controllo
     } else {
-        outFile << (startPlayer ? 1 : 0) << std::endl;
+        outFile << (firstPlayer ? 1 : 0) << std::endl;
         for (auto & i : vector) {       //scorro il vettore per scrivere nel nuovo file
             outFile << i.first << " " << i.second << std::endl;
         }
@@ -343,10 +321,8 @@ std::vector<std::pair<coords, coords>>  game::stringToCoords(const std::vector<s
     std::vector<std::pair<coords, coords>> outVect;
     coords first{}, second{};
     for (auto & i : vector) {
-       //std::cout << i.first << " " << i.second << std::endl;
-
-       first  = (coords) i.first;
-       second  = (coords) i.second;
+       first = (coords) i.first;
+       second = (coords) i.second;
 
        outVect.emplace_back(first, second);
     }
