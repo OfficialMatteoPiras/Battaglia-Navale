@@ -27,7 +27,7 @@ class player{
         coords getRandomOrigin() const;
         static coords getRandomCoord();
         std::string getRandomY() const;
-        std::map<coords, ship*> getFleet() { return fleet; }      //TODO OR NOT TODO??
+        const std::map<coords, ship*>& getFleet() const { return fleet; }      //TODO OR NOT TODO??
         bool isEmpty(coords target) { return defence.isEmpty(target); }
 
         //setters

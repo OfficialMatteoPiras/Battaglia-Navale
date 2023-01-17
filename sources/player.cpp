@@ -41,7 +41,6 @@ coords player::getRandomOrigin() const{
 
 coords player::getRandomCoord(){
     coords c = {getRandomInt(12), getRandomInt(12)};
-    //std::cout << "estrazione-> " << c << std::endl;        //todo: remove
     return c;
 }
 
@@ -76,7 +75,7 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
     unsigned int dif;
     char ch = 'C';
 
-    std::pair<coords, coords> input = {{"A10"},{"B10"}};
+    std::pair<coords, coords> input = {};
     std::vector<std::pair<coords, coords>> log;
 
     //START CORAZZATA
@@ -127,18 +126,14 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
 std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     int dim = 5;
     char ch = 'C';
-
     std::vector<std::pair<coords, coords>> log;
 
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
-
             coords c1 = getRandomCoord();
             bool vtr = getRandomInt(99) % 2 == 0;
             coords c2 = getRandomCoord(c1, vtr, dim);
-            //std::pair<coords, coords> input(c1, c2);
-            //std::cout << c1 << " " << c2 << " " << vtr << " " << dim << std::endl;
 
             //CHECK E MATRIX INPUT
             ship s(c1,c2,dim);
@@ -147,7 +142,6 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
 
             //FLEET INPUT
             newShip(s.getStern(), s.getBow(), ch);
-
             log.emplace_back(s.getBow(), s.getStern());
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
@@ -156,17 +150,12 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
 
         }
         catch (coords::invalidCoords& c){
-            //std::cout << " ** invalid coordinates **" << std::endl;
             i--;
         }
         catch(notEnoughSpace& e){
-            //std::cout << " ** not enough space **" << std::endl;
             i--;
         }
-        //std::cout << "-------------------" << std::endl;
-        //visual();
     }
-    //std::cout << "\n******* " << funnyMessage() << " *******" << std::endl;
     return log;
 }
 
@@ -363,6 +352,7 @@ void player::move(coords origin, coords target) {
     }
 
     s->moved(target);
+
     fleet.erase(origin);
     fleet.insert(std::make_pair(target, s));
 }
@@ -385,11 +375,11 @@ ship* player::getShipPointer(coords c){
 
                 if (fleet.find(center) != fleet.end()) {   //esiste una nave con quel centro?
                     s = fleet.find(center)->second;
-                    //chiede se quella cella appartiene (funzione della nave)
+                    //verifica se quella cella appartiene alla nave
                     found = s->contains(c);
                 }
             }
-            catch (coords::invalidCoords &e) {}
+            catch (coords::invalidCoords& e) {}
         }
     }
     return s;
@@ -418,7 +408,6 @@ bool player::wasHit(coords target){
 //rimuove una nave dalla flotta e dalla griglia di difesa
 void player::removeShip(coords center){
     ship* s = fleet.find(center)->second;
-    fleet.erase(center);        //rimozione dalla flotta
     int dim = s->getDimension();
     for(int i = -dim/2; i <= dim/2; i++) {       //riscrittura defense
         if (s->isVertical())
@@ -426,6 +415,8 @@ void player::removeShip(coords center){
         else
             defence.insert(center.addCol(i), ' ');
     }
+    delete s;
+    fleet.erase(center);        //rimozione dalla flotta
 }
 
 //inserisce la nave s nella griglia di difesa
@@ -468,7 +459,6 @@ coords player::getRandomCoord(coords bow, bool vertical, int distance){ //prende
     //modifica della nuova coordinata
     if (vertical) newCoord = newCoord.add(distance, 0);
     else newCoord = newCoord.add(0, distance);
-    //std::cout << "nuova nave-> " << newCoord << std::endl;       //todo: rimuovere
 
     return newCoord;
 }

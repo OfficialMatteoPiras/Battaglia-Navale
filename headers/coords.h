@@ -12,7 +12,7 @@ class coords{
         //CONSTRUCTORS
         coords(int r, int c);       //costruisce dalle coordinate della matrice (range 0-11)
         coords(std::string);        //legge "B10" e inizializza con x=1, y=9
-        coords() = default;
+        coords() : x{0}, y{0} {};
 
         //GETTERS
         //matrix coordinates
