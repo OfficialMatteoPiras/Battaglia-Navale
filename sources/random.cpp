@@ -26,4 +26,3 @@ int randomFunction::getRandomInt(int range, int start){
     int random = start + (rand() % range);
     return random;
 }
-

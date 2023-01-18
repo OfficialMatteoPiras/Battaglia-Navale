@@ -105,11 +105,11 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
             visual();           //visualizza la griglia per aiutare il giocatore ad inserire le navi
         }
         catch (coords::invalidCoords& c){
-            std::cout << " ** invalid coordinates **" << std::endl;
+            std::cout << " ** Coordinate non valide! **" << std::endl;
             i--;
         }
         catch(notEnoughSpace& e){
-            std::cout << " ** not enough space **" << std::endl;
+            std::cout << " ** Non c'è abbastanza spazio per piazzarci lì, capitano! **" << std::endl;
             i--;
         }
     }
@@ -451,7 +451,7 @@ ship* player::newShip(const coords& stern, const coords& bow, char c){
 
 //*input coordinate*
 std::pair<coords, coords> player::getCoords(const std::string& message){
-    std::string origin, target, delimiter = " ";
+    std::string origin, target;
     //input
     std::cout << message << ": ";
     std::cin >> origin >> target;

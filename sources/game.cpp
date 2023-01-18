@@ -15,6 +15,7 @@ void game::start_menu(){
         switch (ch) {
             case 's':       //inizia la partita
                 std::cout << "START GAME" << std::endl;
+                std::cin.ignore();
                 game::start_game(true);
                 done = true;
                 break;
@@ -139,10 +140,7 @@ void game::create_players(bool human, player &p1, player &p2){
     if(human){
         std::cout << "Inserisci il tuo nome! \n>>";
         std::string name;
-        //cancello il buffer di input
-        std::cin.clear();
-        fflush(stdin);
-        std::getline(std::cin, name);
+        getline(std::cin, name);
         p2.setName(name);
         p1.setName("Computer");
     }
