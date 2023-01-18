@@ -64,7 +64,7 @@ std::pair<std::string, std::string> game::computerRound(player& pl, player& oppo
         if(pl.isABattleship(origin) && !pl.getRandomY().empty())
             target = coords(pl.getRandomY());
         else
-            target = _random::getRandomCoord();
+            target = randomFunction::getRandomCoord();
         try {       //try catch azione
             pl.action(origin, target, opponent);      //coordinate random
             done = true;

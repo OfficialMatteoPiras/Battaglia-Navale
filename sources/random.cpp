@@ -2,12 +2,12 @@
 
 #include "random.h"
 
-coords _random::getRandomCoord(){
+coords randomFunction::getRandomCoord(){
     coords c = {getRandomInt(12), getRandomInt(12)};
     return c;
 }
 
-coords _random::getRandomCoord(const coords& bow, bool vertical, int distance){ //prende in input la PRUA!
+coords randomFunction::getRandomCoord(const coords& bow, bool vertical, int distance){ //prende in input la PRUA!
     coords newCoord = coords(bow.getX(), bow.getY());
     distance--;
 
@@ -21,7 +21,7 @@ coords _random::getRandomCoord(const coords& bow, bool vertical, int distance){ 
     return newCoord;
 }
 
-int _random::getRandomInt(int range, int start){
+int randomFunction::getRandomInt(int range, int start){
     srand(rand());
     int random = start + (rand() % range);
     return random;
