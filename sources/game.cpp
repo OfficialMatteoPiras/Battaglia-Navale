@@ -100,7 +100,7 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
             else if (origin == "CC" && target == "CC") {
                 pl.deleteO();
             }
-            //if XX XX: stampa le griglie di P2
+            //if XX XX: stampa le griglie di pl
             else if (origin == "XX" && target == "XX") {
                //stampa
                 pl.visual();
@@ -110,10 +110,10 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 done = true;
             }
             else {
-                if(origin == "YY" && target == "YY" && pl.getName() == "#admin") opponent.visual();
+                if(origin == "YY" && target == "YY" && pl.getName() == "#admin")
+                    opponent.visual();      //nella modalità amministratore è possibile visualizzare le griglie dell'avversario
                 else{
-                    //chiama l'azione (altrimenti propaga eccezione)
-                    pl.action(origin, target, opponent);
+                    pl.action(origin, target, opponent);        //chiama l'azione (propaga eccezione)
                     done = true;
                 }
             }
@@ -134,7 +134,6 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
 
 
 void game::create_players(bool human, player &p1, player &p2){
-    //crea i giocatori
     if(human){
         std::cout << "Inserisci il tuo nome! \n>>";
         std::string name;
@@ -149,7 +148,7 @@ void game::create_players(bool human, player &p1, player &p2){
 }
 
 void game::start_game(bool human){
-    int MAX_ROUNDS = 100;       //numero round per la partita CC
+    const int MAX_ROUNDS = 100;       //numero massimo round per la partita CC
     std::vector<std::pair<coords, coords>> log;   //vettore log per salvare tutte le mosse (player1, origin, target)
     std::pair<std::string, std::string> move;   //per salvare le mosse effettuate
 
@@ -184,7 +183,6 @@ void game::start_game(bool human){
     if (rand()%2 == 1)
         roundP1 = true;
     const bool firstPlayer = roundP1;
-
     std::cout << "\nINIZIA IL GIOCATORE: ";
     std::cout << (roundP1 ? p1.getName() : p2.getName()) << std::endl;
 
@@ -248,7 +246,6 @@ void game::start_game(bool human){
 
     //salvataggio della partita
     std::string file_name = human ? "logPC" : "logCC";
-
     game::write_game(file_name, firstPlayer, p1.getName(), p2.getName(), log);
 }
 
