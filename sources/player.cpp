@@ -356,7 +356,7 @@ void player::move(const coords& origin, const coords& target) {
     fleet.insert(std::make_pair(target, s));
 }
 
-//restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate    //TODO gestire c vuota
+//restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate
 ship* player::getShipPointer(const coords& c){
     int dim = defence.getShipDim(c);        //dimensione della nave da riparare (in base alla lettera sulla griglia)
     //if(dim == 0)

@@ -111,7 +111,7 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 done = true;
             }
             else {
-                if(origin == "YY" && target == "YY") opponent.visual();     //todo: RIMUOVERE ASSOLUTAMENTE if - else!!!!!!
+                if(origin == "YY" && target == "YY" && pl.getName() == "admin") opponent.visual();
                 else{
                     //chiama l'azione (altrimenti propaga eccezione)
                     pl.action(origin, target, opponent);
@@ -138,12 +138,11 @@ void game::create_players(bool human, player &p1, player &p2){
     //crea i giocatori
     if(human){
         std::cout << "Inserisci il tuo nome! \n>>";
-        std::string name;           //todo: sistemare
+        std::string name;
         //cancello il buffer di input
         std::cin.clear();
         fflush(stdin);
         std::getline(std::cin, name);
-        //std::cin >> name;
         p2.setName(name);
         p1.setName("Computer");
     }
@@ -166,7 +165,7 @@ void game::start_game(bool human){
     std::vector<std::pair<coords, coords>> logMovesOne, logMovesTwo;
     logMovesOne = p1.startRandomFleet();
     if(human){
-        if(p2.getName() == "admin") logMovesTwo = p2.startRandomFleet();        //todo: RIMUOVERE ASSOLUTAMENTE!!!!
+        if(p2.getName() == "admin") logMovesTwo = p2.startRandomFleet();
         else logMovesTwo = p2.startFleet();
         std::cout << player::funnyMessage() << std::endl;
     }
