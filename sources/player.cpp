@@ -2,7 +2,8 @@
 
 #include "../headers/player.h"
 
-//costruttori
+//COSTRUTTORI
+
 player::player() {
     name = "Player";
     fleet = {};
@@ -13,7 +14,9 @@ player::player(const std::string& n){
     fleet = {};
 }
 
-//getters
+
+//GETTERS
+
 int player::getPoints() const{
     int points = 0;
     for(auto& iter: fleet){
@@ -30,7 +33,6 @@ bool player::isABattleship(const coords& origin) const{
 }
 
 coords player::getRandomOrigin() const{
-    //srand(rand());
     std::vector<coords> v;
     for(auto& iter: fleet) {
         v.push_back(iter.first);
@@ -49,9 +51,25 @@ std::string player::getRandomY() const{
     return s;
 }
 
-//setters
+void player::printFleet() const{
+    std::string ship_name, tab;
+    std::cout << "FLOTTA: " << std::endl;
+    for (auto &iter: fleet) {
+        if(iter.second->getDimension() == 5) ship_name = "Corazzata";
+        if(iter.second->getDimension() == 3) ship_name = "Nave di supporto";
+        if(iter.second->getDimension() == 1) ship_name = "Sottomarino";
+
+        tab = ship_name.size() > 11 ? "\t" : "\t\t";
+        std::cout << ship_name << ": " << tab << *iter.second << std::endl;
+    }
+}
+
+
+//SETTERS
+
 void player::hit(const coords& target) {
-    char c = defence.getElement(target);    //controlla che sia un carattere maiuscolo (unità non colpita), altrimenti non esegue nulla
+    char c = defence.getElement(target);
+    //controlla che sia un carattere maiuscolo (unità non colpita), altrimenti non esegue nulla
     if(c == 'C' || c == 'S' || c == 'E') {
         defence.hit(target);
         ship *s = getShipPointer(target);
@@ -62,7 +80,6 @@ void player::hit(const coords& target) {
     }
 }
 
-//inizializzazione flotta
 std::vector<std::pair<coords, coords>> player::startFleet() {
 
     int dim = 5, cont = 1;
@@ -154,20 +171,9 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     return log;
 }
 
-void player::printFleet() {
-    std::string ship_name, tab;
-    std::cout << "FLOTTA: " << std::endl;
-    for (auto &iter: fleet) {
-        if(iter.second->getDimension() == 5) ship_name = "Corazzata";
-        if(iter.second->getDimension() == 3) ship_name = "Nave di supporto";
-        if(iter.second->getDimension() == 1) ship_name = "Sottomarino";
 
-        tab = ship_name.size() > 11 ? "\t" : "\t\t";
-        std::cout << ship_name << ": " << tab << *iter.second << std::endl;
-    }
-}
+//COMANDI
 
-//comandi
 void player::action(const coords& origin, const coords& target, player& opponent, bool replay){
     if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
         throw invalidOrigin();
@@ -218,7 +224,8 @@ void player::deleteO(){
     }
 }
 
-//messaggi output
+//MESSAGGI OUTPUT
+
 std::string player::funnyMessage() {
     srand(rand());
     std::vector<std::string> message = {
@@ -233,9 +240,30 @@ std::string player::funnyMessage() {
     return message[rand() % message.size()];
 }
 
+std::string player::funnyComputerMessage() {
+    srand(rand());
+    std::vector<std::string> message = {        //NB: gli spazi vuoti sono voluti, servono a non far stampare ad ogni turno un messaggio
+        "COLPITO OPPURE NO? CHI LO SA...",
+        "",
+        "ATTENTO! IL MARE E' DALLA NOSTRA PARTE!",
+        "",
+        "I MIEI CANNONI SONO PUNTATI SULLE TUE NAVI, STAI ATTENTO!",
+        "*RISATA MALVAGIA*",
+        "",
+        "*SOFFIO DI VENTO*",
+        "SO CHE SEI LI DA QUALCHE PARTE!",
+        "POSSO SENTIRE LA TUA PAURA!",
+        "",
+        "LE MIE NAVI POSSONO CONTINUARE COSI' TUTTO IL GIORNO!",
+    };
+    return message[rand() % message.size()];
+}
 
-//FUNZIONI PROTECTED
-//*azioni*
+
+//**FUNZIONI PROTECTED**
+
+//AZIONI DELLE TRE NAVI
+
 //azione della corazzata
 void player::fire(const coords& target, player& opponent){
     if(opponent.isEmpty(target)){       // acqua
@@ -295,7 +323,8 @@ void player::moveAndSearch(const coords& origin, const coords& target, player& o
     }
 }
 
-//*funzioni di supporto alle azioni*
+//FUNZIONI DI SUPPORTO ALLE AZIONI
+
 //controlla se c'è spazio per inserire una nave (se non c'è lancia notEnoughSpace())
 void player::checkSpace(ship* s, const coords& target, bool alreadyExists){
     int dim = s->getDimension();
@@ -359,8 +388,6 @@ void player::move(const coords& origin, const coords& target) {
 //restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate
 ship* player::getShipPointer(const coords& c){
     int dim = defence.getShipDim(c);        //dimensione della nave da riparare (in base alla lettera sulla griglia)
-    //if(dim == 0)
-    //    throw invalidOrigin();
     coords center;
     ship* s = nullptr;
     bool found = false;
@@ -418,6 +445,20 @@ void player::removeShip(const coords& center){
     delete s;
 }
 
+//crea una nave e la inserisce nella flotta
+ship* player::newShip(const coords& stern, const coords& bow, char c){
+    ship* s = nullptr;
+    if(c == 'C')
+        s = new battleship(bow, stern);
+    if(c == 'S')
+        s = new support(bow, stern);
+    if(c == 'E')
+        s = new submarine(bow, stern);
+    if(s != nullptr)
+        fleet[s->getCenter()] = s;
+    return s;
+}
+
 //inserisce la nave s nella griglia di difesa
 void player::insertShip(ship& s, char c){
     coords center = s.getCenter();
@@ -433,47 +474,13 @@ void player::insertShip(ship& s, char c){
     }
 }
 
-//crea una nave e la inserisce nella flotta
-ship* player::newShip(const coords& stern, const coords& bow, char c){
-    ship* s = nullptr;
-    if(c == 'C')
-        s = new battleship(bow, stern);
-    if(c == 'S')
-        s = new support(bow, stern);
-    if(c == 'E')
-        s = new submarine(bow, stern);
-    if(s != nullptr)
-        fleet[s->getCenter()] = s;
-    return s;
-}
 
+//INPUT COORDINATE
 
-
-//*input coordinate*
 std::pair<coords, coords> player::getCoords(const std::string& message){
     std::string origin, target;
-    //input
     std::cout << message << ": ";
     std::cin >> origin >> target;
 
     return {{origin},{target}};
-}
-
-std::string player::funnyComputerMessage() {
-    srand(rand());
-    std::vector<std::string> message = {        //NB: gli spazi vuoti sono voluti, servono a non far stampare ad ogni turno un messaggio
-            "COLPITO OPPURE NO? CHI LO SA...",
-            "",
-            "ATTENTO! IL MARE E' DALLA NOSTRA PARTE!",
-            "",
-            "I MIEI CANNONI SONO PUNTATI SULLE TUE NAVI, STAI ATTENTO!",
-            "*RISATA MALVAGIA*",
-            "",
-            "*SOFFIO DI VENTO*",
-            "SO CHE SEI LI DA QUALCHE PARTE!",
-            "POSSO SENTIRE LA TUA PAURA!",
-            "",
-            "LE MIE NAVI POSSONO CONTINUARE COSI' TUTTO IL GIORNO!",
-    };
-    return message[rand() % message.size()];
 }

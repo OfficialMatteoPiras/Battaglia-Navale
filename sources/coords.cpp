@@ -27,16 +27,16 @@ coords::coords(std::string s){  //"XY" ("riga-colonna")
 
 
 //ADD
+coords coords::add(int r, int c) const {
+    return coords(x+r, y+c);
+}
+
 coords coords::addRow (int n) const {
     return coords(x+n, y);
 }
 
 coords coords::addCol(int n) const {
     return coords(x, y+n);
-}
-
-coords coords::add(int r, int c) const {
-    return coords(x+r, y+c);
 }
 
 //COORDS TO STRING
@@ -90,7 +90,8 @@ int coords::operator-(const coords &c) const {
 }
 
 
-//ROW TYPES CONVERSIONS
+//CONVERSIONI RIGHE
+
 char coords::rowToChar(int r) {
     std::string s = "ABCDEFGHILMN";
     return s[r];

@@ -53,21 +53,19 @@ void game::start_menu(){
     }
 }
 
-//FUNZIONI TURNI
+
 std::pair<std::string, std::string> game::computerRound(player& pl, player& opponent) {
-    //nave random da p1.fleet e salva in origin
     coords origin = pl.getRandomOrigin();
     coords target;
-    //(AA AA ?)
     bool done = false;
-    //finché non trova coords target valide per l'azione)
+    //ripete il ciclo finché non trova coords target valide per l'azione
     while (!done) {
         if(pl.isABattleship(origin) && !pl.getRandomY().empty())
             target = coords(pl.getRandomY());
         else
             target = randomFunction::getRandomCoord();
         try {       //try catch azione
-            pl.action(origin, target, opponent);      //coordinate random
+            pl.action(origin, target, opponent);
             done = true;
         }
         catch (coords::invalidCoords &e) {}
@@ -134,7 +132,7 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
     return c;
 }
 
-//TURNI
+
 void game::create_players(bool human, player &p1, player &p2){
     //crea i giocatori
     if(human){
@@ -227,7 +225,6 @@ void game::start_game(bool human){
     }
 
     //FINE PARTITA
-
     //if p1 ha perso
     if(!p1.isAlive()){
         std::cout << "IL VINCITORE E': " + p2.getName() << std::endl;
@@ -236,7 +233,7 @@ void game::start_game(bool human){
     else if(!p2.isAlive()){
         std::cout << "IL VINCITORE E': " + p1.getName() << std::endl;
     }
-    //if p2 si è arresto
+    //if p2 si è arreso
     else if(done){
         std::cout << p2.getName() << " SI E' ARRESO!" << std::endl;
     }
@@ -258,15 +255,14 @@ void game::start_game(bool human){
 
 void game::print(player& p1, player& p2, bool human){
     std::string n1 = p1.getName();
-
+    //stampa la flotta di P1 solo nella partita CC
     if(!human){
         p1.visual();        //P1 sempre computer
         p1.printFleet();
         std::cout << std::endl;
         sleep(1);
     }
-
-    //stampa della flotta di P2
+    //stampa la flotta di P2
     std::string n2 = p2.getName();
     p2.visual();
     p2.printFleet();

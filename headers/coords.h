@@ -11,27 +11,26 @@ class coords{
     public:
         //CONSTRUCTORS
         coords(int r, int c);       //costruisce dalle coordinate della matrice (range 0-11)
-        coords(std::string);        //legge "B10" e inizializza con x=1, y=9
+        coords(std::string);        //esempio: legge "B10" e inizializza con x=1, y=9
         coords() : x{0}, y{0} {};
 
         //GETTERS
         //matrix coordinates
         int getX() const { return x; }    //riga della matrice (0-11)
         int getY() const { return y; }    //colonna della matrice (0-11)
-
         //grid coordinates
         char getRow() const { return rowToChar(x); }  //riga della griglia (A-N)
         int getCol() const { return y+1; }   //colonna della griglia (1-12)
 
         //ADD
+        coords add(int r, int c) const;
         coords addRow(int n) const;
         coords addCol(int n) const;
-        coords add(int r, int c) const;
 
-        //COORDS TO STRING
+        //converte coords in std::string
         std::string toString() const;
 
-        //OVERLOAD
+        //OVERLOAD OPERATORI
         bool operator==(const coords&) const;
         bool operator!=(const coords&) const;
         bool operator<(const coords&) const;
@@ -47,13 +46,14 @@ class coords{
         int x;  //riga della matrice (0-11)
         int y;  //colonna della matrice (0-11)
 
-        //ROW TYPES CONVERSIONS
+        //conversione riga da int a char
         static char rowToChar(int r);
+        //conversione riga da char a int
         static int rowToInt(char r);
 
 };
 
-//OPERATOR << (stampa come "B10")
+//OPERATOR <<
 std::ostream& operator<< (std::ostream& os, const coords& c);
 
 
