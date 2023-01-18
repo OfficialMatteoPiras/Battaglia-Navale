@@ -4,15 +4,18 @@
 
 void replay::replay_main(char ch_, const std::string& nome_file_log, const std::string& output_replay) {
     //lettura del file -> fatta in ogni caso, sia trascrittura che replay
-    read_file(nome_file_log);
-    //funzione che fa partire il replay
-    if(ch_ == 'v'){
-        startReplay();
+    try{
+        read_file(nome_file_log);
+        //funzione che fa partire il replay
+        if(ch_ == 'v'){
+            startReplay();
+        }
+        else{       //write file
+            game::write_game(output_replay, startPlayer, name1, name2, vector);       //chiamo la funzione di scrittura in game
+        }
+    }catch(FileNotValid &){
+        std::cout << "*** File non trovato ***" << std::endl;
     }
-    else{       //write file
-        game::write_game(output_replay, startPlayer, name1, name2, vector);       //chiamo la funzione di scrittura in game
-    }
-
 }
 
 std::vector<std::pair<coords, coords>> replay::getSubVector(int start, int end) {
@@ -30,7 +33,8 @@ void replay::read_file(const std::string& file_in_name) {
     if(path.find(".txt") == std::string::npos) path += ".txt";      //se non trova l'estensione la aggiunge
 
     if(!inFile){
-        std::cout << "*** File non trovato ***" << std::endl;
+        throw FileNotValid();
+        //std::cout << "*** File non trovato ***" << std::endl;
     }
     else{
         getline(inFile, str);
@@ -46,15 +50,15 @@ void replay::read_file(const std::string& file_in_name) {
         name1 = str;
         getline(inFile, str);
         name2 = str;
-        while (getline(inFile, str)){           //inserimento di log.txt nel vettore
+        while (getline(inFile, str)){           //inserimento di logCC.txt nel vettore
             if(!str.empty() && str[0] != '0') {
                 s1 = str.substr(0, str.find(delimiter));
                 s2 = str.substr(str.find(delimiter)+1, str.length()-1);
                 vector.emplace_back(s1, s2);           //salvataggio nell'array
             }
         }
+        inFile.close();
     }
-    inFile.close();
 }
 
 void replay::startReplay() {
