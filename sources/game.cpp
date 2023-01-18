@@ -220,10 +220,8 @@ void game::start_game(bool human){
             roundP1 = !roundP1;
         }
 
-        if(human) MAX_ROUNDS++;     //aumento la variabile del massimo dei turni se è una partita PC
-        else {
+        if(!human)
             std::cout << "Mossa: " << log[i+16].first << " -> " << log[i+16].second << std::endl;        //stampa la mossa se è una partita CC
-        }
 
         std::cout << std::endl;
 
