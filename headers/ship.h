@@ -1,4 +1,4 @@
-//Created by Matteo Piras
+//Matteo Piras
 
 #ifndef BATTAGLIA_NAVALE_SHIP_H
 #define BATTAGLIA_NAVALE_SHIP_H

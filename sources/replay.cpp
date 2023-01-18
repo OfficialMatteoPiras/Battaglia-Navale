@@ -30,7 +30,7 @@ void replay::read_file(const std::string& file_in_name) {
     if(path.find(".txt") == std::string::npos) path += ".txt";      //se non trova l'estensione la aggiunge
 
     if(!inFile){
-        throw FileNotValid();
+        std::cout << "*** File non trovato ***" << std::endl;
     }
     else{
         getline(inFile, str);

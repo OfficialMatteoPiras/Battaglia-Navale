@@ -14,8 +14,6 @@ int main(int argc, char **argv){
     //eliminazione
     std::string name = argv[0];
 
-
-
     if(name.find("battaglia_navale") != std::string::npos ){  //PARTITA
         if(strcmp(argv[1], "pc") == 0 ){
             game::start_menu();     //chiama il menu d'inizio

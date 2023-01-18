@@ -23,9 +23,6 @@ class replay{
         void read_file(const std::string& file_in_name);      //lettura del file txt
         void startReplay();
 
-        //ECCEZIONI
-        class FileNotValid : public std::exception{};
-
     public:
         replay() = default;
         void replay_main(char ch_, const std::string& nome_file_log, const std::string& output_replay = "");      //funzione che fa partire il replay (ancora di partenza)

@@ -1,8 +1,8 @@
-cmake_minimum_required(VERSION 3.23)
+#Matteo Piras
 
-project(Battaglia_Navale)
+cmake_minimum_required(VERSION 3.2)
 
-set(CMAKE_CXX_STANDARD 14)
+project(battaglia_navale)
 
 set(CMAKE_CXX_FLAGS_RELEASE "-DNDEBUG -Wall -O2")
 

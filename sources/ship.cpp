@@ -1,4 +1,4 @@
-//Created by Matteo Piras
+// Matteo Piras
 
 #include "../headers/ship.h"
 
