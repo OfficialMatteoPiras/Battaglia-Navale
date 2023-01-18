@@ -72,7 +72,7 @@ void replay::startReplay() {
         std::cout << "**** " << player::funnyMessage() << " ****" << std::endl;       //chiamata statica
         std::cout << std::endl;
     }catch(player::invalidOrigin& e){
-        std::cout << "player 1" << std::endl;       //todo cos'è????
+        std::cout << "Errore di caricamento del 1 giocatore" << std::endl;
     }
     //Player 2
     try{
@@ -82,7 +82,7 @@ void replay::startReplay() {
         std::cout << std::endl;
         std::cout << "**** " << player::funnyMessage() << " ****" << std::endl;       //chiamata statica
     }catch(player::invalidOrigin& e){
-        std::cout << "player 2" << std::endl;   //todo cos'è????
+        std::cout << "Errore di caricamento del 2 giocatore" << std::endl;
     }
 
     std::cout << std::endl;

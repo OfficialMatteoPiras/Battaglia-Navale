@@ -2,9 +2,9 @@
 
 #include "../headers/ship.h"
 
-//OVERLOAD OPERATORI    //TODO: CAMBIARE OUTPUT
+//OVERLOAD OPERATORI
 std::ostream& operator<< (std::ostream& os, ship& ship){
-    return os << "Center:" <<ship.getCenter() << "\t| Bow: " << ship.getBow().getRow() << ship.getBow().getCol() << "\t| Stern: " <<ship.getStern().getRow() << ship.getStern().getCol();
+    return os << "Centro:" <<ship.getCenter() << "\t| Prua: " << ship.getBow().getRow() << ship.getBow().getCol() << "\t| Poppa: " <<ship.getStern().getRow() << ship.getStern().getCol();
 }
 
 // -------------------- SHIP -------------------- //

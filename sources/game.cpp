@@ -1,4 +1,4 @@
-// Claudia De Carlo
+//Matteo Piras and Claudia De Carlo
 
 #include "../headers/game.h"
 

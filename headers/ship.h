@@ -52,7 +52,6 @@ public:
     void restoreLife() { life = dim; }
     void moved(coords newCenter) { center = newCenter; }
 
-    //TODO: aggiungere DISTRUTTORE
 };
 
 

@@ -10,9 +10,6 @@
 #include "../headers/matrix.h"
 #include "../headers/random.h"
 
-//todo: alleggerire il codice
-//- unire startRandomFleet e startFleet
-
 class player{
     public:
         //costruttori

@@ -182,7 +182,7 @@ void player::action(const coords& origin, const coords& target, player& opponent
         moveAndSearch(origin, target, opponent);
     }
 
-    if(replay) std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;       //todo: RIMUOVERE MOSSA
+    if(replay) std::cout << "Mossa: " <<  origin << " -> " << target << std::endl;          //se è in corso un replay fa vedere la mossa fatta
 }
 
 void player::visual(){
