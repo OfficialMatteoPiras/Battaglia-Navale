@@ -5,7 +5,7 @@
 
 #include "../headers/coords.h"
 
-namespace random {
+namespace _random {
     coords getRandomCoord();
     coords getRandomCoord(const coords& coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
     int getRandomInt(int range = 11, int start = 0);

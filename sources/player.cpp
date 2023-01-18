@@ -43,7 +43,7 @@ std::string player::getRandomY() const{
     std::string s;
     std::vector<coords> v = attack.findLetter('Y');
     if(!v.empty()){
-        coords randomY = v[random::getRandomInt(v.size())];
+        coords randomY = v[_random::getRandomInt(v.size())];
         s = randomY.toString();
     }
     return s;
@@ -126,9 +126,9 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
-            coords c1 = random::getRandomCoord();
-            bool vtr = random::getRandomInt(99) % 2 == 0;
-            coords c2 = random::getRandomCoord(c1, vtr, dim);
+            coords c1 = _random::getRandomCoord();
+            bool vtr = _random::getRandomInt(99) % 2 == 0;
+            coords c2 = _random::getRandomCoord(c1, vtr, dim);
 
             //CHECK E MATRIX INPUT
             ship s(c1,c2,dim);
