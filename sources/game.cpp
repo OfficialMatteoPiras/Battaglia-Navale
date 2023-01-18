@@ -112,7 +112,7 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
                 done = true;
             }
             else {
-                if(origin == "YY" && target == "YY" && pl.getName() == "admin") opponent.visual();
+                if(origin == "YY" && target == "YY" && pl.getName() == "#admin") opponent.visual();
                 else{
                     //chiama l'azione (altrimenti propaga eccezione)
                     pl.action(origin, target, opponent);
@@ -163,7 +163,7 @@ void game::start_game(bool human){
     std::vector<std::pair<coords, coords>> logMovesOne, logMovesTwo;
     logMovesOne = p1.startRandomFleet();
     if(human){
-        if(p2.getName() == "admin") logMovesTwo = p2.startRandomFleet();
+        if(p2.getName() == "#admin") logMovesTwo = p2.startRandomFleet();
         else logMovesTwo = p2.startFleet();
         std::cout << player::funnyMessage() << std::endl;
     }

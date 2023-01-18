@@ -20,7 +20,7 @@ coords ship::getStern() const {     //poppa
 
 
 bool ship::contains(coords c) const{
-    coords check = center;      //salvo in check le coordinate delle varie unità della nave
+    coords check;      //salvo in check le coordinate delle varie unità della nave
     for(int i = -dim/2; i <= dim/2; i++){
         if(vertical)
             check = center.addRow(i);

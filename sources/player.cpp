@@ -109,7 +109,7 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
             i--;
         }
         catch(notEnoughSpace& e){
-            std::cout << " ** Non c'è abbastanza spazio per piazzarci lì, capitano! **" << std::endl;
+            std::cout << " ** Non c'e' abbastanza spazio per piazzarci li', capitano! **" << std::endl;
             i--;
         }
     }
@@ -186,7 +186,7 @@ void player::action(const coords& origin, const coords& target, player& opponent
 }
 
 void player::visual(){
-    //std::cout << std::endl;
+    std::cout << std::endl;
     std::string name_ = "**** " + name + " ****";
     unsigned int rep = (102 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
 
@@ -261,7 +261,7 @@ void player::moveAndRepair(const coords& origin, const coords& target){
                         c = target.add(i, j);
                     else
                         c = target.add(j, i);
-                    if (wasHit(c)) {         //ogni volta che trova una lettera minuscola (NON appartenente al sottomarino)
+                    if (!defence.isEmpty(c)) {         //ogni volta che trova una lettera (NON appartenente al sottomarino)
                         repairFullShip(c);
                     }
                 }

@@ -7,9 +7,8 @@
 #include <vector>
 #include <fstream>
 #include <random>
-#include <map>
-#include <functional>
-#include <cstdlib>
+//#include <functional>
+//#include <cstdlib>
 #include <unistd.h>
 #include "../headers/coords.h"
 #include "../headers/ship.h"

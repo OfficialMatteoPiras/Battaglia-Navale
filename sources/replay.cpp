@@ -38,18 +38,19 @@ void replay::read_file(const std::string& file_in_name) {
     }
     else{
         getline(inFile, str);
-        if(str[0] == '0'){
-            std::cout << "Inizia player 1" << std::endl;
-            startPlayer = false;
-        }
-        else{
-            std::cout << "Inizia player 2" << std::endl;
+        if(str[0] == '1')
             startPlayer = true;
-        }
-        getline(inFile, str);
-        name1 = str;
-        getline(inFile, str);
-        name2 = str;
+        else
+            startPlayer = false;
+
+        getline(inFile, name1);
+        getline(inFile, name2);
+
+        if (startPlayer)
+            std::cout << "Inizia " << name1 << std::endl;
+        else
+            std::cout << "Inizia " << name2 << std::endl;
+
         while (getline(inFile, str)){           //inserimento di logCC.txt nel vettore
             if(!str.empty() && str[0] != '0') {
                 s1 = str.substr(0, str.find(delimiter));
