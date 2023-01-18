@@ -1,4 +1,4 @@
-//Matteo Piras
+// Claudia De Carlo
 
 #ifndef BATTAGLIA_NAVALE_GAME_H
 #define BATTAGLIA_NAVALE_GAME_H
@@ -11,11 +11,11 @@
 #include <functional>
 #include <cstdlib>
 #include <unistd.h>
-
 #include "../headers/coords.h"
-#include "../headers/matrix.h"
-#include "../headers/player.h"
 #include "../headers/ship.h"
+#include "../headers/matrix.h"
+#include "../headers/random.h"
+#include "../headers/player.h"
 
 namespace game {
     //FUNZIONI PER I TURNI
@@ -27,9 +27,10 @@ namespace game {
     void start_game(bool human);
     void create_players(bool human, player &p1, player &p2);
 
+
     //void start_game(bool human);
-    void print(player p1, player p2, bool human);
-    void write_game(const std::string &out_file, bool startPlayer, std::vector<std::pair<coords, coords>> vector);      //funzione per la scrittura della partita
+    void print(player& p1, player& p2, bool human);
+    void write_game(const std::string &out_file, bool startPlayer, std::string name1, std::string name2, std::vector<std::pair<coords, coords>>& vector);      //funzione per la scrittura della partita
 };
 
 

@@ -1,4 +1,4 @@
-//Created by Claudia De Carlo and Matteo Piras
+// Claudia De Carlo
 
 #include "../headers/player.h"
 
@@ -8,7 +8,7 @@ player::player() {
     fleet = {};
 }
 
-player::player(const std::string &n){
+player::player(const std::string& n){
     name = n;
     fleet = {};
 }
@@ -22,7 +22,7 @@ int player::getPoints() const{
     return points;
 }
 
-bool player::isABattleship(coords origin) const{
+bool player::isABattleship(const coords& origin) const{
     ship* s = fleet.find(origin)->second;
     if (s->getDimension() == 5)
         return true;
@@ -39,23 +39,18 @@ coords player::getRandomOrigin() const{
     return c;
 }
 
-coords player::getRandomCoord(){
-    coords c = {getRandomInt(12), getRandomInt(12)};
-    return c;
-}
-
 std::string player::getRandomY() const{
     std::string s;
     std::vector<coords> v = attack.findLetter('Y');
     if(!v.empty()){
-        coords randomY = v[getRandomInt(v.size())];
+        coords randomY = v[random::getRandomInt(v.size())];
         s = randomY.toString();
     }
     return s;
 }
 
 //setters
-void player::hit(coords target) {
+void player::hit(const coords& target) {
     char c = defence.getElement(target);    //controlla che sia un carattere maiuscolo (unità non colpita), altrimenti non esegue nulla
     if(c == 'C' || c == 'S' || c == 'E') {
         defence.hit(target);
@@ -131,9 +126,9 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
-            coords c1 = getRandomCoord();
-            bool vtr = getRandomInt(99) % 2 == 0;
-            coords c2 = getRandomCoord(c1, vtr, dim);
+            coords c1 = random::getRandomCoord();
+            bool vtr = random::getRandomInt(99) % 2 == 0;
+            coords c2 = random::getRandomCoord(c1, vtr, dim);
 
             //CHECK E MATRIX INPUT
             ship s(c1,c2,dim);
@@ -160,15 +155,20 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
 }
 
 void player::printFleet() {
-    for (auto & it : fleet) {
-        std::cout << "center: " << it.first.getRow() << it.first.getCol() << "\t| ";
-        std::cout << "bow: " <<it.second->getBow().getRow() << it.second->getBow().getCol() << "\t| ";
-        std::cout << "stern: " <<it.second->getStern().getRow() << it.second->getStern().getCol() << std::endl;
+    std::string ship_name, tab;
+    std::cout << "FLOTTA: " << std::endl;
+    for (auto &iter: fleet) {
+        if(iter.second->getDimension() == 5) ship_name = "Corazzata";
+        if(iter.second->getDimension() == 3) ship_name = "Nave di supporto";
+        if(iter.second->getDimension() == 1) ship_name = "Sottomarino";
+
+        tab = ship_name.size() > 11 ? "\t" : "\t\t";
+        std::cout << ship_name << ": " << tab << *iter.second << std::endl;
     }
 }
 
 //comandi
-void player::action(coords origin, coords target, player& opponent, bool replay){
+void player::action(const coords& origin, const coords& target, player& opponent, bool replay){
     if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
         throw invalidOrigin();
     ship* s = fleet.find(origin)->second;
@@ -237,7 +237,7 @@ std::string player::funnyMessage() {
 //FUNZIONI PROTECTED
 //*azioni*
 //azione della corazzata
-void player::fire(coords target, player& opponent){
+void player::fire(const coords& target, player& opponent){
     if(opponent.isEmpty(target)){       // acqua
         attack.insert(target, 'O');
     }
@@ -248,7 +248,7 @@ void player::fire(coords target, player& opponent){
 }
 
 //azione della nave di supporto
-void player::moveAndRepair(coords origin, coords target){
+void player::moveAndRepair(const coords& origin, const coords& target){
     move(origin, target);   //lancia eccezione se non c'è spazio
 
     ship* s = fleet.find(target)->second;
@@ -272,7 +272,7 @@ void player::moveAndRepair(coords origin, coords target){
 }
 
 //azione del sottomarino di esplorazione
-void player::moveAndSearch(coords origin, coords target, player& opponent){
+void player::moveAndSearch(const coords& origin, const coords& target, player& opponent){
     move(origin, target);  //lancia eccezione se non c'è spazio
 
     coords check;
@@ -297,7 +297,7 @@ void player::moveAndSearch(coords origin, coords target, player& opponent){
 
 //*funzioni di supporto alle azioni*
 //controlla se c'è spazio per inserire una nave (se non c'è lancia notEnoughSpace())
-void player::checkSpace(ship* s, coords target, bool alreadyExists){
+void player::checkSpace(ship* s, const coords& target, bool alreadyExists){
     int dim = s->getDimension();
     coords check;
 
@@ -326,29 +326,28 @@ void player::checkSpace(ship* s, coords target, bool alreadyExists){
 }
 
 //sposta una nave QUALSIASI da origin a target, lancia eccezione se non c'è spazio
-void player::move(coords origin, coords target) {
+void player::move(const coords& origin, const coords& target) {
     std::vector<char> v;
     ship* s = fleet.find(origin)->second;
     checkSpace(s, target, true);
 
     int dim = s->getDimension();
-    //copia la nave in un vettore
+    //copia la nave in un vettore e la cancella da defence
     for(int i = -dim/2; i <= dim/2; i++){
         if(s->isVertical()) {
             v.push_back(defence.getElement(origin.addRow(i)));
+            defence.insert(origin.addRow(i), ' ');
         } else {
             v.push_back(defence.getElement(origin.addCol(i)));
+            defence.insert(origin.addCol(i), ' ');
         }
     }
-    //riscrive defence
+    //inserisce la nave nella nuova posizione
     for(int i = -dim/2; i <= dim/2; i++){
-        if(s->isVertical()) {
-            defence.insert(origin.addRow(i), ' ');
+        if(s->isVertical())
             defence.insert(target.addRow(i), v[i+dim/2]);
-        } else {
-            defence.insert(origin.addCol(i), ' ');
+        else
             defence.insert(target.addCol(i), v[i+dim/2]);
-        }
     }
 
     s->moved(target);
@@ -358,7 +357,7 @@ void player::move(coords origin, coords target) {
 }
 
 //restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate    //TODO gestire c vuota
-ship* player::getShipPointer(coords c){
+ship* player::getShipPointer(const coords& c){
     int dim = defence.getShipDim(c);        //dimensione della nave da riparare (in base alla lettera sulla griglia)
     //if(dim == 0)
     //    throw invalidOrigin();
@@ -386,7 +385,7 @@ ship* player::getShipPointer(coords c){
 }
 
 //ripara l'intera nave a partire dalla coordinata di una delle sue unità
-void player::repairFullShip(coords c){
+void player::repairFullShip(const coords& c){
     ship* s = getShipPointer(c);
     s->restoreLife();
     int dim = s->getDimension();
@@ -400,13 +399,13 @@ void player::repairFullShip(coords c){
 }
 
 //controlla se l'unità in target è stata colpita
-bool player::wasHit(coords target){
+bool player::wasHit(const coords& target){
     char c = defence.getElement(target);
     return c == 'c' || c == 's' || c == 'e';
 }
 
 //rimuove una nave dalla flotta e dalla griglia di difesa
-void player::removeShip(coords center){
+void player::removeShip(const coords& center){
     ship* s = fleet.find(center)->second;
     int dim = s->getDimension();
     for(int i = -dim/2; i <= dim/2; i++) {       //riscrittura defense
@@ -415,12 +414,12 @@ void player::removeShip(coords center){
         else
             defence.insert(center.addCol(i), ' ');
     }
-    delete s;
     fleet.erase(center);        //rimozione dalla flotta
+    delete s;
 }
 
 //inserisce la nave s nella griglia di difesa
-void player::insertShip(ship s, char c){
+void player::insertShip(ship& s, char c){
     coords center = s.getCenter();
     coords n_c;
     int dim = s.getDimension();
@@ -435,7 +434,7 @@ void player::insertShip(ship s, char c){
 }
 
 //crea una nave e la inserisce nella flotta
-ship* player::newShip(coords stern, coords bow, char c){
+ship* player::newShip(const coords& stern, const coords& bow, char c){
     ship* s = nullptr;
     if(c == 'C')
         s = new battleship(bow, stern);
@@ -448,26 +447,7 @@ ship* player::newShip(coords stern, coords bow, char c){
     return s;
 }
 
-//*funzioni random*
-coords player::getRandomCoord(coords bow, bool vertical, int distance){ //prende in input la PRUA!
-    coords newCoord = coords(bow.getX(), bow.getY());
-    distance--;
 
-    //check se sommare o sottrarre
-    if(bow.getX() - distance > 0 || bow.getY() - distance > 0) distance *= (-1);
-
-    //modifica della nuova coordinata
-    if (vertical) newCoord = newCoord.add(distance, 0);
-    else newCoord = newCoord.add(0, distance);
-
-    return newCoord;
-}
-
-int player::getRandomInt(int range, int start){
-    srand(rand());
-    int random = start + (rand() % range);
-    return random;
-}
 
 //*input coordinate*
 std::pair<coords, coords> player::getCoords(const std::string& message){

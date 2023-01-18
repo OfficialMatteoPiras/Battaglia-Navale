@@ -1,4 +1,4 @@
-// Created by Claudia De Carlo
+// Claudia De Carlo
 
 #include "../headers/coords.h"
 
@@ -103,6 +103,6 @@ int coords::rowToInt(char r) {
 
 
 //OPERATOR <<
-std::ostream& operator<< (std::ostream& os, coords& c){
+std::ostream& operator<< (std::ostream& os, const coords& c){
     return os << c.toString();
 }

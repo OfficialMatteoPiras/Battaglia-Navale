@@ -1,4 +1,4 @@
-//Andrea Nalin
+// Andrea Nalin
 
 #ifndef BATTAGLIA_NAVALE_REPLAYPLAYER_H
 #define BATTAGLIA_NAVALE_REPLAYPLAYER_H

@@ -1,4 +1,4 @@
-//Created by Matteo Piras
+// Matteo Piras
 
 #include "../headers/replay.h"
 
@@ -10,7 +10,7 @@ void replay::replay_main(char ch_, const std::string& nome_file_log, const std::
         startReplay();
     }
     else{       //write file
-        game::write_game(output_replay, startPlayer, vector);       //chiamo la funzione di scrittura in game
+        game::write_game(output_replay, startPlayer, name1, name2, vector);       //chiamo la funzione di scrittura in game
     }
 
 }
@@ -42,6 +42,10 @@ void replay::read_file(const std::string& file_in_name) {
             std::cout << "Inizia player 2" << std::endl;
             startPlayer = true;
         }
+        getline(inFile, str);
+        name1 = str;
+        getline(inFile, str);
+        name2 = str;
         while (getline(inFile, str)){           //inserimento di log.txt nel vettore
             if(!str.empty() && str[0] != '0') {
                 s1 = str.substr(0, str.find(delimiter));
@@ -55,7 +59,7 @@ void replay::read_file(const std::string& file_in_name) {
 
 void replay::startReplay() {
     //creazione dei giocatori
-    replayPlayer p1("Player 1"), p2("Player 2");        //inizializzazione dei giocatori
+    replayPlayer p1(name1), p2(name2);        //inizializzazione dei giocatori
     std::vector<std::pair<coords, coords>> moves = getSubVector(16, vector.size());     //vettore con solo le mosse da replicare
     const int maxRounds = moves.size() - 1;
     //INIZIALIZZAZIONE DELLA FLOTTA
@@ -64,28 +68,31 @@ void replay::startReplay() {
         p1.startReplayFleet(getSubVector(0, 7));
         p1.visual();
         p1.printFleet();
+        std::cout << std::endl;
         std::cout << "**** " << player::funnyMessage() << " ****" << std::endl;       //chiamata statica
         std::cout << std::endl;
-    }catch(player::invalidOrigin){
-        std::cout << "player 1" << std::endl;
+    }catch(player::invalidOrigin& e){
+        std::cout << "player 1" << std::endl;       //todo cos'è????
     }
     //Player 2
     try{
         p2.startReplayFleet(getSubVector(8, 15));
         p2.visual();
         p2.printFleet();
+        std::cout << std::endl;
         std::cout << "**** " << player::funnyMessage() << " ****" << std::endl;       //chiamata statica
-    }catch(player::invalidOrigin){
-        std::cout << "player 2" << std::endl;
+    }catch(player::invalidOrigin& e){
+        std::cout << "player 2" << std::endl;   //todo cos'è????
     }
 
     std::cout << std::endl;
 
     //partita (replay)
+    bool roundP1 = startPlayer;
     for (int i = 0; i < maxRounds && p1.isAlive() && p2.isAlive(); ++i) {
 
         std::cout << std::endl;
-        if(startPlayer == 0) {     //round P1
+        if(roundP1) {     //round P1
             std::cout << "** TURNO " << i+1 << ":  TOCCA A " << p1.getName() << std::endl;
             p1.visual();
             replayPlayer::makeMove(p1, p2, moves[i]);
@@ -96,7 +103,7 @@ void replay::startReplay() {
             replayPlayer::makeMove(p2, p1, moves[i]);
         }
 
-        startPlayer = !startPlayer; //cambio turno
+        roundP1 = !roundP1; //cambio turno
         std::cout << std::endl;
         sleep(2);
     }
@@ -122,4 +129,3 @@ void replay::startReplay() {
     std::cout << ">> " + p2.getName() + ": " << p2.getPoints() << std::endl;
 
 }
-

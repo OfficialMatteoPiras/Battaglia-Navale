@@ -20,6 +20,11 @@ add_library(coords
         headers/coords.h
         sources/coords.cpp)
 
+add_library(random
+        headers/random.h
+        sources/random.cpp
+        )
+
 add_library(game
         headers/game.h
         sources/game.cpp)
@@ -46,6 +51,7 @@ add_executable(battaglia_navale
         sources/coords.cpp
         sources/matrix.cpp
         sources/ship.cpp
+        sources/random.cpp
         sources/player.cpp
         sources/game.cpp
         sources/replay.cpp
@@ -56,6 +62,7 @@ add_executable(replay
         sources/coords.cpp
         sources/matrix.cpp
         sources/ship.cpp
+        sources/random.cpp
         sources/player.cpp
         sources/game.cpp
         sources/replay.cpp

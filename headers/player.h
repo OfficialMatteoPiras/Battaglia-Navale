@@ -1,14 +1,14 @@
-// Created by Claudia De Carlo and Matteo Piras
+// Claudia De Carlo
 
 #ifndef BATTAGLIA_NAVALE_PLAYER_H
 #define BATTAGLIA_NAVALE_PLAYER_H
 
+#include <map>
+#include <vector>
 #include "../headers/coords.h"
 #include "../headers/ship.h"
 #include "../headers/matrix.h"
-
-#include <map>
-#include <vector>
+#include "../headers/random.h"
 
 //todo: alleggerire il codice
 //- unire startRandomFleet e startFleet
@@ -17,30 +17,28 @@ class player{
     public:
         //costruttori
         explicit player();
-        explicit player(const std::string &n);
+        explicit player(const std::string& n);
 
         //getters
         std::string getName() const{ return name; }
         bool isAlive() const {return getPoints() > 0; }
         int getPoints() const;
-        bool isABattleship(coords origin) const;
+        bool isABattleship(const coords& origin) const;
         coords getRandomOrigin() const;
-        static coords getRandomCoord();
         std::string getRandomY() const;
-        const std::map<coords, ship*>& getFleet() const { return fleet; }      //TODO OR NOT TODO??
-        bool isEmpty(coords target) { return defence.isEmpty(target); }
+        bool isEmpty(const coords& target) { return defence.isEmpty(target); }
 
         //setters
         void setName(std::string n) { name = n; }
-        void hit(coords target);
+        void hit(const coords& target);
 
         //inizializzazione flotta
         std::vector<std::pair<coords, coords>> startFleet();          //start della flotta con input del giocatore
         std::vector<std::pair<coords, coords>> startRandomFleet();    //start della flotta randomico
-        void printFleet();  //todo: rimuovere
+        void printFleet();
 
         //comandi
-        void action(coords origin, coords target, player& opponent, bool replay = false);    //XYorigin XYtarget -> azione giocatore
+        void action(const coords& origin, const coords& target, player& opponent, bool replay = false);    //XYorigin XYtarget -> azione giocatore
         void visual();      //XX XX - mostra griglie di attacco e difesa
         void deleteY();     //AA AA - cancella tutte le Y
         void deleteX();     //BB BB - cancella tutte le X
@@ -61,25 +59,22 @@ class player{
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
         //azioni
-        void fire(coords target, player& opponent);  //azione della corazzata
-        void moveAndRepair(coords origin, coords target);   //azione della nave di supporto
-        void moveAndSearch(coords origin, coords target, player& opponent); //azione del sottomarino di esplorazione
+        void fire(const coords& target, player& opponent);  //azione della corazzata
+        void moveAndRepair(const coords& origin, const coords& target);   //azione della nave di supporto
+        void moveAndSearch(const coords& origin, const coords& target, player& opponent); //azione del sottomarino di esplorazione
 
         //funzioni di supporto alle azioni
-        void checkSpace(ship* s, coords target, bool alreadyExists);
-        void move(coords origin, coords target);
-        ship* getShipPointer(coords c);
-        void repairFullShip(coords target);    //(ripara l'intera nave da una sua componente)
-        bool wasHit(coords target);
-        void removeShip(coords c);
-        void insertShip(ship origin, char c);
-        ship* newShip(coords stern, coords bow, char c);
+        void checkSpace(ship* s, const coords& target, bool alreadyExists);
+        void move(const coords& origin, const coords& target);
+        ship* getShipPointer(const coords& c);
+        void repairFullShip(const coords& target);    //(ripara l'intera nave da una sua componente)
+        bool wasHit(const coords& target);
+        void removeShip(const coords& c);
+        void insertShip(ship& origin, char c);
+        ship* newShip(const coords& stern, const coords& bow, char c);
 
-        //funzioni random
-        static coords getRandomCoord(coords coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
-        static int getRandomInt(int range = 11, int start = 0);
 
-        //input coordinate
+        //*input coordinate*
         static std::pair<coords, coords> getCoords(const std::string& message);
 };
 

@@ -1,12 +1,10 @@
 //Created by Matteo Piras
 
 #include "../headers/ship.h"
-#include <utility>
 
 //OVERLOAD OPERATORI    //TODO: CAMBIARE OUTPUT
 std::ostream& operator<< (std::ostream& os, ship& ship){
-    return os << "\tCenter:" <<ship.getCenter() << "\t| Bow: " << ship.getBow().getRow() << ship.getBow().getCol() << "\t| Stern: " <<ship.getStern().getRow() << ship.getStern().getCol();
-    //return os << ship.getC() << " " << ship.getCenter() << " " << ship.getDimension() << " " << ship.getLife() << " " << ship.isVertical();      //stampa come centro, dimensione, vita, verticale
+    return os << "Center:" <<ship.getCenter() << "\t| Bow: " << ship.getBow().getRow() << ship.getBow().getCol() << "\t| Stern: " <<ship.getStern().getRow() << ship.getStern().getCol();
 }
 
 // -------------------- SHIP -------------------- //

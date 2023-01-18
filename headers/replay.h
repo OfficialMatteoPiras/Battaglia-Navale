@@ -15,11 +15,12 @@ class replay{
     private:
         std::vector<std::pair<coords, coords>> vector;      //vettore per il salvataggio
         bool startPlayer = false;
+        std::string name1;
+        std::string name2;
 
         //MEMBRI PRIVATI
         std::vector<std::pair<coords, coords>>getSubVector(int start, int end);     //funzione per ottenere un sottovettore
         void read_file(const std::string& file_in_name);      //lettura del file txt
-        void print(player p);       //!funzione per la stampa (usare visual di player?)
         void startReplay();
 
         //ECCEZIONI

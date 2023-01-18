@@ -1,4 +1,4 @@
-// Created by Claudia De Carlo
+// Claudia De Carlo
 
 #ifndef BATTAGLIA_NAVALE_COORDS_H
 #define BATTAGLIA_NAVALE_COORDS_H
@@ -54,7 +54,7 @@ class coords{
 };
 
 //OPERATOR << (stampa come "B10")
-std::ostream& operator<< (std::ostream& os, coords& c);
+std::ostream& operator<< (std::ostream& os, const coords& c);
 
 
 #endif //BATTAGLIA_NAVALE_COORDS_H

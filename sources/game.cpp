@@ -1,4 +1,4 @@
-//Matteo Piras and Claudia De Carlo
+// Claudia De Carlo
 
 #include "../headers/game.h"
 
@@ -64,7 +64,7 @@ std::pair<std::string, std::string> game::computerRound(player& pl, player& oppo
         if(pl.isABattleship(origin) && !pl.getRandomY().empty())
             target = coords(pl.getRandomY());
         else
-            target = player::getRandomCoord();
+            target = random::getRandomCoord();
         try {       //try catch azione
             pl.action(origin, target, opponent);      //coordinate random
             done = true;
@@ -105,6 +105,10 @@ std::pair<std::string, std::string> game::humanRound(player& pl, player& opponen
             else if (origin == "XX" && target == "XX") {
                //stampa
                 pl.visual();
+            }
+            //if QQ QQ: torna al chiamante (start_game) che interrompe la partita
+            else if (origin == "QQ" && target == "QQ") {
+                done = true;
             }
             else {
                 if(origin == "YY" && target == "YY") opponent.visual();     //todo: RIMUOVERE ASSOLUTAMENTE if - else!!!!!!
@@ -189,7 +193,8 @@ void game::start_game(bool human){
     std::cout << "\nINIZIA IL GIOCATORE: ";
     std::cout << (roundP1 ? p1.getName() : p2.getName()) << std::endl;
 
-    for (int i = 0; i < MAX_ROUNDS && p1.isAlive() && p2.isAlive(); ++i) {
+    bool done = false;
+    for (int i = 0; i < MAX_ROUNDS && !done && p1.isAlive() && p2.isAlive(); ++i) {
         std::cout << std::endl;
         //round P1 (computer)
         if(roundP1) {
@@ -209,7 +214,9 @@ void game::start_game(bool human){
             }
         }
         std::string s = move.first;
-        if(s != "XX" && s != "AA" && s != "BB" && s != "CC") {
+        if(s == "QQ")
+            done = true;
+        if(s != "XX" && s != "AA" && s != "BB" && s != "CC" && s != "QQ") {
             log.emplace_back(move);
             roundP1 = !roundP1;
         }
@@ -221,7 +228,7 @@ void game::start_game(bool human){
 
         std::cout << std::endl;
 
-        sleep(1);         //timer
+        //sleep(1);         //timer
     }
 
     //FINE PARTITA
@@ -233,6 +240,10 @@ void game::start_game(bool human){
     //if p2 ha perso
     else if(!p2.isAlive()){
         std::cout << "IL VINCITORE E': " + p1.getName() << std::endl;
+    }
+    //if p2 si è arresto
+    else if(done){
+        std::cout << p2.getName() << " SI E' ARRESO!" << std::endl;
     }
     //if mosse finite: pareggio
     else{
@@ -246,59 +257,29 @@ void game::start_game(bool human){
     //salvataggio della partita
     std::string file_name = human ? "logPC" : "logCC";
 
-    game::write_game(file_name, firstPlayer, log);
+    game::write_game(file_name, firstPlayer, p1.getName(), p2.getName(), log);
 }
 
 
-void game::print(player p1, player p2, bool human){     //todo: rivedere la funzione -> non bisogna stampare la griglia del computer se la partita è PC (stampa solo se !human)
+void game::print(player& p1, player& p2, bool human){
     std::string n1 = p1.getName();
-    std::string ship_name, tab;
-    int cont = 1, last_dim;
 
     if(!human){
         p1.visual();        //P1 sempre computer
-        std::cout << "FLOTTA: " << std::endl;
-        for (auto &iter: p1.getFleet()) {
-            coords c = iter.first;
-
-            if(iter.second->getDimension() == 5) ship_name = "Corazzata ";
-            if(iter.second->getDimension() == 3) ship_name = "Nave di supporto ";
-            if(iter.second->getDimension() == 1) ship_name = "Sottomarino ";
-
-            tab = ship_name.size() > 10 ? "\t" : "\t\t";
-
-            std::cout << ship_name << c << ": " << tab << *iter.second << std::endl;
-
-            cont ++;
-        }
+        p1.printFleet();
+        std::cout << std::endl;
         sleep(1);
     }
 
     //stampa della flotta di P2
     std::string n2 = p2.getName();
     p2.visual();
-    std::cout << "FLOTTA: " << std::endl;
-    for(auto& iter: p2.getFleet()) {
-        coords c = iter.first;
-
-        if(iter.second->getDimension() == 5) ship_name = "Corazzata ";
-        if(iter.second->getDimension() == 3) ship_name = "Nave di supporto ";
-        if(iter.second->getDimension() == 1) ship_name = "Sottomarino ";
-
-        tab = ship_name.size() > 10 ? "\t" : "\t\t";
-
-        std::cout << ship_name << c << ": " << tab << *iter.second << std::endl;
-
-        cont ++;
-
-        //coords c = iter.first;
-        //std::cout << c << ": " << *iter.second << std::endl;
-    }
+    p2.printFleet();
     std::cout << std::endl;
     sleep(1);
 }
 
-void game::write_game(const std::string &out_file, bool firstPlayer, std::vector<std::pair<coords, coords>> vector) {
+void game::write_game(const std::string &out_file, bool firstPlayer, std::string name1, std::string name2, std::vector<std::pair<coords, coords>>& vector) {
     std::ofstream outFile;              // Dichiarazione di tipo
     std::string path = "../file/" + out_file;      //creazione del percorso per il salvataggio
 
@@ -310,6 +291,8 @@ void game::write_game(const std::string &out_file, bool firstPlayer, std::vector
         std::cout << "Errore di apertura del file" << std::endl;         // controllo
     } else {
         outFile << (firstPlayer ? 1 : 0) << std::endl;
+        outFile << name1 << std::endl;
+        outFile << name2 << std::endl;
         for (auto & i : vector) {       //scorro il vettore per scrivere nel nuovo file
             outFile << i.first << " " << i.second << std::endl;
         }
