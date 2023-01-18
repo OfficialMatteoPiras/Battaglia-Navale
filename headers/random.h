@@ -6,9 +6,9 @@
 #include "../headers/coords.h"
 
 namespace randomFunction {
-    coords getRandomCoord();
-    coords getRandomCoord(const coords& coord, bool vertical = false, int distance = 1); //prende in input la PRUA!
-    int getRandomInt(int range = 11, int start = 0);
+    coords getRandomCoord();        //genera delle coordinate casuali
+    coords getRandomCoord(const coords& coord, bool vertical = false, int distance = 1);            //genera delle coordinate date la prua della nave, se è in verticale e la dimensione della nave
+    int getRandomInt(int range = 11, int start = 0);        //genera un intero random
 };
 
 

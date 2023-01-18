@@ -15,7 +15,7 @@ protected:
 
 public:
     //COSTRUTTORI
-    explicit ship(coords ctr): center{ctr} {};      //costruttore
+    explicit ship(coords ctr): center{ctr} {};                //costruttore
     explicit ship(coords bow, coords stern, unsigned int d = 0){        //costruttore che ricava il centro da prua e poppa
         dim = d;
         life = dim;
@@ -37,37 +37,30 @@ public:
     };
 
     //GETTERS
-    coords& getCenter(){ return center; }
-    bool isVertical() const{ return vertical; }
-    int getDimension() const { return dim; }
-    int getLife() const { return life; }
-    coords getBow() const;          //prua
-    coords getStern() const;        //poppa
+    coords& getCenter(){ return center; }           //ritorna il centro di una nave
+    bool isVertical() const{ return vertical; }     //ritorna se è verticale o meno la nave
+    int getDimension() const { return dim; }        //ritorna la dimensione della nave
+    int getLife() const { return life; }            //ritorna la vita della nave
+    coords getBow() const;                          //restituisce la prua
+    coords getStern() const;                        //restituisce la poppa
 
-    bool contains(coords c) const;
-    bool isAlive() const { return life>0; }
+    bool contains(coords c) const;              //verifica se la coordinata trovata appartenga ad una nave
+    bool isAlive() const { return life>0; }     //verifica che la nave sia viva
 
     //SETTERS
-    void removeLife();
-    void restoreLife() { life = dim; }
-    void moved(coords newCenter) { center = newCenter; }
+    void removeLife();          //rimuove la vita di una nave
+    void restoreLife() { life = dim; }      //rigenera la vita di una nave
+    void moved(coords newCenter) { center = newCenter; }        //cambia il centro do una nave a seguito di uno spostamento
 
 };
 
 
-std::ostream& operator<<(std::ostream& os, ship& s);
+std::ostream& operator<<(std::ostream& os, ship& s);        //overload dell'operatore di output
 
-
+// ---------- NAVE DA BATTAGLIA --------- //
 class battleship : public ship{
 public:
-    //COSTRUTTORI
-    //chiamata ai costruttori della classe base e dichiarazione dei membri per battleship
-    battleship(coords ctr, bool vtr) : ship(ctr) {
-        ship::vertical = vtr;
-        ship::dim = 5;
-        ship::life = 5;
-    }
-    battleship(coords bow, coords stern) : ship(bow, stern) {
+    battleship(coords bow, coords stern) : ship(bow, stern) {           //costruttore che inizializza una nave da battaglia chiamando il costruttore della super classe
         ship::vertical = bow.getY() == stern.getY();
         ship::dim = 5;
         ship::life = 5;
@@ -75,30 +68,22 @@ public:
 
 };
 
-
+// ---------- NAVE DI SUPPORTO ---------- //
 class support : public ship{
 public:
 
-    support(coords bow, coords stern) : ship(bow, stern) {
+    support(coords bow, coords stern) : ship(bow, stern) {           //costruttore che inizializza una nave di supporto chiamando il costruttore della super classe
         ship::vertical = bow.getY() == stern.getY();
-        ship::dim = 3;
-        ship::life = 3;
-    }
-    support(coords ctr, bool vtr) : ship(ctr) {
-        ship::vertical = vtr;
         ship::dim = 3;
         ship::life = 3;
     }
 
 };
 
-
+//---------- SOTTOMARINO DI RICERCA ----------//
 class submarine : public ship{
 public:
-    submarine(coords ctr, bool vtr) : ship(ctr) {
-        ship::vertical = vtr;
-    }
-    submarine(coords bow, coords stern) : ship(bow, stern) {
+    submarine(coords bow, coords stern) : ship(bow, stern) {           //costruttore che inizializza un sottomarino il costruttore della super classe
         ship::vertical = bow.getY() == stern.getY();
         ship::dim = 1;
         ship::life = 1;

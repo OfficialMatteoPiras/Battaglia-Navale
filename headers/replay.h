@@ -21,13 +21,13 @@ class replay{
         //MEMBRI PRIVATI
         std::vector<std::pair<coords, coords>>getSubVector(int start, int end);     //funzione per ottenere un sottovettore
         void read_file(const std::string& file_in_name);      //lettura del file txt
-        void startReplay();
+        void startReplay();         //funzione per far partire un replay
 
         //ECCEZIONI
-        class FileNotValid : public std::exception{};
+        class FileNotValid : public std::exception{};           //eccezione se non trova il nome di un file nella directory
 
     public:
-        replay() = default;
+        replay() = default;         //costruttore di default
         void replay_main(char ch_, const std::string& nome_file_log, const std::string& output_replay = "");      //funzione che fa partire il replay (ancora di partenza)
 
 };
