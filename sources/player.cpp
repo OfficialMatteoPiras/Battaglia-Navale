@@ -65,7 +65,6 @@ void player::hit(const coords& target) {
 //inizializzazione flotta
 std::vector<std::pair<coords, coords>> player::startFleet() {
 
-    //todo: usare la funzione newShip();
     int dim = 5, cont = 1;
     unsigned int dif;
     char ch = 'C';
@@ -73,10 +72,11 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
     std::pair<coords, coords> input = {};
     std::vector<std::pair<coords, coords>> log;
 
+    visual();       //visualizza la griglia per aiutare il giocatore ad inserire le navi
+
     //START CORAZZATA
     for (int i = 0; i < 8; i++) {
         try{
-            visual();       //todo: vedere se va bene visualizzare la griglia ogni ciclo
             if(i >= 0 && i < 3)
                 input = getCoords("Quali sono le coordinate per la corazzata " + std::to_string(cont));
             if(i >= 3 && i < 6)
@@ -102,6 +102,7 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
             if(i + 1 == 6) { ch = 'E'; cont = 0; }
 
             cont ++;
+            visual();           //visualizza la griglia per aiutare il giocatore ad inserire le navi
         }
         catch (coords::invalidCoords& c){
             std::cout << " ** invalid coordinates **" << std::endl;
@@ -111,7 +112,6 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
             std::cout << " ** not enough space **" << std::endl;
             i--;
         }
-        //visual();
     }
 
     std::cout << "\n\t ******* " << funnyMessage() << " *******" << std::endl;
