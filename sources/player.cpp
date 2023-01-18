@@ -2,19 +2,6 @@
 
 #include "../headers/player.h"
 
-//COSTRUTTORI
-
-player::player() {
-    name = "Player";
-    fleet = {};
-}
-
-player::player(const std::string& n){
-    name = n;
-    fleet = {};
-}
-
-
 //GETTERS
 
 int player::getPoints() const{
@@ -81,17 +68,13 @@ void player::hit(const coords& target) {
 }
 
 std::vector<std::pair<coords, coords>> player::startFleet() {
-
     int dim = 5, cont = 1;
     unsigned int dif;
     char ch = 'C';
-
     std::pair<coords, coords> input = {};
     std::vector<std::pair<coords, coords>> log;
-
     visual();       //visualizza la griglia per aiutare il giocatore ad inserire le navi
 
-    //START CORAZZATA
     for (int i = 0; i < 8; i++) {
         try{
             if(i >= 0 && i < 3)
@@ -105,24 +88,23 @@ std::vector<std::pair<coords, coords>> player::startFleet() {
 
             if(dif != dim) throw coords::invalidCoords();
 
-            //CHECK E MATRIX INPUT
+            //controlla che ci sia spazio (se non c'è viene lanciata eccezione)
             ship s(input.first, input.second, dim);
             checkSpace(&s, s.getCenter(), false);
-            insertShip(s, ch);
 
-            //FLEET INPUT
+            //inserisce nella matrice, nella flotta e nel vettore da restituire
+            insertShip(s, ch);
             newShip(s.getStern(), s.getBow(), ch);
             log.emplace_back(input.first, input.second);
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) { ch = 'S'; cont = 0; }
             if(i + 1 == 6) { ch = 'E'; cont = 0; }
-
             cont ++;
             visual();           //visualizza la griglia per aiutare il giocatore ad inserire le navi
         }
         catch (coords::invalidCoords& c){
-            std::cout << " ** Coordinate non valide! **" << std::endl;
+            std::cout << " ** Queste coordinate non sono valide, capitano! **" << std::endl;
             i--;
         }
         catch(notEnoughSpace& e){
@@ -140,26 +122,25 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
     char ch = 'C';
     std::vector<std::pair<coords, coords>> log;
 
-    //START FLOTTA
     for (int i = 0; i < 8; ++i) {
         try{
+            //sceglie delle coordinate casuali
             coords c1 = randomFunction::getRandomCoord();
             bool vtr = randomFunction::getRandomInt(99) % 2 == 0;
             coords c2 = randomFunction::getRandomCoord(c1, vtr, dim);
 
-            //CHECK E MATRIX INPUT
+            //controlla che ci sia spazio (se non c'è viene lanciata eccezione)
             ship s(c1,c2,dim);
             checkSpace(&s, s.getCenter(), false);
-            insertShip(s, ch);
 
-            //FLEET INPUT
+            //inserisce nella matrice, nella flotta e nel vettore da restituire
+            insertShip(s, ch);
             newShip(s.getStern(), s.getBow(), ch);
             log.emplace_back(s.getBow(), s.getStern());
 
             if(i + 1 == 3 || i + 1 == 6) dim -= 2;
             if(i + 1 == 3) ch = 'S';
             if(i + 1 == 6) ch = 'E';
-
         }
         catch (coords::invalidCoords& c){
             i--;
@@ -175,8 +156,9 @@ std::vector<std::pair<coords, coords>> player::startRandomFleet() {
 //COMANDI
 
 void player::action(const coords& origin, const coords& target, player& opponent, bool replay){
-    if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi
+    if (fleet.find(origin) == fleet.end())       //controlla che origin sia il centro di una delle sue navi, altrimenti lancia eccezione
         throw invalidOrigin();
+
     ship* s = fleet.find(origin)->second;
     if (s->getDimension() == 5){             //azione corazzata
         fire(target, opponent);
@@ -194,11 +176,9 @@ void player::action(const coords& origin, const coords& target, player& opponent
 void player::visual(){
     std::cout << std::endl;
     std::string name_ = "**** " + name + " ****";
-    unsigned int rep = (102 - name.size()) / 2;      //(lunghezza della riga - nome.size()) / 2
-
-    //centro la scritta
-    for (int i = 0; i < rep; i++) std::cout << " ";
-
+    unsigned int rep = (102 - name.size()) / 2;     //(lunghezza della riga - nome.size()) / 2
+    for (int i = 0; i < rep; i++)       //centra la scritta
+        std::cout << " ";
     std::cout << name_ << std::endl;
     grid(defence, attack);
 }
@@ -244,7 +224,6 @@ std::string player::funnyComputerMessage() {
     srand(rand());
     std::vector<std::string> message = {        //NB: gli spazi vuoti sono voluti, servono a non far stampare ad ogni turno un messaggio
         "COLPITO OPPURE NO? CHI LO SA...",
-        "",
         "ATTENTO! IL MARE E' DALLA NOSTRA PARTE!",
         "",
         "I MIEI CANNONI SONO PUNTATI SULLE TUE NAVI, STAI ATTENTO!",
@@ -293,7 +272,7 @@ void player::moveAndRepair(const coords& origin, const coords& target){
                         repairFullShip(c);
                     }
                 }
-                catch (coords::invalidCoords& e){}
+                catch (coords::invalidCoords& e){}      //se le coordinate del 3x3 escono dalla griglia prosegue con le altre
             }
         }
     }
@@ -325,21 +304,19 @@ void player::moveAndSearch(const coords& origin, const coords& target, player& o
 
 //FUNZIONI DI SUPPORTO ALLE AZIONI
 
-//controlla se c'è spazio per inserire una nave (se non c'è lancia notEnoughSpace())
 void player::checkSpace(ship* s, const coords& target, bool alreadyExists){
     int dim = s->getDimension();
     coords check;
-
     bool valid = true;
     try {
-        for (int i = -dim/2; i <= dim/2 && valid; i++) {      //controllo spazio che serve
+        for (int i = -dim/2; i <= dim/2 && valid; i++) {      //controllo tutte le caselle che servono
             if (s->isVertical())
                 check = target.addRow(i);
             else
                 check = target.addCol(i);
 
             if(alreadyExists) {
-                if (!defence.isEmpty(check) && !s->contains(check))
+                if (!defence.isEmpty(check) && !s->contains(check))     //se la nave è già sulla griglia, non considera le caselle in occupate da se stessa
                     valid = false;
             } else {
                 if (!defence.isEmpty(check))
@@ -347,21 +324,20 @@ void player::checkSpace(ship* s, const coords& target, bool alreadyExists){
             }
         }
     }catch(coords::invalidCoords& c){
-        valid = false;
+        valid = false;      //il target dato non permette di posizionarla interamente all'interno della griglia
     }
 
     if (!valid)
-        throw notEnoughSpace();     //eccezione non c'è spazio
+        throw notEnoughSpace();     //eccezione: non c'è spazio
 }
 
-//sposta una nave QUALSIASI da origin a target, lancia eccezione se non c'è spazio
 void player::move(const coords& origin, const coords& target) {
     std::vector<char> v;
     ship* s = fleet.find(origin)->second;
-    checkSpace(s, target, true);
+    checkSpace(s, target, true);        //se non c'è spazio propaga eccezione notEnoughSpace()
 
+    //copia la nave in un vettore e la cancella da defence (serve per inserire in posizioni già occupate dalla nave stessa)
     int dim = s->getDimension();
-    //copia la nave in un vettore e la cancella da defence
     for(int i = -dim/2; i <= dim/2; i++){
         if(s->isVertical()) {
             v.push_back(defence.getElement(origin.addRow(i)));
@@ -371,6 +347,7 @@ void player::move(const coords& origin, const coords& target) {
             defence.insert(origin.addCol(i), ' ');
         }
     }
+
     //inserisce la nave nella nuova posizione
     for(int i = -dim/2; i <= dim/2; i++){
         if(s->isVertical())
@@ -379,18 +356,18 @@ void player::move(const coords& origin, const coords& target) {
             defence.insert(target.addCol(i), v[i+dim/2]);
     }
 
+    //aggiorna la nave e fleet
     s->moved(target);
-
     fleet.erase(origin);
     fleet.insert(std::make_pair(target, s));
 }
 
-//restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate
 ship* player::getShipPointer(const coords& c){
     int dim = defence.getShipDim(c);        //dimensione della nave da riparare (in base alla lettera sulla griglia)
     coords center;
     ship* s = nullptr;
     bool found = false;
+    //scorre le posizioni possibili del centro
     for (int i = -dim/2; i <= dim/2 && !found; i++) {
         for (int k = 0; k <= 1 && !found; k++) {
             try{
@@ -401,8 +378,7 @@ ship* player::getShipPointer(const coords& c){
 
                 if (fleet.find(center) != fleet.end()) {   //esiste una nave con quel centro?
                     s = fleet.find(center)->second;
-                    //verifica se quella cella appartiene alla nave
-                    found = s->contains(c);
+                    found = s->contains(c);     //verifica se quella cella appartiene alla nave e aggiorna la flag found
                 }
             }
             catch (coords::invalidCoords& e) {}
@@ -411,7 +387,6 @@ ship* player::getShipPointer(const coords& c){
     return s;
 }
 
-//ripara l'intera nave a partire dalla coordinata di una delle sue unità
 void player::repairFullShip(const coords& c){
     ship* s = getShipPointer(c);
     s->restoreLife();
@@ -425,17 +400,15 @@ void player::repairFullShip(const coords& c){
     }
 }
 
-//controlla se l'unità in target è stata colpita
 bool player::wasHit(const coords& target){
     char c = defence.getElement(target);
     return c == 'c' || c == 's' || c == 'e';
 }
 
-//rimuove una nave dalla flotta e dalla griglia di difesa
 void player::removeShip(const coords& center){
     ship* s = fleet.find(center)->second;
     int dim = s->getDimension();
-    for(int i = -dim/2; i <= dim/2; i++) {       //riscrittura defense
+    for(int i = -dim/2; i <= dim/2; i++) {       //riscrittura defence
         if (s->isVertical())
             defence.insert(center.addRow(i), ' ');
         else
@@ -445,7 +418,6 @@ void player::removeShip(const coords& center){
     delete s;
 }
 
-//crea una nave e la inserisce nella flotta
 ship* player::newShip(const coords& stern, const coords& bow, char c){
     ship* s = nullptr;
     if(c == 'C')
@@ -459,13 +431,11 @@ ship* player::newShip(const coords& stern, const coords& bow, char c){
     return s;
 }
 
-//inserisce la nave s nella griglia di difesa
 void player::insertShip(ship& s, char c){
     coords center = s.getCenter();
     coords n_c;
     int dim = s.getDimension();
     for (int i = -dim/2; i <= dim/2; i++) {
-        //std::cout << "new: " << n_c << std::endl;
         if (s.isVertical())
             n_c = center.addRow(i);
         else

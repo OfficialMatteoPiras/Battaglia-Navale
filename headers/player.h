@@ -4,6 +4,7 @@
 #define BATTAGLIA_NAVALE_PLAYER_H
 
 #include <map>
+#include <utility>
 #include <vector>
 #include "../headers/coords.h"
 #include "../headers/ship.h"
@@ -14,15 +15,16 @@ class player{
     public:
     //COSTRUTTORI
         //Costruttore di default
-        explicit player();
-        //Costruttore con nome
-        explicit player(const std::string& n);
+        explicit player(): name{"Player"}, fleet{} {}
+
+        //Costruttore con nome del giocatore
+        explicit player(std::string  n): name{std::move(n)}, fleet{} {}
 
     //GETTERS: restituiscono informazioni sul giocatore
         //Restituisce una stringa contenente il nome del giocatore
         std::string getName() const{ return name; }
 
-        //Restituisce il numero di unità non colpite
+        //Restituisce il numero totale di unità non colpite
         int getPoints() const;
 
         //Verifica se il giocatore ha ancora unità non colpite
@@ -60,7 +62,7 @@ class player{
 
     //COMANDI
         //esegue l'azione sulle coordinate di target (è diversificata in base al tipo di nave indicata da origin)
-        void action(const coords& origin, const coords& target, player& opponent, bool replay = false);    //XYorigin XYtarget -> azione giocatore
+        void action(const coords& origin, const coords& target, player& opponent, bool replay = false);
 
         //XX XX - mostra griglie di attacco e difesa
         void visual();
@@ -94,42 +96,42 @@ class player{
         std::map<coords, ship*> fleet;  //mappa per la flotta
 
     //AZIONI DELLE TRE NAVI
-        //azione della corazzata
+        //Azione della corazzata
         void fire(const coords& target, player& opponent);  //azione della corazzata
 
-        //azione della nave di supporto
+        //Azione della nave di supporto
         void moveAndRepair(const coords& origin, const coords& target);   //azione della nave di supporto
 
-        //azione del sottomarino di esplorazione
+        //Azione del sottomarino di esplorazione
         void moveAndSearch(const coords& origin, const coords& target, player& opponent); //azione del sottomarino di esplorazione
 
     //FUNZIONI DI SUPPORTO ALLE AZIONI
-        //controlla se c'è spazio per inserire una nave in target (se non c'è lancia notEnoughSpace())
+        //Controlla se c'è spazio per inserire una nave in target (se non c'è lancia notEnoughSpace())
         void checkSpace(ship* s, const coords& target, bool alreadyExists);
 
-        //sposta una nave QUALSIASI da origin a target, propaga eccezione se non c'è spazio
+        //Sposta una nave QUALSIASI da origin a target, propaga eccezione se non c'è spazio
         void move(const coords& origin, const coords& target);
 
-        //restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate
+        //Restituisce un puntatore alla nave data UNA QUALSIASI delle sue coordinate
         ship* getShipPointer(const coords& c);
 
-        //ripara l'intera nave data una qualsiasi delle sue coordinate
+        //Ripara l'intera nave data una qualsiasi delle sue coordinate
         void repairFullShip(const coords& target);
 
-        //verifica se l'unità in target è già stata colpita
+        //Verifica se l'unità in target è già stata colpita
         bool wasHit(const coords& target);
 
-        //rimuove una nave dalla flotta e dalla griglia di difesa
+        //Rimuove una nave dalla flotta e dalla griglia di difesa
         void removeShip(const coords& c);
 
-        //crea una nave, la inserisce nella flotta e ne restituisce un puntatore
+        //Crea una nave, la inserisce nella flotta e ne restituisce un puntatore
         ship* newShip(const coords& stern, const coords& bow, char c);
 
-        //inserisce la nave s nella griglia di difesa
+        //Inserisce la nave s nella griglia di difesa
         void insertShip(ship& s, char c);
 
     //INPUT COORDINATE
-        //Scrive un messaggio in output, poi prende in input e restituisce una coppia di coordinate di tipo XY-origin, XY-target
+        //Scrive il messaggio in output, poi prende in input e restituisce una coppia di coordinate di tipo XY-origin, XY-target
         static std::pair<coords, coords> getCoords(const std::string& message);
 };
 
