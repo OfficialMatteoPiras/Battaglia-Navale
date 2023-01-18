@@ -41,7 +41,7 @@ void backing::grid(backing::matrix ships, backing::matrix attack) {
 
 std::vector<std::pair<coords, coords>> backing::read_file(){        //!DA TESTARE
     std::vector<std::pair<coords, coords>> read_coords;         //vettore per la lettura delle coordinate
-    std::ifstream inFile("../file/log.txt");      //apertura del file ("../" serve per cercare in automatico il percorso del file)
+    std::ifstream inFile("../file/logCC.txt");      //apertura del file ("../" serve per cercare in automatico il percorso del file)
 
     if (!inFile) {      //controllo corretta apertura
         std::cout << "Errore di apertura del file" << std::endl; // controllo

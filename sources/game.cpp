@@ -227,7 +227,7 @@ void game::start_game(bool human){
 
         std::cout << std::endl;
 
-        //sleep(1);         //timer
+        sleep(1);         //timer
     }
 
     //FINE PARTITA
